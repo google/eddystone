@@ -1,6 +1,6 @@
 # Eddystone-UID
 
-The Eddystone-UID frame broadcasts a an opaque, unique 16-byte Beacon ID composed of a 10-byte namespace ID and a 6-byte instance ID. The Beacon ID may be useful in mapping a device to a record in external storage. The namespace ID may be used to group a particular set of beacons, while the instance ID identifies individual devices in the group. The division of namespace and instance IDs may also be used to optimize BLE scanning strategies, e.g. by filtering only on the namespace.
+The Eddystone-UID frame broadcasts an opaque, unique 16-byte Beacon ID composed of a 10-byte namespace ID and a 6-byte instance ID. The Beacon ID may be useful in mapping a device to a record in external storage. The namespace ID may be used to group a particular set of beacons, while the instance ID identifies individual devices in the group. The division of namespace and instance IDs may also be used to optimize BLE scanning strategies, e.g. by filtering only on the namespace.
 
 ## Frame Specification
 
