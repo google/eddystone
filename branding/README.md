@@ -30,7 +30,7 @@ to follow.
 - **Don't** change the spelling or intended capitalization of Eddystone
   - Incorrect: Eddy Stone, EddyStone
   - Correct: Eddystone
-- **The Eddystone mark** can be found [in this folder][]
+- **The Eddystone mark** can be found [assets](assets/) directory in this github project
   - **Don't** modify the color, proportions, spacing, or any other aspect of the
     Eddystone logo
   - The mark should only be placed on a white (or simple) background; it should
@@ -40,5 +40,3 @@ to follow.
     (**don't** display the stylized E standing alone)
   - When used alongside other logos, the Eddystone logo should be of equal or
     greater size
-
-[in this folder]: https://drive.google.com/folderview?id=0B6geOwLGWFVYflRlWGtTVDhveXZpOGxQcExmZ3RpTm1aX3lfRFlnUWZ5NUlfRzFBZHFqWUU&usp=sharing
