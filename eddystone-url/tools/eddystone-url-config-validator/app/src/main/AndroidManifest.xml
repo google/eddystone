@@ -1,0 +1,58 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.google.sample.eddystoneurlconfigvalidator">
+    <!-- This is required for the scan library. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!--
+    Declare this required feature if you want to make the app available to BLE-capable
+    devices only.  If you want to make your app available to devices that don't support BLE,
+    you should omit this in the manifest.  Instead, determine BLE capability by using
+    PackageManager.hasSystemFeature(FEATURE_BLUETOOTH_LE)
+    -->
+    <uses-feature
+            android:name="android.hardware.bluetooth_le"
+            android:required="true" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+    <application
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme" >
+
+        <!-- This is required for the scan library. -->
+        <service
+                android:name="org.uribeacon.scan.compat.ScanWakefulService"
+                android:exported="false" />
+        <service
+                android:name="org.uribeacon.config.GattService"
+                android:exported="false" >
+        </service>
+
+        <!-- This is required for the scan library. -->
+        <receiver android:name="org.uribeacon.scan.compat.ScanWakefulBroadcastReceiver" />
+
+        <activity
+                android:name=".TestActivity"
+                android:configChanges="orientation|keyboardHidden"
+                android:label="@string/title_activity_tests"
+                android:parentActivityName=".MainActivity"
+                android:screenOrientation="portrait" >
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".MainActivity" />
+        </activity>
+        <activity
+                android:name=".MainActivity"
+                android:label="@string/title_activity_main" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

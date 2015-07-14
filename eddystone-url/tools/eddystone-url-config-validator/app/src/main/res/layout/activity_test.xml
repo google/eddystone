@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2015 Google Inc. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.google.sample.eddystoneurlconfigvalidator.TestActivity">
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView_tests"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"/>
+        <TextView
+                android:id="@+id/button_progress"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:textColor="#fff"
+                android:elevation="10dp"
+                android:clickable="true"
+                android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+                android:gravity="center"
+                android:background="@drawable/floating_button"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"/>
+</RelativeLayout>

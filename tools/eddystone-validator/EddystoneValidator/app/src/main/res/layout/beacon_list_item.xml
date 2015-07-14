@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+
+  <TextView
+    android:id="@+id/deviceAddress"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    android:text="Device Address"
+    android:textStyle="bold" />
+
+  <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+      android:id="@+id/uidLabel"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingLeft="10dp"
+      android:paddingTop="10dp"
+      android:text="UID" />
+
+    <TextView
+      android:id="@+id/uidStatus"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp"
+      android:paddingTop="10dp"
+      android:text="UID" />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+      android:id="@+id/tlmLabel"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingLeft="10dp"
+      android:paddingTop="10dp"
+      android:text="TLM" />
+
+    <TextView
+      android:id="@+id/tlmStatus"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp"
+      android:paddingTop="10dp"
+      android:text="TLM" />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+      android:id="@+id/urlLabel"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingLeft="10dp"
+      android:paddingTop="10dp"
+      android:text="URL" />
+
+    <TextView
+      android:id="@+id/urlStatus"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp"
+      android:paddingTop="10dp"
+      android:text="URL" />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/frameStatusGroup"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    android:orientation="horizontal">
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textColor="#960000"
+      android:paddingLeft="10dp"
+      android:paddingTop="10dp"
+      android:text="Frame errors: " />
+
+    <TextView
+      android:id="@+id/frameStatus"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp"
+      android:paddingTop="10dp"
+      />
+
+  </LinearLayout>
+
+  <View
+    android:layout_width="match_parent"
+    android:layout_height="1dip"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="10dp"
+    android:background="#AAAAAA" />
+
+</LinearLayout>

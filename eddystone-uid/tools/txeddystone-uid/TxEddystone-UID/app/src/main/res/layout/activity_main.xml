@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+                tools:context=".MainActivity">
+
+  <Switch
+      android:id="@+id/txSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Tx"
+      android:layout_alignParentTop="true"
+      android:layout_centerHorizontal="true"/>
+
+  <TextView
+      android:id="@+id/namespaceText"
+      android:text="10-byte namespace ID"
+      android:layout_below="@+id/txSwitch"
+      android:layout_centerHorizontal="true"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"/>
+
+  <EditText
+      android:id="@+id/namespace"
+      android:text="00010203040506070809"
+      android:inputType="textCapCharacters"
+      android:layout_below="@+id/namespaceText"
+      android:layout_centerHorizontal="true"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"/>
+
+  <Button
+      android:id="@+id/randomizeNamespace"
+      android:text="Rnd"
+      style="?android:attr/buttonStyleSmall"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignBaseline="@id/namespace"
+      android:layout_toEndOf="@id/namespace"/>
+
+  <TextView
+      android:id="@+id/instanceText"
+      android:text="6-byte instance ID"
+      android:layout_below="@+id/namespace"
+      android:layout_centerHorizontal="true"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"/>
+
+  <EditText
+      android:id="@+id/instance"
+      android:text="AABBCCDDEEFF"
+      android:inputType="textCapCharacters"
+      android:layout_below="@+id/instanceText"
+      android:layout_centerHorizontal="true"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"/>
+
+  <Button
+      android:id="@+id/randomizeInstance"
+      android:text="Rnd"
+      style="?android:attr/buttonStyleSmall"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignBaseline="@id/instance"
+      android:layout_toEndOf="@id/instance"/>
+
+</RelativeLayout>
