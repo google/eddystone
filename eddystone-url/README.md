@@ -35,10 +35,10 @@ The URL Scheme Prefix byte defines the identifier scheme, an optional prefix and
 
 |Decimal  | Hex        | Expansion
 |:------- | :--------- | :--------
-|0        | 0x00       | http://www.
-|1        | 0x01       | https://www.
-|2        | 0x02       | http://
-|3        | 0x03       | https://
+|0        | 0x00       | `http://www.`
+|1        | 0x01       | `https://www.`
+|2        | 0x02       | `http://`
+|3        | 0x03       | `https://`
 
 ### Eddystone-URL HTTP URL encoding
 
