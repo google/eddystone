@@ -24,11 +24,11 @@ again.
 [corporate CLA]: https://developers.google.com/open-source/cla/corporate
 
 Once your CLA is submitted (or if you already submitted one for another Google
-project), make a commit adding yourself to the [AUTHORS][] and [CONTRIBUTORS][]
-files. This commit can be part of your first [pull request][].
+project), make a commit adding yourself to the [CONTRIBUTORS][] and/or the
+[AUTHORS][] files. This commit can be part of your first [pull request][].
 
-[AUTHORS]: AUTHORS
 [CONTRIBUTORS]: CONTRIBUTORS
+[AUTHORS]: AUTHORS
 
 ## Submitting a patch
 
@@ -49,7 +49,8 @@ files. This commit can be part of your first [pull request][].
    This provides consistency throughout the project, and ensures that commit
    messages are able to be formatted properly by various git tools.
 
-1. Finally, push the commits to your fork and submit a [pull request][].
+1. Finally, all submissions require review. We use pull requests for this, so
+   push the commits to your fork and submit a [pull request][].
 
 [forking]: https://help.github.com/articles/fork-a-repo
 [style guides]: https://github.com/google/styleguide
