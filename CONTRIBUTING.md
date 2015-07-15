@@ -43,6 +43,8 @@ files. This commit can be part of your first [pull request][].
    separate branches in order to ensure that a pull request only includes the
    commits related to that bug or feature.
 
+1. We have [style guides] for the languages we use; please follow them.
+
 1. Do your best to have [well-formed commit messages][] for each change.
    This provides consistency throughout the project, and ensures that commit
    messages are able to be formatted properly by various git tools.
@@ -50,5 +52,7 @@ files. This commit can be part of your first [pull request][].
 1. Finally, push the commits to your fork and submit a [pull request][].
 
 [forking]: https://help.github.com/articles/fork-a-repo
+[style guides]: https://github.com/google/styleguide
+
 [well-formed commit messages]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
 [pull request]: https://help.github.com/articles/creating-a-pull-request
