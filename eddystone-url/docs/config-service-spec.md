@@ -7,7 +7,7 @@
 The Eddystone-URL Configuration Service should only be available during Configuration Mode (i.e. connectable) and **not** be available during regular URI Advertising Mode (i.e. **not** connectable). The Eddystone-URL Configuration Service allows setting Eddystone-URL fields and transmission characteristics. This information includes the following:
 
 *   Lock code
-*   Uri
+*   URI
 *   Flags
 *   Transmit Power
 *   Duty Cycle
@@ -59,8 +59,8 @@ The assigned number for `<<Eddystone-URL Configuration Service>>` is
 | Lock State                 | [3.1](#31-lock-state) | Mandatory|
 | Lock                       | [3.2](#32-lock) | Optional|
 | Unlock                     | [3.3](#33-unlock) | Optional|
-| Uri Data                   | [3.4](#34-uri-data) | Mandatory|
-| Uri Flags                  | [3.5](#35-flags)  | Mandatory|
+| URI Data                   | [3.4](#34-uri-data) | Mandatory|
+| URI Flags                  | [3.5](#35-flags)  | Mandatory|
 | Advertised Tx Power Levels | [3.6](#36-advertised-tx-power-levels)  | Mandatory|
 | Tx Power Mode              | [3.7](#37-tx-power-mode) | Mandatory |
 | Beacon Period              | [3.8](#38-beacon-period)| Mandatory|
@@ -73,8 +73,8 @@ The assigned number for `<<Eddystone-URL Configuration Service>>` is
 |Lock State                |X|M|X|X  |X|X|X|X|X|
 |Lock                      |X|X|X|O\*|X|X|X|X|X|
 |Unlock                    |X|X|X|O  |X|X|X|X|X|
-|Uri Data                  |X|M|X|M\*|X|X|X|X|X|
-|Uri Flags                 |X|M|X|M\*|X|X|X|X|X|
+|URI Data                  |X|M|X|M\*|X|X|X|X|X|
+|URI Flags                 |X|M|X|M\*|X|X|X|X|X|
 |Advertised Tx Power Levels|X|M|X|M\*|X|X|X|X|X|
 |Tx Power Mode             |X|M|X|M\*|X|X|X|X|X|
 |Beacon Period             |X|M|X|M\*|X|X|X|X|X|
@@ -122,19 +122,19 @@ Read returns true if the device is locked.
 * [Invalid length](#14-return-codes) - for an unlock attempt with an invalid length whether the beacon is locked or not.
 * Success - for an unlock attempt with a valid length key when the beacon is unlocked
 
-### 3.4 Uri Data
+### 3.4 URI Data
 
-| Name | Uri Data |
+| Name | URI Data |
 |:------------|:--------------------------------------------|
 | UUID  | ee0c<b>2084</b>-8786-40ba-ab96-99b91ac981d8|
-|  Description| Reads/writes the Uri. |
+|  Description| Reads/writes the URI. |
 |  Type | uint8[0..18]|
 |  Lock State | For write, must be unlocked.|
 
-The Uri Data characteristic is a variable length structure. The first byte contains the [Uri Scheme Prefix](../README.md#URL-Scheme-Prefix).
+The URI Data characteristic is a variable length structure. The first byte contains the [URI Scheme Prefix](../README.md#URL-Scheme-Prefix).
 The remaining bytes contain the [HTTP URL encoding](../README.md#Eddystone_URL-HTTP-URL-encoding).
 
-Note: Uri Data must be between 0 and 18 bytes in length.
+Note: URI Data must be between 0 and 18 bytes in length.
 
 ### 3.5 Flags
 
@@ -212,8 +212,8 @@ Writing a non-zero value to this characteristic will set all characteristics to 
 
 | Characteristic | Default Value |
 |:---------------|:--------------|
-| Uri Data | vendor specified |
-| Uri Flags | 0 |
+| URI Data | vendor specified |
+| URI Flags | 0 |
 | TX Power Mode | TX_POWER_MODE_LOW |
 | Beacon Period | 1000 (1 second) |
 | Lock | 00000000-00000-0000-0000-000000000000 |

@@ -45,7 +45,7 @@ The Eddystone-UID frame broadcasts an opaque, unique 16-byte Beacon ID composed 
 
 The Eddystone-URL frame broadcasts a URL using a compressed encoding format in order to fit more within the limited advertisement packet.
 
-Once decoded, the URL can be used by any client with access to the internet. For example, if an Eddystone-URL beacon were to broadcast the URL `https://goo.gl/Aq18zF`, then any client that received this packet could chose to [visit that url](https://goo.gl/Aq18zF).
+Once decoded, the URL can be used by any client with access to the internet. For example, if an Eddystone-URL beacon were to broadcast the URL `https://goo.gl/Aq18zF`, then any client that received this packet could choose to [visit that url](https://goo.gl/Aq18zF).
 
 The Eddystone-URL frame forms the backbone of the [Physical Web](http://physical-web.org), an effort to enable frictionless discovery of web content relating to one’s surroundings. Eddystone-URL incorporates all of the learnings from the [UriBeacon](http://uribeacon.org) format from which it evolved.
 
