@@ -122,19 +122,19 @@ Read returns true if the device is locked.
 * [Invalid length](#14-return-codes) - for an unlock attempt with an invalid length whether the beacon is locked or not.
 * Success - for an unlock attempt with a valid length key when the beacon is unlocked
 
-### 3.4 Uri Data
+### 3.4 URI Data
 
-| Name | Uri Data |
+| Name | URI Data |
 |:------------|:--------------------------------------------|
 | UUID  | ee0c<b>2084</b>-8786-40ba-ab96-99b91ac981d8|
 |  Description| Reads/writes the Uri. |
 |  Type | uint8[0..18]|
 |  Lock State | For write, must be unlocked.|
 
-The Uri Data characteristic is a variable length structure. The first byte contains the [Uri Scheme Prefix](../README.md#URL-Scheme-Prefix).
+The Uri Data characteristic is a variable length structure. The first byte contains the [URI Scheme Prefix](../README.md#URL-Scheme-Prefix).
 The remaining bytes contain the [HTTP URL encoding](../README.md#Eddystone_URL-HTTP-URL-encoding).
 
-Note: Uri Data must be between 0 and 18 bytes in length.
+Note: URI Data must be between 0 and 18 bytes in length.
 
 ### 3.5 Flags
 
