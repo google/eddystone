@@ -29,6 +29,8 @@ Byte offset | Field | Description
 18 | RFU | Reserved for future use, must be`0x00`
 19 | RFU | Reserved for future use, must be`0x00`
 
+All multi-byte values are big-endian.
+
 ## Field Notes
 
 - The length of this frame is fixed and takes up the full 31 bytes of the ADV packet. The value of the Service Data Length byte must be `0x17`. Existing UID implementations that truncate the frame to omit the RFU bytes will use `0x15`, but in future should include the RFU bytes and the full length.

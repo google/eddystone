@@ -25,6 +25,8 @@ Byte offset | Field | Description
 12 | SEC_CNT[2] |
 13 | SEC_CNT[3] |
 
+All multi-byte values are big-endian.
+
 ## Field Notes
 
 - The length of this frame is fixed and must be truncated after the "time since power-on" bytes. The value of the Service Data Length byte must be `0x11`.

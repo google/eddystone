@@ -17,6 +17,10 @@ TLM | `0010` | `0x20`
 
 The four low-order bits are reserved for future use and must be `0000`.
 
+Note: although the core Bluetooth data type are defined in the standard as
+little-endian, Eddystone's multi-value bytes defined in the Service Data are
+all big-endian.
+
 An example frame type may look like:
 
 Byte offset | Value | Description | Data Type
