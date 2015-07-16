@@ -172,4 +172,17 @@ class Beacon {
     this.deviceAddress = deviceAddress;
   }
 
+  /**
+   * Performs a case-insensitive contains test of s on the device address (with or without the
+   * colon separators) and/or the UID value, and/or the URL value.
+   */
+  boolean contains(String s) {
+    return s == null
+        || s.isEmpty()
+        || deviceAddress.replace(":", "").toLowerCase().contains(s.toLowerCase())
+        || (uidStatus.uidValue != null
+            && uidStatus.uidValue.toLowerCase().contains(s.toLowerCase()))
+        || (urlStatus.urlValue != null
+            && urlStatus.urlValue.toLowerCase().contains(s.toLowerCase()));
+  }
 }

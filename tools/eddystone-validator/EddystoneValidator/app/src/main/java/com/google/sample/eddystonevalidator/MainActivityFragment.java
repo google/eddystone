@@ -30,10 +30,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.ParcelUuid;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -66,6 +69,8 @@ public class MainActivityFragment extends Fragment {
 
   private Map<String /* device address */, Beacon> deviceToBeaconMap = new HashMap<>();
 
+  private EditText filter;
+
   @Override
   public void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -92,7 +97,6 @@ public class MainActivityFragment extends Fragment {
         byte[] serviceData = scanRecord.getServiceData(EDDYSTONE_SERVICE_UUID);
         Log.v(TAG, deviceAddress + " " + Utils.toHexString(serviceData));
         validateServiceData(deviceAddress, serviceData);
-        arrayAdapter.notifyDataSetChanged();
       }
 
       @Override
@@ -123,6 +127,23 @@ public class MainActivityFragment extends Fragment {
                            ViewGroup container,
                            Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_main, container, false);
+    filter = (EditText) view.findViewById(R.id.filter);
+    filter.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        // NOP
+      }
+
+      @Override
+      public void onTextChanged(CharSequence s, int start, int before, int count) {
+        // NOP
+      }
+
+      @Override
+      public void afterTextChanged(Editable s) {
+        arrayAdapter.getFilter().filter(filter.getText().toString());
+      }
+    });
     ListView listView = (ListView)view.findViewById(R.id.listView);
     listView.setAdapter(arrayAdapter);
     listView.setEmptyView(view.findViewById(R.id.placeholder));
