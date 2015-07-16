@@ -23,13 +23,6 @@ again.
 [individual CLA]: https://developers.google.com/open-source/cla/individual
 [corporate CLA]: https://developers.google.com/open-source/cla/corporate
 
-Once your CLA is submitted (or if you already submitted one for another Google
-project), make a commit adding yourself to the [CONTRIBUTORS][] and/or the
-[AUTHORS][] files. This commit can be part of your first [pull request][].
-
-[CONTRIBUTORS]: CONTRIBUTORS
-[AUTHORS]: AUTHORS
-
 ## Submitting a patch
 
 1. It's generally best to start by opening a new issue describing the bug or
