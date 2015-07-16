@@ -1,17 +1,17 @@
 # Branding Guidelines
 
 We're excited that you'd like to tell potential customers of your support for
-the next-generation BLE beacon format, Eddystone. Below are guidelines for you
+the next-generation  Bluetooth® Smart beacon format, Eddystone. Below are guidelines for you
 to follow.
 
 - **Do** print it as: Eddystone™ (and not EddyStone or Eddy Stone)
 - **Do** use trademark symbol in the first or most prominent instance of Eddystone™
   in your creative
 - When describing Eddystone, use approved phrases:
-  - an open BLE beacon format
+  - an open Bluetooth® Smart beacon format
   - quickly deploys real-world context to users
   - capable of working across Android and iOS devices
-  - an open BLE beacon format from Google
+  - an open Bluetooth® Smart beacon format from Google
 - **Don't** put "Google" or "Android" before Eddystone, and don't append either
   directly after Eddystone
   - Incorrect: "Google's Eddystone"
