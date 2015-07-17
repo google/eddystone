@@ -49,17 +49,18 @@ import java.util.Map;
  * Main UI and logic for scanning and validation of results.
  */
 public class MainActivityFragment extends Fragment {
+
   private static final String TAG = "EddystoneValidator";
   private static final int REQUEST_ENABLE_BLUETOOTH = 1;
 
   // An aggressive scan for nearby devices that reports immediately.
   private static final ScanSettings SCAN_SETTINGS =
-    new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).setReportDelay(0)
-      .build();
+      new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).setReportDelay(0)
+          .build();
 
   // The Eddystone Service UUID, 0xFEAA.
   private static final ParcelUuid EDDYSTONE_SERVICE_UUID =
-    ParcelUuid.fromString("0000FEAA-0000-1000-8000-00805F9B34FB");
+      ParcelUuid.fromString("0000FEAA-0000-1000-8000-00805F9B34FB");
 
   private BluetoothLeScanner scanner;
   private BeaconArrayAdapter arrayAdapter;
@@ -127,8 +128,8 @@ public class MainActivityFragment extends Fragment {
 
   @Override
   public View onCreateView(LayoutInflater inflater,
-                           ViewGroup container,
-                           Bundle savedInstanceState) {
+      ViewGroup container,
+      Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_main, container, false);
     filter = (EditText) view.findViewById(R.id.filter);
     filter.addTextChangedListener(new TextWatcher() {
@@ -147,7 +148,7 @@ public class MainActivityFragment extends Fragment {
         arrayAdapter.getFilter().filter(filter.getText().toString());
       }
     });
-    ListView listView = (ListView)view.findViewById(R.id.listView);
+    ListView listView = (ListView) view.findViewById(R.id.listView);
     listView.setAdapter(arrayAdapter);
     listView.setEmptyView(view.findViewById(R.id.placeholder));
     return view;
@@ -175,8 +176,7 @@ public class MainActivityFragment extends Fragment {
     if (requestCode == REQUEST_ENABLE_BLUETOOTH) {
       if (resultCode == Activity.RESULT_OK) {
         init();
-      }
-      else {
+      } else {
         getActivity().finish();
       }
     }
@@ -184,17 +184,15 @@ public class MainActivityFragment extends Fragment {
 
   // Attempts to create the scanner.
   private void init() {
-    BluetoothManager manager = (BluetoothManager)getActivity().getApplicationContext()
-      .getSystemService(Context.BLUETOOTH_SERVICE);
+    BluetoothManager manager = (BluetoothManager) getActivity().getApplicationContext()
+        .getSystemService(Context.BLUETOOTH_SERVICE);
     BluetoothAdapter btAdapter = manager.getAdapter();
     if (btAdapter == null) {
       showFinishingAlertDialog("Bluetooth Error", "Bluetooth not detected on device");
-    }
-    else if (!btAdapter.isEnabled()) {
+    } else if (!btAdapter.isEnabled()) {
       Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
       this.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BLUETOOTH);
-    }
-    else {
+    } else {
       scanner = btAdapter.getBluetoothLeScanner();
     }
   }
@@ -202,12 +200,12 @@ public class MainActivityFragment extends Fragment {
   // Pops an AlertDialog that quits the app on OK.
   private void showFinishingAlertDialog(String title, String message) {
     new AlertDialog.Builder(getActivity()).setTitle(title).setMessage(message)
-      .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialogInterface, int i) {
-          getActivity().finish();
-        }
-      }).show();
+        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialogInterface, int i) {
+            getActivity().finish();
+          }
+        }).show();
   }
 
   // Checks the frame type and hands off the service data to the validation module.

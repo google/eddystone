@@ -14,14 +14,83 @@
 
 package com.google.sample.eddystonevalidator;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
+import android.test.AndroidTestCase;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
  */
-public class ApplicationTest extends ApplicationTestCase<Application> {
-    public ApplicationTest() {
-        super(Application.class);
-    }
+public class ApplicationTest extends AndroidTestCase {
+
+  private static final String DEVICE_ADDRESS = "00:01:02:03:04:05";
+  private static final int INITIAL_RSSI = -100;
+  private static final byte FRAME_TYPE_UID = 0x00;
+  private static final byte FRAME_TYPE_URL = 0x10;
+  private static final byte FRAME_TYPE_TLM = 0x20;
+  private static final byte TX_POWER_LOW = (byte) -20;
+
+  private static final byte[] UID_NAMESPACE = {
+      0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09  // 10 bytes
+  };
+
+  private static final byte[] UID_INSTANCE = {
+      (byte) 0xAA, (byte) 0xBB,(byte) 0xCC,(byte) 0xDD,(byte) 0xEE,(byte) 0xFF  // 6 bytes
+  };
+
+  private byte[] uidServiceData() throws IOException {
+    ByteArrayOutputStream os = new ByteArrayOutputStream();
+    os.write(FRAME_TYPE_UID);
+    os.write(TX_POWER_LOW);
+    os.write(UID_NAMESPACE);
+    os.write(UID_INSTANCE);
+    return os.toByteArray();
+  }
+
+  public ApplicationTest() {
+    super();
+  }
+
+  public void testUidValidator_success() throws IOException {
+    byte[] serviceData = uidServiceData();
+    Beacon beacon = new Beacon(DEVICE_ADDRESS, -100);
+    UidValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
+
+    // Only a UID frame.
+    assertTrue(beacon.hasUidFrame);
+    assertFalse(beacon.hasTlmFrame);
+    assertFalse(beacon.hasUrlFrame);
+
+    // With no errors.
+    assertTrue(Arrays.equals(serviceData, beacon.uidServiceData));
+    assertTrue(beacon.uidStatus.getErrors().isEmpty());
+  }
+
+  // Tx power should be between -100 and 20.
+  public void testUidValidator_failsBadTxPower() throws IOException {
+    byte[] serviceData = uidServiceData();
+    serviceData[1] = (byte) Constants.MIN_EXPECTED_TX_POWER - 1;
+    Beacon beacon = new Beacon(DEVICE_ADDRESS, -100);
+    UidValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
+
+    assertFalse(beacon.uidStatus.getErrors().isEmpty());
+    assertEquals(1, beacon.uidStatus.errors.size());
+  }
+
+  // An ID of all zeroes is certainly "valid" but probably indicates garbage.
+  public void testUidValidator_failsZeroedId() {
+    byte[] serviceData = new byte[]{
+        FRAME_TYPE_UID, TX_POWER_LOW,
+        // 10-byte namespace
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        // 6-byte instance
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    };
+    Beacon beacon = new Beacon(DEVICE_ADDRESS, -100);
+    UidValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
+
+    assertFalse(beacon.uidStatus.getErrors().isEmpty());
+  }
 }

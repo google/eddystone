@@ -59,7 +59,7 @@ public class BeaconArrayAdapter extends ArrayAdapter<Beacon> implements Filterab
   public View getView(int position, View convertView, ViewGroup parent) {
     if (convertView == null) {
       convertView = LayoutInflater.from(getContext())
-        .inflate(R.layout.beacon_list_item, parent, false);
+          .inflate(R.layout.beacon_list_item, parent, false);
     }
 
     // Note: this is a listView and the convertView object here is likely to be
@@ -68,16 +68,16 @@ public class BeaconArrayAdapter extends ArrayAdapter<Beacon> implements Filterab
 
     final Beacon beacon = getItem(position);
 
-    TextView deviceAddress = (TextView)convertView.findViewById(R.id.deviceAddress);
+    TextView deviceAddress = (TextView) convertView.findViewById(R.id.deviceAddress);
     deviceAddress.setText(beacon.deviceAddress);
 
-    TextView rssi = (TextView)convertView.findViewById(R.id.rssi);
+    TextView rssi = (TextView) convertView.findViewById(R.id.rssi);
     rssi.setText(String.valueOf(beacon.rssi));
 
-    TextView uidLabel = (TextView)convertView.findViewById(R.id.uidLabel);
-    TextView uidNamespace = (TextView)convertView.findViewById(R.id.uidNamespace);
-    TextView uidInstance = (TextView)convertView.findViewById(R.id.uidInstance);
-    TextView uidTxPower = (TextView)convertView.findViewById(R.id.uidTxPower);
+    TextView uidLabel = (TextView) convertView.findViewById(R.id.uidLabel);
+    TextView uidNamespace = (TextView) convertView.findViewById(R.id.uidNamespace);
+    TextView uidInstance = (TextView) convertView.findViewById(R.id.uidInstance);
+    TextView uidTxPower = (TextView) convertView.findViewById(R.id.uidTxPower);
 
     View uidGroup = convertView.findViewById(R.id.uidGroup);
     if (!beacon.hasUidFrame) {
@@ -95,13 +95,13 @@ public class BeaconArrayAdapter extends ArrayAdapter<Beacon> implements Filterab
       uidGroup.setVisibility(View.VISIBLE);
     }
 
-    TextView tlmLabel = (TextView)convertView.findViewById(R.id.tlmLabel);
+    TextView tlmLabel = (TextView) convertView.findViewById(R.id.tlmLabel);
 
-    TextView tlmVersion = (TextView)convertView.findViewById(R.id.tlmVersion);
-    TextView tlmVoltage = (TextView)convertView.findViewById(R.id.tlmVoltage);
-    TextView tlmTemp = (TextView)convertView.findViewById(R.id.tlmTemp);
-    TextView tlmAdvCnt = (TextView)convertView.findViewById(R.id.tlmAdvCount);
-    TextView tlmSecCnt = (TextView)convertView.findViewById(R.id.tlmSecCnt);
+    TextView tlmVersion = (TextView) convertView.findViewById(R.id.tlmVersion);
+    TextView tlmVoltage = (TextView) convertView.findViewById(R.id.tlmVoltage);
+    TextView tlmTemp = (TextView) convertView.findViewById(R.id.tlmTemp);
+    TextView tlmAdvCnt = (TextView) convertView.findViewById(R.id.tlmAdvCount);
+    TextView tlmSecCnt = (TextView) convertView.findViewById(R.id.tlmSecCnt);
 
     View tlmGroup = convertView.findViewById(R.id.tlmGroup);
     if (!beacon.hasTlmFrame) {
@@ -121,8 +121,8 @@ public class BeaconArrayAdapter extends ArrayAdapter<Beacon> implements Filterab
       tlmGroup.setVisibility(View.VISIBLE);
     }
 
-    TextView urlLabel = (TextView)convertView.findViewById(R.id.urlLabel);
-    TextView urlStatus = (TextView)convertView.findViewById(R.id.urlStatus);
+    TextView urlLabel = (TextView) convertView.findViewById(R.id.urlLabel);
+    TextView urlStatus = (TextView) convertView.findViewById(R.id.urlStatus);
     if (!beacon.hasUrlFrame) {
       grey(urlLabel);
       urlStatus.setText("");
@@ -135,9 +135,9 @@ public class BeaconArrayAdapter extends ArrayAdapter<Beacon> implements Filterab
       urlStatus.setText(beacon.urlStatus.toString());
     }
 
-    LinearLayout frameStatusGroup = (LinearLayout)convertView.findViewById(R.id.frameStatusGroup);
+    LinearLayout frameStatusGroup = (LinearLayout) convertView.findViewById(R.id.frameStatusGroup);
     if (!beacon.frameStatus.getErrors().isEmpty()) {
-      TextView frameStatus = (TextView)convertView.findViewById(R.id.frameStatus);
+      TextView frameStatus = (TextView) convertView.findViewById(R.id.frameStatus);
       frameStatus.setText(beacon.frameStatus.toString());
       frameStatusGroup.setVisibility(View.VISIBLE);
     } else {
