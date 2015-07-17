@@ -1,3 +1,26 @@
 <resources>
-  <string name="app_name">TxEddystone-UID</string>
+    <string name="app_name">TxEddystone-UID</string>
+
+    <!-- https://developer.android.com/reference/android/bluetooth/le/AdvertiseSettings.html -->
+    <string name="tx_power_high">High ~16 dBm</string>
+    <string name="tx_power_medium">Medium ~26 dBm</string>
+    <string name="tx_power_low">Low ~35 dBm</string>
+    <string name="tx_power_ultra_low">Ultra-low ~59 dBm</string>
+    <string name="tx_mode_low_latency">Low latency ~7 Hz</string>
+    <string name="tx_mode_balanced">Balanced ~3 Hz</string>
+    <string name="tx_mode_low_power">Low power ~1 Hz</string>
+
+    <string-array name="tx_power_array">
+        <item>@string/tx_power_high</item>
+        <item>@string/tx_power_medium</item>
+        <item>@string/tx_power_low</item>
+        <item>@string/tx_power_ultra_low</item>
+    </string-array>
+
+    <string-array name="tx_mode_array">
+        <item>@string/tx_mode_low_latency</item>
+        <item>@string/tx_mode_balanced</item>
+        <item>@string/tx_mode_low_power</item>
+    </string-array>
+
 </resources>
