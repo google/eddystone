@@ -30,9 +30,13 @@ import android.os.Bundle;
 import android.os.ParcelUuid;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -41,42 +45,48 @@ import java.io.IOException;
 import java.util.Random;
 
 /**
- * A simple app that can advertise Eddystone-UID frames. The namespace and instance parts of
- * the beacon ID are separately configurable.
+ * A simple app that can advertise Eddystone-UID frames. The namespace and instance parts of the
+ * beacon ID are separately configurable, along with the Tx power and frequency.
  */
 public class MainActivity extends Activity {
   private static final String TAG = "EddystoneAdvertiser";
   private static final int REQUEST_ENABLE_BLUETOOTH = 1;
+  private static final byte FRAME_TYPE_UID = 0x00;
   private static final String SHARED_PREFS_NAME = "txeddystone-uid-prefs";
+  private static final String PREF_TX_POWER_LEVEL = "tx_power_level";
+  private static final String PREF_TX_ADVERTISE_MODE = "tx_advertise_mode";
+  private static final String PREF_NAMESPACE = "namespace";
+  private static final String PREF_INSTANCE = "instance";
 
   // The Eddystone Service UUID, 0xFEAA. See https://github.com/google/eddystone
   private static final ParcelUuid SERVICE_UUID =
       ParcelUuid.fromString("0000FEAA-0000-1000-8000-00805F9B34FB");
 
-  // Broadcasts at medium power with minimum delay between advertisements.
-  private static final AdvertiseSettings ADV_SETTINGS = new AdvertiseSettings.Builder()
-      .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
-      .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
-      .setConnectable(true)
-      .build();
-
-  // Used to remember the most recently used namespace and instance ID values.
+  // Used to remember the most recently used UI settings.
   private SharedPreferences sharedPreferences;
 
   private BluetoothLeAdvertiser adv;
   private AdvertiseCallback advertiseCallback;
+  private int txPowerLevel;
+  private int advertiseMode;
 
   private Switch txSwitch;
   private EditText namespace;
   private Button rndNamespace;
   private EditText instance;
   private Button rndInstance;
+  private Spinner txPower;
+  private Spinner txMode;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     sharedPreferences = getSharedPreferences(SHARED_PREFS_NAME, 0);
+    txPowerLevel = sharedPreferences.getInt(PREF_TX_POWER_LEVEL,
+        AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM);
+    advertiseMode = sharedPreferences.getInt(PREF_TX_ADVERTISE_MODE,
+        AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY);
     init();
   }
 
@@ -97,8 +107,10 @@ public class MainActivity extends Activity {
     super.onPause();
     if (namespace != null && instance != null) {
       SharedPreferences.Editor editor = sharedPreferences.edit();
-      editor.putString("namespace", namespace.getText().toString());
-      editor.putString("instance", instance.getText().toString());
+      editor.putString(PREF_NAMESPACE, namespace.getText().toString());
+      editor.putString(PREF_INSTANCE, instance.getText().toString());
+      editor.putInt(PREF_TX_POWER_LEVEL, txPowerLevel);
+      editor.putInt(PREF_TX_ADVERTISE_MODE, advertiseMode);
       editor.apply();
     }
   }
@@ -193,10 +205,71 @@ public class MainActivity extends Activity {
         instance.setText(randomHexString(6));
       }
     });
+    txPower = (Spinner) findViewById(R.id.txPower);
+    ArrayAdapter<CharSequence> txPowerAdapter = ArrayAdapter.createFromResource(
+        this, R.array.tx_power_array, android.R.layout.simple_spinner_dropdown_item);
+    txPowerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    txPower.setAdapter(txPowerAdapter);
+    setTxPowerSelectionListener();
+    txMode = (Spinner) findViewById(R.id.txMode);
+    ArrayAdapter<CharSequence> txModeAdapter = ArrayAdapter.createFromResource(
+        this, R.array.tx_mode_array, android.R.layout.simple_spinner_dropdown_item);
+    txModeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    txMode.setAdapter(txModeAdapter);
+    setTxModeSelectionListener();
+  }
+
+  private void setTxPowerSelectionListener() {
+    txPower.setOnItemSelectedListener(new OnItemSelectedListener() {
+      @Override
+      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String selected = (String) parent.getItemAtPosition(position);
+        if (selected.equals(getString(R.string.tx_power_high))) {
+          txPowerLevel = AdvertiseSettings.ADVERTISE_TX_POWER_HIGH;
+        } else if (selected.equals(getString(R.string.tx_power_medium))) {
+          txPowerLevel = AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM;
+        } else if (selected.equals(getString(R.string.tx_power_low))) {
+          txPowerLevel = AdvertiseSettings.ADVERTISE_TX_POWER_LOW;
+        } else if (selected.equals(getString(R.string.tx_power_ultra_low))) {
+          txPowerLevel = AdvertiseSettings.ADVERTISE_TX_POWER_ULTRA_LOW;
+        } else {
+          Log.e(TAG, "Unknown Tx power " + selected);
+        }
+      }
+
+      @Override
+      public void onNothingSelected(AdapterView<?> parent) {
+        // NOP
+      }
+    });
+  }
+
+  private void setTxModeSelectionListener() {
+    txMode.setOnItemSelectedListener(new OnItemSelectedListener() {
+      @Override
+      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String selected = (String) parent.getItemAtPosition(position);
+        if (selected.equals(getString(R.string.tx_mode_low_latency))) {
+          advertiseMode = AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY;
+        } else if (selected.equals(getString(R.string.tx_mode_balanced))) {
+          advertiseMode = AdvertiseSettings.ADVERTISE_MODE_BALANCED;
+        } else if (selected.equals(getString(R.string.tx_mode_low_power))) {
+          advertiseMode = AdvertiseSettings.ADVERTISE_MODE_LOW_POWER;
+        } else {
+          Log.e(TAG, "Unknown Tx mode " + selected);
+        }
+      }
+
+      @Override
+      public void onNothingSelected(AdapterView<?> parent) {
+        // NOP
+      }
+    });
   }
 
   private void startAdvertising() {
-    Log.i(TAG, "Starting ADV");
+    Log.i(TAG, "Starting ADV, Tx power = " + txPower.getSelectedItem()
+        + ", mode = " + txMode.getSelectedItem());
     if (!isValidHex(namespace.getText().toString(), 10)) {
       namespace.setError("not 10-byte hex");
       txSwitch.setChecked(false);
@@ -207,6 +280,12 @@ public class MainActivity extends Activity {
       txSwitch.setChecked(false);
       return;
     }
+
+    AdvertiseSettings advertiseSettings = new AdvertiseSettings.Builder()
+        .setAdvertiseMode(advertiseMode)
+        .setTxPowerLevel(txPowerLevel)
+        .setConnectable(true)
+        .build();
 
     byte[] serviceData = null;
     try {
@@ -226,14 +305,14 @@ public class MainActivity extends Activity {
 
     namespace.setError(null);
     instance.setError(null);
-    setEnabledViews(false, namespace, instance, rndNamespace, rndInstance);
-    adv.startAdvertising(ADV_SETTINGS, advertiseData, advertiseCallback);
+    setEnabledViews(false, namespace, instance, rndNamespace, rndInstance, txPower, txMode);
+    adv.startAdvertising(advertiseSettings, advertiseData, advertiseCallback);
   }
 
   private void stopAdvertising() {
     Log.i(TAG, "Stopping ADV");
     adv.stopAdvertising(advertiseCallback);
-    setEnabledViews(true, namespace, instance, rndNamespace, rndInstance);
+    setEnabledViews(true, namespace, instance, rndNamespace, rndInstance, txPower, txMode);
   }
 
   private void setEnabledViews(boolean enabled, View... views) {
@@ -242,11 +321,30 @@ public class MainActivity extends Activity {
     }
   }
 
+  // Converts the current Tx power level value to the byte value for that power
+  // in dBm at 0 meters.
+  //
+  // Note that this will vary by device and the values are only roughly accurate.
+  // The measurements were taken with a Nexus 6.
+  private byte txPowerLevelToByteValue() {
+    switch (txPowerLevel) {
+      case AdvertiseSettings.ADVERTISE_TX_POWER_HIGH:
+        return (byte) -16;
+      case AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM:
+        return (byte) -26;
+      case AdvertiseSettings.ADVERTISE_TX_POWER_LOW:
+        return (byte) -35;
+      default:
+        return (byte) -59;
+    }
+  }
+
   private byte[] buildServiceData() throws IOException {
+    byte txPower = txPowerLevelToByteValue();
     byte[] namespaceBytes = toByteArray(namespace.getText().toString());
     byte[] instanceBytes = toByteArray(instance.getText().toString());
     ByteArrayOutputStream os = new ByteArrayOutputStream();
-    os.write(new byte[]{(byte) 0x00 /* UID frame type */, (byte) 0x10 /* Tx power */});
+    os.write(new byte[]{FRAME_TYPE_UID, txPower});
     os.write(namespaceBytes);
     os.write(instanceBytes);
     return os.toByteArray();
