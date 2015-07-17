@@ -36,6 +36,7 @@ public class UidValidator {
 
     // Tx power should have reasonable values.
     int txPower = (int)serviceData[1];
+    beacon.uidStatus.txPower = String.valueOf(txPower);
     if (txPower < MIN_EXPECTED_TX_POWER || txPower > MAX_EXPECTED_TX_POWER) {
       String err = String
         .format("Expected UID Tx power between %d and %d, got %d", MIN_EXPECTED_TX_POWER,
@@ -46,9 +47,10 @@ public class UidValidator {
 
     // The namespace and instance bytes should not be all zeroes.
     byte[] uidBytes = Arrays.copyOfRange(serviceData, 2, 18);
+    beacon.uidStatus.uidValue = Utils.toHexString(uidBytes);
     if (Utils.isZeroed(uidBytes)) {
       String err = "UID bytes are all 0x00";
-      beacon.uidStatus.uidNotSet = err;
+      beacon.uidStatus.errors.add(err);
       logDeviceError(deviceAddress, err);
     }
 
@@ -62,7 +64,7 @@ public class UidValidator {
         String err = String.format("UID should be invariant.\nLast: %s\nthis: %s",
                                    Utils.toHexString(previousUidBytes),
                                    Utils.toHexString(uidBytes));
-        beacon.uidStatus.uidNotInvariant = err;
+        beacon.uidStatus.errors.add(err);
         logDeviceError(deviceAddress, err);
         beacon.uidServiceData = serviceData;
         return;
@@ -73,11 +75,9 @@ public class UidValidator {
     byte[] rfu = Arrays.copyOfRange(serviceData, 18, 20);
     if (rfu[0] != 0x00 && rfu[1] != 0x00) {
       String err = "Expected UID RFU bytes to be 0x00, were " + Utils.toHexString(rfu);
-      beacon.uidStatus.rfuBytes = err;
+      beacon.uidStatus.errors.add(err);
       logDeviceError(deviceAddress, err);
     }
-
-    beacon.uidStatus.uidValue = Utils.toHexString(uidBytes);
   }
 
   private static void logDeviceError(String deviceAddress, String err) {

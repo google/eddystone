@@ -49,7 +49,7 @@ public class TlmValidator {
       if (Arrays.equals(beacon.tlmServiceData, serviceData)) {
         String err =
           "TLM service data was identical to recent TLM frame:\n" + Utils.toHexString(serviceData);
-        beacon.tlmStatus.serviceDataStatic = err;
+        beacon.tlmStatus.errors.add(err);
         logDeviceError(deviceAddress, err);
         beacon.tlmServiceData = serviceData;
         return;
@@ -61,8 +61,9 @@ public class TlmValidator {
 
     // The version should be zero.
     byte version = buf.get();
+    beacon.tlmStatus.version = String.format("0x%02X", version);
     if (version != 0x00) {
-      String err = String.format("Bad TLM version, expected 0x00, got %2X", version);
+      String err = String.format("Bad TLM version, expected 0x00, got %02X", version);
       beacon.tlmStatus.version = err;
       logDeviceError(deviceAddress, err);
     }
@@ -70,6 +71,7 @@ public class TlmValidator {
     // Battery voltage should be sane. Zero is fine if the device is externally powered, but
     // it shouldn't be negative or unreasonably high.
     short voltage = buf.getShort();
+    beacon.tlmStatus.voltage = String.valueOf(voltage);
     if (voltage < 0 || voltage > 10000) {
       String err = "Expected TLM voltage to be between 0 and 10000, got " + voltage;
       beacon.tlmStatus.voltage = err;
@@ -81,42 +83,44 @@ public class TlmValidator {
     byte tempIntegral = buf.get();
     int tempFractional = (buf.get() & 0xff);
     float temp = tempIntegral + (tempFractional / 256.0f);
+    beacon.tlmStatus.temp = String.valueOf(temp);
     if (temp < MIN_EXPECTED_TEMP || temp > MAX_EXPECTED_TEMP) {
       String err = String.format("Expected TLM temperature to be between %d and %d, got %.2f",
                                  MIN_EXPECTED_TEMP, MAX_EXPECTED_TEMP, temp);
-      beacon.tlmStatus.temperature = err;
+      beacon.tlmStatus.errors.add(err);
       logDeviceError(deviceAddress, err);
     }
 
     // Check the PDU count is increasing from frame to frame.
-    // XXX if two TLM frames come back to back they might report the same count.
-    int pduCount = buf.getInt();
-    if (pduCount < 0) {
-      String err = "Expected TLM PDU count to be positive, got " + pduCount;
-      beacon.tlmStatus.pduCountNegative = err;
+    int advCnt = buf.getInt();
+    beacon.tlmStatus.advCnt = String.valueOf(advCnt);
+    if (advCnt < 0) {
+      String err = "Expected TLM ADV count to be positive, got " + advCnt;
+      beacon.tlmStatus.errors.add(err);
       logDeviceError(deviceAddress, err);
     }
     if (previousTlm != null) {
-      int previousPduCount = ByteBuffer.wrap(previousTlm, 6, 4).getInt();
-      if (previousPduCount == pduCount) {
-        String err = "Expected increasing TLM PDU count but unchanged from " + pduCount;
-        beacon.tlmStatus.pduCountStatic = err;
+      int previousAdvCnt = ByteBuffer.wrap(previousTlm, 6, 4).getInt();
+      if (previousAdvCnt == advCnt) {
+        String err = "Expected increasing TLM PDU count but unchanged from " + advCnt;
+        beacon.tlmStatus.errors.add(err);
         logDeviceError(deviceAddress, err);
       }
     }
 
     // Check that the time since boot is increasing.
     int uptime = buf.getInt();
+    beacon.tlmStatus.secCnt = String.valueOf(uptime);
     if (uptime < 0) {
       String err = "Expected TLM time since boot to be positive, got " + uptime;
-      beacon.tlmStatus.uptimeNegative = err;
+      beacon.tlmStatus.errors.add(err);
       logDeviceError(deviceAddress, err);
     }
     if (previousTlm != null) {
       int previousUptime = ByteBuffer.wrap(previousTlm, 10, 4).getInt();
       if (previousUptime == uptime) {
         String err = "Expected increasing TLM time since boot but unchanged from " + uptime;
-        beacon.tlmStatus.uptimeStatic = err;
+        beacon.tlmStatus.errors.add(err);
         logDeviceError(deviceAddress, err);
       }
     }
@@ -125,7 +129,7 @@ public class TlmValidator {
     for (byte b : rfu) {
       if (b != 0x00) {
         String err = "Expected TLM RFU bytes to be 0x00, were " + Utils.toHexString(rfu);
-        beacon.tlmStatus.rfuBytes = err;
+        beacon.tlmStatus.errors.add(err);
         logDeviceError(deviceAddress, err);
         break;
       }

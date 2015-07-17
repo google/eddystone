@@ -88,10 +88,13 @@ public class MainActivityFragment extends Fragment {
         }
 
         String deviceAddress = result.getDevice().getAddress();
+        Beacon beacon;
         if (!deviceToBeaconMap.containsKey(deviceAddress)) {
-          Beacon beacon = new Beacon(deviceAddress);
+          beacon = new Beacon(deviceAddress, result.getRssi());
           deviceToBeaconMap.put(deviceAddress, beacon);
           arrayAdapter.add(beacon);
+        } else {
+          deviceToBeaconMap.get(deviceAddress).rssi = result.getRssi();
         }
 
         byte[] serviceData = scanRecord.getServiceData(EDDYSTONE_SERVICE_UUID);
@@ -227,11 +230,12 @@ public class MainActivityFragment extends Fragment {
         UrlValidator.validate(deviceAddress, serviceData, beacon);
         break;
       default:
-        String err = String.format("Invalid frame type byte %2X %s", serviceData[0], deviceAddress);
+        String err = String.format("Invalid frame type byte %02X", serviceData[0]);
         beacon.frameStatus.invalidFrameType = err;
         logDeviceError(deviceAddress, err);
         break;
     }
+    arrayAdapter.notifyDataSetChanged();
   }
 
   private void logErrorAndShowToast(String message) {
