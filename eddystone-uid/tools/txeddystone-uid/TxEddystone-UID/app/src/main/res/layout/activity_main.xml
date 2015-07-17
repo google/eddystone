@@ -1,70 +1,102 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="16dp"
-                tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".MainActivity">
 
-  <Switch
-      android:id="@+id/txSwitch"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Tx"
-      android:layout_alignParentTop="true"
-      android:layout_centerHorizontal="true"/>
+    <Switch
+        android:id="@+id/txSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Tx" />
 
-  <TextView
-      android:id="@+id/namespaceText"
-      android:text="10-byte namespace ID"
-      android:layout_below="@+id/txSwitch"
-      android:layout_centerHorizontal="true"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="20dp"/>
+    <TextView
+        android:id="@+id/namespaceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txSwitch"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="10-byte namespace ID" />
 
-  <EditText
-      android:id="@+id/namespace"
-      android:text="00010203040506070809"
-      android:inputType="textCapCharacters"
-      android:layout_below="@+id/namespaceText"
-      android:layout_centerHorizontal="true"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/namespace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/namespaceText"
+        android:layout_centerHorizontal="true"
+        android:inputType="textCapCharacters"
+        android:text="00010203040506070809" />
 
-  <Button
-      android:id="@+id/randomizeNamespace"
-      android:text="Rnd"
-      style="?android:attr/buttonStyleSmall"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_alignBaseline="@id/namespace"
-      android:layout_toEndOf="@id/namespace"/>
+    <Button
+        android:id="@+id/randomizeNamespace"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/namespace"
+        android:layout_toEndOf="@id/namespace"
+        android:text="Rnd" />
 
-  <TextView
-      android:id="@+id/instanceText"
-      android:text="6-byte instance ID"
-      android:layout_below="@+id/namespace"
-      android:layout_centerHorizontal="true"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="20dp"/>
+    <TextView
+        android:id="@+id/instanceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/namespace"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="6-byte instance ID" />
 
-  <EditText
-      android:id="@+id/instance"
-      android:text="AABBCCDDEEFF"
-      android:inputType="textCapCharacters"
-      android:layout_below="@+id/instanceText"
-      android:layout_centerHorizontal="true"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/instance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/instanceText"
+        android:layout_centerHorizontal="true"
+        android:inputType="textCapCharacters"
+        android:text="AABBCCDDEEFF" />
 
-  <Button
-      android:id="@+id/randomizeInstance"
-      android:text="Rnd"
-      style="?android:attr/buttonStyleSmall"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_alignBaseline="@id/instance"
-      android:layout_toEndOf="@id/instance"/>
+    <Button
+        android:id="@+id/randomizeInstance"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/instance"
+        android:layout_toEndOf="@id/instance"
+        android:text="Rnd" />
+
+    <TextView
+        android:id="@+id/txPowerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/instance"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Tx power" />
+
+    <Spinner
+        android:id="@+id/txPower"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txPowerText"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/txModeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txPower"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Tx mode" />
+
+    <Spinner
+        android:id="@+id/txMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txModeText"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
