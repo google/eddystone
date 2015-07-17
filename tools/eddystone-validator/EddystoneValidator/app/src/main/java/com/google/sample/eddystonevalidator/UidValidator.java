@@ -23,25 +23,28 @@ import static com.google.sample.eddystonevalidator.Constants.MIN_EXPECTED_TX_POW
 
 
 /**
- * Basic validation of an Eddystone-UID frame.
- * <p>
+ * Basic validation of an Eddystone-UID frame. <p>
+ *
  * @see <a href="https://github.com/google/eddystone/eddystone-uid">UID frame specification</a>
  */
 public class UidValidator {
+
   private static final String TAG = UidValidator.class.getSimpleName();
-  private UidValidator() {}
+
+  private UidValidator() {
+  }
 
   static void validate(String deviceAddress, byte[] serviceData, Beacon beacon) {
     beacon.hasUidFrame = true;
 
     // Tx power should have reasonable values.
-    int txPower = (int)serviceData[1];
+    int txPower = (int) serviceData[1];
     beacon.uidStatus.txPower = String.valueOf(txPower);
     if (txPower < MIN_EXPECTED_TX_POWER || txPower > MAX_EXPECTED_TX_POWER) {
       String err = String
-        .format("Expected UID Tx power between %d and %d, got %d", MIN_EXPECTED_TX_POWER,
-                MAX_EXPECTED_TX_POWER, txPower);
-      beacon.uidStatus.txPower = err;
+          .format("Expected UID Tx power between %d and %d, got %d", MIN_EXPECTED_TX_POWER,
+              MAX_EXPECTED_TX_POWER, txPower);
+      beacon.uidStatus.errors.add(err);
       logDeviceError(deviceAddress, err);
     }
 
@@ -56,24 +59,23 @@ public class UidValidator {
 
     // If we have a previous frame, verify the ID isn't changing.
     if (beacon.uidServiceData == null) {
-      beacon.uidServiceData = serviceData;
-    }
-    else {
+      beacon.uidServiceData = serviceData.clone();
+    } else {
       byte[] previousUidBytes = Arrays.copyOfRange(beacon.uidServiceData, 2, 18);
       if (!Arrays.equals(uidBytes, previousUidBytes)) {
         String err = String.format("UID should be invariant.\nLast: %s\nthis: %s",
-                                   Utils.toHexString(previousUidBytes),
-                                   Utils.toHexString(uidBytes));
+            Utils.toHexString(previousUidBytes),
+            Utils.toHexString(uidBytes));
         beacon.uidStatus.errors.add(err);
         logDeviceError(deviceAddress, err);
-        beacon.uidServiceData = serviceData;
-        return;
+        beacon.uidServiceData = serviceData.clone();
       }
     }
 
     // Last two bytes in frame are RFU and should be zeroed.
     byte[] rfu = Arrays.copyOfRange(serviceData, 18, 20);
-    if (rfu[0] != 0x00 && rfu[1] != 0x00) {
+    Log.i(TAG, String.format("verifying rfu %s in service data %s", Utils.toHexString(rfu), Utils.toHexString(serviceData)));
+    if (rfu[0] != 0x00 || rfu[1] != 0x00) {
       String err = "Expected UID RFU bytes to be 0x00, were " + Utils.toHexString(rfu);
       beacon.uidStatus.errors.add(err);
       logDeviceError(deviceAddress, err);
