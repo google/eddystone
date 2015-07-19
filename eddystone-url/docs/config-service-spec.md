@@ -131,9 +131,8 @@ Read returns true if the device is locked.
 |  Type | uint8[0..18]|
 |  Lock State | For write, must be unlocked.|
 
-The URI Data characteristic is a variable length structure. The first byte contains the [URI Scheme Prefix](../README.md#URL-Scheme-Prefix).
-The remaining bytes contain the [HTTP URL encoding](../README.md#Eddystone_URL-HTTP-URL-encoding).
-
+The URI Data characteristic is a variable length structure. The first byte contains the [URI Scheme Prefix](../README.md#url-scheme-prefix).
+The remaining bytes contain the [HTTP URL encoding](../README.md#eddystone-url-http-url-encoding).
 Note: URI Data must be between 0 and 18 bytes in length.
 
 ### 3.5 Flags
@@ -157,7 +156,7 @@ The Flags characteristic is a single unsigned byte value containing the Eddyston
 |  Lock State | For write, must be unlocked.|
 
 This characteristic is a fixed length array of values, in dBm, to be included in the
-[Eddystone-URL TX Power Level](../README.md#Tx-Power-Level) field of the advertisement when that mode is active. The index into the array is [TX Power Mode](#37-tx-power-mode).
+[Eddystone-URL TX Power Level](../README.md#tx-power-level) field of the advertisement when that mode is active. The index into the array is [TX Power Mode](#37-tx-power-mode).
 
 **Note to developers:**
 The Advertised TX Power Levels is not the same as values set internally into the radio tx power. You need to implement an internal array indexed by TX Power Mode that is used for the internal facing radio setting.
