@@ -14,32 +14,10 @@
 
 package com.google.sample.eddystonevalidator;
 
-class Constants {
-  private Constants() {}
+public class TestUtils {
+  private TestUtils() {}
 
-  /**
-   * Eddystone-UID frame type value.
-   */
-  static final byte UID_FRAME_TYPE = 0x00;
-
-  /**
-   * Eddystone-URL frame type value.
-   */
-  static final byte URL_FRAME_TYPE = 0x10;
-
-  /**
-   * Eddystone-TLM frame type value.
-   */
-  static final byte TLM_FRAME_TYPE = 0x20;
-
-  /**
-   * Minimum expected Tx power (in dBm) in UID and URL frames.
-   */
-  static final int MIN_EXPECTED_TX_POWER = -100;
-
-  /**
-   * Maximum expected Tx power (in dBm) in UID and URL frames.
-   */
-  static final int MAX_EXPECTED_TX_POWER = 20;
-
+  static final String DEVICE_ADDRESS = "00:01:02:03:04:05";
+  static final int INITIAL_RSSI = -100;
+  static final byte TX_POWER_LOW = (byte) -20;
 }

@@ -14,6 +14,13 @@
 
 package com.google.sample.eddystonevalidator;
 
+import static com.google.sample.eddystonevalidator.Constants.MAX_EXPECTED_TX_POWER;
+import static com.google.sample.eddystonevalidator.Constants.MIN_EXPECTED_TX_POWER;
+import static com.google.sample.eddystonevalidator.Constants.UID_FRAME_TYPE;
+import static com.google.sample.eddystonevalidator.TestUtils.DEVICE_ADDRESS;
+import static com.google.sample.eddystonevalidator.TestUtils.INITIAL_RSSI;
+import static com.google.sample.eddystonevalidator.TestUtils.TX_POWER_LOW;
+
 import android.test.AndroidTestCase;
 
 import java.io.ByteArrayOutputStream;
@@ -21,16 +28,9 @@ import java.io.IOException;
 import java.util.Arrays;
 
 /**
- * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
+ * Basic tests for the UidValidator class.
  */
-public class ApplicationTest extends AndroidTestCase {
-
-  private static final String DEVICE_ADDRESS = "00:01:02:03:04:05";
-  private static final int INITIAL_RSSI = -100;
-  private static final byte FRAME_TYPE_UID = 0x00;
-  private static final byte FRAME_TYPE_URL = 0x10;
-  private static final byte FRAME_TYPE_TLM = 0x20;
-  private static final byte TX_POWER_LOW = (byte) -20;
+public class UidValidatorTest extends AndroidTestCase {
 
   private static final byte[] UID_NAMESPACE = {
       0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09  // 10 bytes
@@ -46,7 +46,7 @@ public class ApplicationTest extends AndroidTestCase {
 
   private Beacon beacon;
 
-  public ApplicationTest() {
+  public UidValidatorTest() {
     super();
   }
 
@@ -73,7 +73,7 @@ public class ApplicationTest extends AndroidTestCase {
   // Tx power should be between -100 and 20.
   public void testUidValidator_failsTxPowerBelowMin() throws IOException {
     byte[] serviceData = uidServiceData();
-    serviceData[1] = (byte) Constants.MIN_EXPECTED_TX_POWER - 1;
+    serviceData[1] = (byte) MIN_EXPECTED_TX_POWER - 1;
     UidValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
 
     assertFalse(beacon.uidStatus.getErrors().isEmpty());
@@ -83,7 +83,7 @@ public class ApplicationTest extends AndroidTestCase {
   // Tx power should be between -100 and 20.
   public void testUidValidator_failsTxPowerAboveMax() throws IOException {
     byte[] serviceData = uidServiceData();
-    serviceData[1] = (byte) Constants.MAX_EXPECTED_TX_POWER + 1;
+    serviceData[1] = (byte) MAX_EXPECTED_TX_POWER + 1;
     UidValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
 
     assertFalse(beacon.uidStatus.getErrors().isEmpty());
@@ -93,7 +93,7 @@ public class ApplicationTest extends AndroidTestCase {
   // An ID of all zeroes is certainly "valid" but probably indicates garbage.
   public void testUidValidator_failsZeroedId() {
     byte[] serviceData = new byte[]{
-        FRAME_TYPE_UID, TX_POWER_LOW,
+        UID_FRAME_TYPE, TX_POWER_LOW,
         // 10-byte namespace
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         // 6-byte instance
@@ -132,7 +132,7 @@ public class ApplicationTest extends AndroidTestCase {
 
   private byte[] uidServiceData() throws IOException {
     ByteArrayOutputStream os = new ByteArrayOutputStream();
-    os.write(FRAME_TYPE_UID);
+    os.write(UID_FRAME_TYPE);
     os.write(TX_POWER_LOW);
     os.write(UID_NAMESPACE);
     os.write(UID_INSTANCE);

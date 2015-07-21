@@ -14,9 +14,6 @@
 
 package com.google.sample.eddystonevalidator;
 
-import static com.google.sample.eddystonevalidator.Constants.MAX_EXPECTED_TEMP;
-import static com.google.sample.eddystonevalidator.Constants.MIN_EXPECTED_TEMP;
-
 import android.util.Log;
 
 import java.nio.ByteBuffer;
@@ -30,20 +27,50 @@ import java.util.Arrays;
  */
 public class TlmValidator {
   private static final String TAG = TlmValidator.class.getSimpleName();
+
+  // TLM frames only support version 0x00 for now.
+  static final byte EXPECTED_VERSION = 0x00;
+
+  // Minimum expected voltage value in beacon telemetry in millivolts.
+  static final int MIN_EXPECTED_VOLTAGE = 500;
+
+  // Maximum expected voltage value in beacon telemetry in degrees Celsius.
+  static final int MAX_EXPECTED_VOLTAGE = 10000;
+
+  // Value indicating temperature not supported. temp[0] == 0x80, temp[1] == 0x00.
+  static final float TEMPERATURE_NOT_SUPPORTED = -128.0f;
+
+  // Minimum expected temperature value in beacon telemetry in degrees Celsius.
+  static final float MIN_EXPECTED_TEMP = 0.0f;
+
+  // Maximum expected temperature value in beacon telemetry in degrees Celsius.
+  static final float MAX_EXPECTED_TEMP = 60.0f;
+
+  // Maximum expected PDU count in beacon telemetry.
+  // The fastest we'd expect to see a beacon transmitting would be about 10 Hz.
+  // Given that and a lifetime of ~3 years, any value above this is suspicious.
+  static final int MAX_EXPECTED_PDU_COUNT = 10 * 60 * 60 * 24 * 365 * 3;
+
+  // Maximum expected time since boot in beacon telemetry.
+  // Given that and a lifetime of ~3 years, any value above this is suspicious.
+  static final int MAX_EXPECTED_SEC_COUNT = 60 * 60 * 24 * 365 * 3;
+
+  // The service data for a TLM frame should vary with each broadcast, but depending on the
+  // firmware implementation a couple of consecutive TLM frames may be broadcast. Store the
+  // frame only if few seconds have passed since we last saw one.
+  static final int STORE_NEXT_FRAME_DELTA_MS = 3000;
+
   private TlmValidator() {}
 
   static void validate(String deviceAddress, byte[] serviceData, Beacon beacon) {
     beacon.hasTlmFrame = true;
 
-    // The service data for a TLM frame should vary with each broadcast, but depending on the
-    // firmware implementation a couple of consecutive TLM frames may be broadcast. Store the
-    // frame only if few seconds have passed since we last saw one.
     byte[] previousTlm = null;
     if (beacon.tlmServiceData == null) {
       beacon.tlmServiceData = serviceData;
       beacon.timestamp = System.currentTimeMillis();
     }
-    else if (System.currentTimeMillis() - beacon.timestamp > 3000) {
+    else if (System.currentTimeMillis() - beacon.timestamp > STORE_NEXT_FRAME_DELTA_MS) {
       beacon.timestamp = System.currentTimeMillis();
       previousTlm = beacon.tlmServiceData.clone();
       if (Arrays.equals(beacon.tlmServiceData, serviceData)) {
@@ -52,7 +79,6 @@ public class TlmValidator {
         beacon.tlmStatus.errors.add(err);
         logDeviceError(deviceAddress, err);
         beacon.tlmServiceData = serviceData;
-        return;
       }
     }
 
@@ -62,9 +88,10 @@ public class TlmValidator {
     // The version should be zero.
     byte version = buf.get();
     beacon.tlmStatus.version = String.format("0x%02X", version);
-    if (version != 0x00) {
-      String err = String.format("Bad TLM version, expected 0x00, got %02X", version);
-      beacon.tlmStatus.version = err;
+    if (version != EXPECTED_VERSION) {
+      String err = String.format("Bad TLM version, expected 0x%02X, got %02X",
+          EXPECTED_VERSION, version);
+      beacon.tlmStatus.errors.add(err);
       logDeviceError(deviceAddress, err);
     }
 
@@ -72,9 +99,10 @@ public class TlmValidator {
     // it shouldn't be negative or unreasonably high.
     short voltage = buf.getShort();
     beacon.tlmStatus.voltage = String.valueOf(voltage);
-    if (voltage < 0 || voltage > 10000) {
-      String err = "Expected TLM voltage to be between 0 and 10000, got " + voltage;
-      beacon.tlmStatus.voltage = err;
+    if (voltage < MIN_EXPECTED_VOLTAGE || voltage > MAX_EXPECTED_VOLTAGE) {
+      String err = String.format("Expected TLM voltage to be between %d and %d, got %d",
+          MIN_EXPECTED_VOLTAGE, MAX_EXPECTED_VOLTAGE, voltage);
+      beacon.tlmStatus.errors.add(err);
       logDeviceError(deviceAddress, err);
     }
 
@@ -84,18 +112,26 @@ public class TlmValidator {
     int tempFractional = (buf.get() & 0xff);
     float temp = tempIntegral + (tempFractional / 256.0f);
     beacon.tlmStatus.temp = String.valueOf(temp);
-    if (temp < MIN_EXPECTED_TEMP || temp > MAX_EXPECTED_TEMP) {
-      String err = String.format("Expected TLM temperature to be between %d and %d, got %.2f",
-                                 MIN_EXPECTED_TEMP, MAX_EXPECTED_TEMP, temp);
+    if (temp != TEMPERATURE_NOT_SUPPORTED) {
+      if (temp < MIN_EXPECTED_TEMP || temp > MAX_EXPECTED_TEMP) {
+        String err = String.format("Expected TLM temperature to be between %.2f and %.2f, got %.2f",
+            MIN_EXPECTED_TEMP, MAX_EXPECTED_TEMP, temp);
+        beacon.tlmStatus.errors.add(err);
+        logDeviceError(deviceAddress, err);
+      }
+    }
+
+    // Check the PDU count is increasing from frame to frame and is neither too low or too high.
+    int advCnt = buf.getInt();
+    beacon.tlmStatus.advCnt = String.valueOf(advCnt);
+    if (advCnt <= 0) {
+      String err = "Expected TLM ADV count to be positive, got " + advCnt;
       beacon.tlmStatus.errors.add(err);
       logDeviceError(deviceAddress, err);
     }
-
-    // Check the PDU count is increasing from frame to frame.
-    int advCnt = buf.getInt();
-    beacon.tlmStatus.advCnt = String.valueOf(advCnt);
-    if (advCnt < 0) {
-      String err = "Expected TLM ADV count to be positive, got " + advCnt;
+    if (advCnt > MAX_EXPECTED_PDU_COUNT) {
+      String err = String.format("TLM ADV count %d is higher than expected max of %d",
+          advCnt, MAX_EXPECTED_PDU_COUNT);
       beacon.tlmStatus.errors.add(err);
       logDeviceError(deviceAddress, err);
     }
@@ -108,11 +144,17 @@ public class TlmValidator {
       }
     }
 
-    // Check that the time since boot is increasing.
+    // Check that the time since boot is increasing and is neither too low nor too high.
     int uptime = buf.getInt();
     beacon.tlmStatus.secCnt = String.valueOf(uptime);
-    if (uptime < 0) {
+    if (uptime <= 0) {
       String err = "Expected TLM time since boot to be positive, got " + uptime;
+      beacon.tlmStatus.errors.add(err);
+      logDeviceError(deviceAddress, err);
+    }
+    if (uptime > MAX_EXPECTED_SEC_COUNT) {
+      String err = String.format("TLM time since boot %d is higher than expected max of %d",
+          uptime, MAX_EXPECTED_SEC_COUNT);
       beacon.tlmStatus.errors.add(err);
       logDeviceError(deviceAddress, err);
     }

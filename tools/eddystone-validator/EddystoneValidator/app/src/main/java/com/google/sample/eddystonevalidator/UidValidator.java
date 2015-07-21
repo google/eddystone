@@ -14,12 +14,12 @@
 
 package com.google.sample.eddystonevalidator;
 
+import static com.google.sample.eddystonevalidator.Constants.MAX_EXPECTED_TX_POWER;
+import static com.google.sample.eddystonevalidator.Constants.MIN_EXPECTED_TX_POWER;
+
 import android.util.Log;
 
 import java.util.Arrays;
-
-import static com.google.sample.eddystonevalidator.Constants.MAX_EXPECTED_TX_POWER;
-import static com.google.sample.eddystonevalidator.Constants.MIN_EXPECTED_TX_POWER;
 
 
 /**
@@ -28,11 +28,9 @@ import static com.google.sample.eddystonevalidator.Constants.MIN_EXPECTED_TX_POW
  * @see <a href="https://github.com/google/eddystone/eddystone-uid">UID frame specification</a>
  */
 public class UidValidator {
-
   private static final String TAG = UidValidator.class.getSimpleName();
 
-  private UidValidator() {
-  }
+  private UidValidator() {}
 
   static void validate(String deviceAddress, byte[] serviceData, Beacon beacon) {
     beacon.hasUidFrame = true;
