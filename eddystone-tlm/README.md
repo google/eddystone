@@ -29,7 +29,7 @@ All multi-byte values are big-endian.
 
 ## Field Notes
 
-- The length of this frame is fixed and must be truncated after the "time since power-on" bytes. The value of the Service Data Length byte must be `0x11`.
+- The length of this frame is fixed and must be truncated after the "time since power-on" bytes. The value of the Service Data Length byte must be `0x0E`.
 - TLM version allows for future development of this frame type. At present the value must be `0x00`.
 - Battery voltage is the current battery charge in millivolts, expressed as 1 mV per bit. If not supported (for example in a USB-powered beacon) the value should be zeroed.
 - Beacon temperature is the temperature in degrees Celsius sensed by the beacon and expressed in a signed [8.8 fixed-point notation](https://www.google.com/url?q=https%3A%2F%2Fcourses.cit.cornell.edu%2Fee476%2FMath%2F&sa=D&sntz=1&usg=AFQjCNG3AHS46J3FlyEoV5NY4lTYoSVOCA). If not supported the value should be set to 0x8000, -128 °C.
