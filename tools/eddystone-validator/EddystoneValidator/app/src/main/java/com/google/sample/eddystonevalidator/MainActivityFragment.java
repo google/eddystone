@@ -54,32 +54,32 @@ public class MainActivityFragment extends Fragment {
 
   // An aggressive scan for nearby devices that reports immediately.
   private static final ScanSettings SCAN_SETTINGS =
-    new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).setReportDelay(0)
-      .build();
+          new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).setReportDelay(0)
+                  .build();
 
   // The Eddystone Service UUID, 0xFEAA.
   private static final ParcelUuid EDDYSTONE_SERVICE_UUID =
-    ParcelUuid.fromString("0000FEAA-0000-1000-8000-00805F9B34FB");
+          ParcelUuid.fromString("0000FEAA-0000-1000-8000-00805F9B34FB");
 
-  private BluetoothLeScanner scanner;
-  private BeaconArrayAdapter arrayAdapter;
+  private BluetoothLeScanner mScanner;
+  private BeaconArrayAdapter mArrayAdapter;
 
-  private List<ScanFilter> scanFilters;
-  private ScanCallback scanCallback;
+  private List<ScanFilter> mScanFilters;
+  private ScanCallback mScanCallback;
 
-  private Map<String /* device address */, Beacon> deviceToBeaconMap = new HashMap<>();
+  private Map<String /* device address */, Beacon> mDeviceToBeaconMap = new HashMap<>();
 
-  private EditText filter;
+  private EditText mFilter;
 
   @Override
   public void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     init();
     ArrayList<Beacon> arrayList = new ArrayList<>();
-    arrayAdapter = new BeaconArrayAdapter(getActivity(), R.layout.beacon_list_item, arrayList);
-    scanFilters = new ArrayList<>();
-    scanFilters.add(new ScanFilter.Builder().setServiceUuid(EDDYSTONE_SERVICE_UUID).build());
-    scanCallback = new ScanCallback() {
+    mArrayAdapter = new BeaconArrayAdapter(getActivity(), R.layout.beacon_list_item, arrayList);
+    mScanFilters = new ArrayList<>();
+    mScanFilters.add(new ScanFilter.Builder().setServiceUuid(EDDYSTONE_SERVICE_UUID).build());
+    mScanCallback = new ScanCallback() {
       @Override
       public void onScanResult(int callbackType, ScanResult result) {
         ScanRecord scanRecord = result.getScanRecord();
@@ -88,10 +88,10 @@ public class MainActivityFragment extends Fragment {
         }
 
         String deviceAddress = result.getDevice().getAddress();
-        if (!deviceToBeaconMap.containsKey(deviceAddress)) {
+        if (!mDeviceToBeaconMap.containsKey(deviceAddress)) {
           Beacon beacon = new Beacon(deviceAddress);
-          deviceToBeaconMap.put(deviceAddress, beacon);
-          arrayAdapter.add(beacon);
+          mDeviceToBeaconMap.put(deviceAddress, beacon);
+          mArrayAdapter.add(beacon);
         }
 
         byte[] serviceData = scanRecord.getServiceData(EDDYSTONE_SERVICE_UUID);
@@ -127,8 +127,8 @@ public class MainActivityFragment extends Fragment {
                            ViewGroup container,
                            Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_main, container, false);
-    filter = (EditText) view.findViewById(R.id.filter);
-    filter.addTextChangedListener(new TextWatcher() {
+    mFilter = (EditText) view.findViewById(R.id.filter);
+    mFilter.addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         // NOP
@@ -141,11 +141,11 @@ public class MainActivityFragment extends Fragment {
 
       @Override
       public void afterTextChanged(Editable s) {
-        arrayAdapter.getFilter().filter(filter.getText().toString());
+        mArrayAdapter.getFilter().filter(mFilter.getText().toString());
       }
     });
     ListView listView = (ListView)view.findViewById(R.id.listView);
-    listView.setAdapter(arrayAdapter);
+    listView.setAdapter(mArrayAdapter);
     listView.setEmptyView(view.findViewById(R.id.placeholder));
     return view;
   }
@@ -153,16 +153,16 @@ public class MainActivityFragment extends Fragment {
   @Override
   public void onPause() {
     super.onPause();
-    if (scanner != null) {
-      scanner.stopScan(scanCallback);
+    if (mScanner != null) {
+      mScanner.stopScan(mScanCallback);
     }
   }
 
   @Override
   public void onResume() {
     super.onResume();
-    if (scanner != null) {
-      scanner.startScan(scanFilters, SCAN_SETTINGS, scanCallback);
+    if (mScanner != null) {
+      mScanner.startScan(mScanFilters, SCAN_SETTINGS, mScanCallback);
     }
   }
 
@@ -179,10 +179,10 @@ public class MainActivityFragment extends Fragment {
     }
   }
 
-  // Attempts to create the scanner.
+  // Attempts to create the mScanner.
   private void init() {
     BluetoothManager manager = (BluetoothManager)getActivity().getApplicationContext()
-      .getSystemService(Context.BLUETOOTH_SERVICE);
+            .getSystemService(Context.BLUETOOTH_SERVICE);
     BluetoothAdapter btAdapter = manager.getAdapter();
     if (btAdapter == null) {
       showFinishingAlertDialog("Bluetooth Error", "Bluetooth not detected on device");
@@ -192,24 +192,24 @@ public class MainActivityFragment extends Fragment {
       this.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BLUETOOTH);
     }
     else {
-      scanner = btAdapter.getBluetoothLeScanner();
+      mScanner = btAdapter.getBluetoothLeScanner();
     }
   }
 
   // Pops an AlertDialog that quits the app on OK.
   private void showFinishingAlertDialog(String title, String message) {
     new AlertDialog.Builder(getActivity()).setTitle(title).setMessage(message)
-      .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialogInterface, int i) {
-          getActivity().finish();
-        }
-      }).show();
+            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+              @Override
+              public void onClick(DialogInterface dialogInterface, int i) {
+                getActivity().finish();
+              }
+            }).show();
   }
 
   // Checks the frame type and hands off the service data to the validation module.
   private void validateServiceData(String deviceAddress, byte[] serviceData) {
-    Beacon beacon = deviceToBeaconMap.get(deviceAddress);
+    Beacon beacon = mDeviceToBeaconMap.get(deviceAddress);
     if (serviceData == null) {
       String err = "Null Eddystone service data";
       beacon.frameStatus.nullServiceData = err;
