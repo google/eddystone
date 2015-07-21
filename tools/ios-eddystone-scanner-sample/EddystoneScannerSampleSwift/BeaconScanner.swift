@@ -78,7 +78,7 @@ class BeaconScanner: NSObject, CBCentralManagerDelegate {
 
   func centralManagerDidUpdateState(central: CBCentralManager!)  {
     if central.state == CBCentralManagerState.PoweredOn && self.shouldBeScanning {
-      self.startScanningSynchronized();
+      self.startScanningSynchronized()();
     }
   }
 
