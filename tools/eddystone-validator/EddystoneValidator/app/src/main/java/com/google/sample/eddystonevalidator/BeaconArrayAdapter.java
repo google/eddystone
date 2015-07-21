@@ -36,30 +36,30 @@ public class BeaconArrayAdapter extends ArrayAdapter<Beacon> implements Filterab
   private static final int DARK_GREEN = Color.argb(255, 0, 150, 0);
   private static final int DARK_RED = Color.argb(255, 150, 0, 0);
 
-  private List<Beacon> allBeacons;
-  private List<Beacon> filteredBeacons;
+  private List<Beacon> mAllBeacons;
+  private List<Beacon> mFilteredBeacons;
 
   public BeaconArrayAdapter(Context context, int resource, List<Beacon> allBeacons) {
     super(context, resource, allBeacons);
-    this.allBeacons = allBeacons;
-    this.filteredBeacons = allBeacons;
+    this.mAllBeacons = allBeacons;
+    this.mFilteredBeacons = mAllBeacons;
   }
 
   @Override
   public int getCount() {
-    return filteredBeacons.size();
+    return mFilteredBeacons.size();
   }
 
   @Override
   public Beacon getItem(int position) {
-    return filteredBeacons.get(position);
+    return mFilteredBeacons.get(position);
   }
 
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
     if (convertView == null) {
       convertView = LayoutInflater.from(getContext())
-        .inflate(R.layout.beacon_list_item, parent, false);
+              .inflate(R.layout.beacon_list_item, parent, false);
     }
 
     final Beacon beacon = getItem(position);
@@ -128,25 +128,25 @@ public class BeaconArrayAdapter extends ArrayAdapter<Beacon> implements Filterab
       @Override
       protected FilterResults performFiltering(CharSequence constraint) {
         FilterResults results = new FilterResults();
-        List<Beacon> filteredBeacons;
+        List<Beacon> mFilteredBeacons;
         if (constraint != null && constraint.length() != 0) {
-          filteredBeacons = new ArrayList<>();
-          for (Beacon beacon : allBeacons) {
+          mFilteredBeacons = new ArrayList<>();
+          for (Beacon beacon : mAllBeacons) {
             if (beacon.contains(constraint.toString())) {
-              filteredBeacons.add(beacon);
+              mFilteredBeacons.add(beacon);
             }
           }
         } else {
-          filteredBeacons = allBeacons;
+          mFilteredBeacons = mAllBeacons;
         }
-        results.count = filteredBeacons.size();
-        results.values = filteredBeacons;
+        results.count = mFilteredBeacons.size();
+        results.values = mFilteredBeacons;
         return results;
       }
 
       @Override
       protected void publishResults(CharSequence constraint, FilterResults results) {
-        filteredBeacons = (List<Beacon>) results.values;
+        mFilteredBeacons = (List<Beacon>) results.values;
         if (results.count == 0) {
           notifyDataSetInvalidated();
         } else {
