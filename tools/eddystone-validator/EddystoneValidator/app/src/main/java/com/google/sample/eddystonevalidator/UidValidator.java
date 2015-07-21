@@ -28,9 +28,11 @@ import java.util.Arrays;
  * @see <a href="https://github.com/google/eddystone/eddystone-uid">UID frame specification</a>
  */
 public class UidValidator {
+
   private static final String TAG = UidValidator.class.getSimpleName();
 
-  private UidValidator() {}
+  private UidValidator() {
+  }
 
   static void validate(String deviceAddress, byte[] serviceData, Beacon beacon) {
     beacon.hasUidFrame = true;
@@ -42,7 +44,7 @@ public class UidValidator {
       String err = String
           .format("Expected UID Tx power between %d and %d, got %d", MIN_EXPECTED_TX_POWER,
               MAX_EXPECTED_TX_POWER, txPower);
-      beacon.uidStatus.errors.add(err);
+      beacon.uidStatus.errTx = err;
       logDeviceError(deviceAddress, err);
     }
 
@@ -51,7 +53,7 @@ public class UidValidator {
     beacon.uidStatus.uidValue = Utils.toHexString(uidBytes);
     if (Utils.isZeroed(uidBytes)) {
       String err = "UID bytes are all 0x00";
-      beacon.uidStatus.errors.add(err);
+      beacon.uidStatus.errUid = err;
       logDeviceError(deviceAddress, err);
     }
 
@@ -64,7 +66,7 @@ public class UidValidator {
         String err = String.format("UID should be invariant.\nLast: %s\nthis: %s",
             Utils.toHexString(previousUidBytes),
             Utils.toHexString(uidBytes));
-        beacon.uidStatus.errors.add(err);
+        beacon.uidStatus.errUid = err;
         logDeviceError(deviceAddress, err);
         beacon.uidServiceData = serviceData.clone();
       }
@@ -72,10 +74,9 @@ public class UidValidator {
 
     // Last two bytes in frame are RFU and should be zeroed.
     byte[] rfu = Arrays.copyOfRange(serviceData, 18, 20);
-    Log.i(TAG, String.format("verifying rfu %s in service data %s", Utils.toHexString(rfu), Utils.toHexString(serviceData)));
     if (rfu[0] != 0x00 || rfu[1] != 0x00) {
       String err = "Expected UID RFU bytes to be 0x00, were " + Utils.toHexString(rfu);
-      beacon.uidStatus.errors.add(err);
+      beacon.uidStatus.errRfu = err;
       logDeviceError(deviceAddress, err);
     }
   }

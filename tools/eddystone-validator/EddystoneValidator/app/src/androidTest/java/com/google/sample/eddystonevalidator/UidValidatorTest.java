@@ -76,8 +76,8 @@ public class UidValidatorTest extends AndroidTestCase {
     serviceData[1] = (byte) MIN_EXPECTED_TX_POWER - 1;
     UidValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
 
+    assertNotNull(beacon.uidStatus.errTx);
     assertFalse(beacon.uidStatus.getErrors().isEmpty());
-    assertEquals(1, beacon.uidStatus.errors.size());
   }
 
   // Tx power should be between -100 and 20.
@@ -86,8 +86,8 @@ public class UidValidatorTest extends AndroidTestCase {
     serviceData[1] = (byte) MAX_EXPECTED_TX_POWER + 1;
     UidValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
 
+    assertNotNull(beacon.uidStatus.errTx);
     assertFalse(beacon.uidStatus.getErrors().isEmpty());
-    assertEquals(1, beacon.uidStatus.errors.size());
   }
 
   // An ID of all zeroes is certainly "valid" but probably indicates garbage.
@@ -116,8 +116,8 @@ public class UidValidatorTest extends AndroidTestCase {
     serviceData[2] += 1;
     UidValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
 
+    assertNotNull(beacon.uidStatus.errUid);
     assertFalse(beacon.uidStatus.getErrors().isEmpty());
-    assertEquals(1, beacon.uidStatus.errors.size());
   }
 
   // RFU bytes should be zeroed.
@@ -126,8 +126,8 @@ public class UidValidatorTest extends AndroidTestCase {
     serviceData[19] = 0x01;
     UidValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
 
+    assertNotNull(beacon.uidStatus.errRfu);
     assertFalse(beacon.uidStatus.getErrors().isEmpty());
-    assertEquals(1, beacon.uidStatus.errors.size());
   }
 
   private byte[] uidServiceData() throws IOException {

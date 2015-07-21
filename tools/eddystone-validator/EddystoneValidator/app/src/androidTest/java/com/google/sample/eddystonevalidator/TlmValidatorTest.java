@@ -74,6 +74,7 @@ public class TlmValidatorTest extends AndroidTestCase {
     serviceData[1] = 0x10;
     TlmValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
 
+    assertNotNull(beacon.tlmStatus.errVersion);
     assertFalse(beacon.tlmStatus.getErrors().isEmpty());
   }
 
@@ -85,6 +86,7 @@ public class TlmValidatorTest extends AndroidTestCase {
     serviceData[3] = (byte) 0xf3;  // 499 mV
     TlmValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
 
+    assertNotNull(beacon.tlmStatus.errVoltage);
     assertFalse(beacon.tlmStatus.getErrors().isEmpty());
   }
 
@@ -94,6 +96,7 @@ public class TlmValidatorTest extends AndroidTestCase {
     serviceData[3] = 0x11;  // 10001 mV
     TlmValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
 
+    assertNotNull(beacon.tlmStatus.errVoltage);
     assertFalse(beacon.tlmStatus.getErrors().isEmpty());
   }
 
@@ -105,6 +108,7 @@ public class TlmValidatorTest extends AndroidTestCase {
     serviceData[5] = 0x00;
     TlmValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
 
+    assertNotNull(beacon.tlmStatus.errTemp);
     assertFalse(beacon.tlmStatus.getErrors().isEmpty());
   }
 
@@ -114,6 +118,7 @@ public class TlmValidatorTest extends AndroidTestCase {
     serviceData[5] = 0x00;  // 61 °C.
     TlmValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
 
+    assertNotNull(beacon.tlmStatus.errTemp);
     assertFalse(beacon.tlmStatus.getErrors().isEmpty());
   }
 
@@ -123,6 +128,7 @@ public class TlmValidatorTest extends AndroidTestCase {
     serviceData[5] = 0x00;  // -128 °C.
     TlmValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
 
+    assertNull(beacon.tlmStatus.errTemp);
     assertTrue(beacon.tlmStatus.getErrors().isEmpty());
   }
 
@@ -132,6 +138,7 @@ public class TlmValidatorTest extends AndroidTestCase {
     serviceData[6] = serviceData[7] = serviceData[8] = serviceData[9] = 0x00;
     TlmValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
 
+    assertNotNull(beacon.tlmStatus.errPduCnt);
     assertFalse(beacon.tlmStatus.getErrors().isEmpty());
   }
 
@@ -145,6 +152,7 @@ public class TlmValidatorTest extends AndroidTestCase {
     serviceData[9] = 0x01;
     TlmValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
 
+    assertNotNull(beacon.tlmStatus.errPduCnt);
     assertFalse(beacon.tlmStatus.getErrors().isEmpty());
   }
 
@@ -161,6 +169,7 @@ public class TlmValidatorTest extends AndroidTestCase {
     // Advance the boot counter so it's valid.
     t2[13] += 1;
 
+    assertNotNull(beacon.tlmStatus.errPduCnt);
     assertFalse(beacon.tlmStatus.getErrors().isEmpty());
   }
 
@@ -170,6 +179,7 @@ public class TlmValidatorTest extends AndroidTestCase {
     serviceData[10] = serviceData[11] = serviceData[12] = serviceData[13] = 0x00;
     TlmValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
 
+    assertNotNull(beacon.tlmStatus.errSecCnt);
     assertFalse(beacon.tlmStatus.getErrors().isEmpty());
   }
 
@@ -183,6 +193,7 @@ public class TlmValidatorTest extends AndroidTestCase {
     serviceData[13] = (byte) 0x81;
     TlmValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
 
+    assertNotNull(beacon.tlmStatus.errSecCnt);
     assertFalse(beacon.tlmStatus.getErrors().isEmpty());
   }
 
@@ -199,6 +210,7 @@ public class TlmValidatorTest extends AndroidTestCase {
     // Advance the PDU counter so it's valid.
     t2[9] += 1;
 
+    assertNotNull(beacon.tlmStatus.errSecCnt);
     assertFalse(beacon.tlmStatus.getErrors().isEmpty());
   }
 
@@ -214,6 +226,8 @@ public class TlmValidatorTest extends AndroidTestCase {
     t2[13] += 1;  // Advance SEC count.
     TlmValidator.validate(DEVICE_ADDRESS, t2, beacon);
 
+    assertNull(beacon.tlmStatus.errPduCnt);
+    assertNull(beacon.tlmStatus.errSecCnt);
     assertTrue(beacon.tlmStatus.getErrors().isEmpty());
   }
 

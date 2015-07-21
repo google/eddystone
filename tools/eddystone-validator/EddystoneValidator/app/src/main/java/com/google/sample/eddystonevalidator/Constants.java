@@ -15,7 +15,9 @@
 package com.google.sample.eddystonevalidator;
 
 class Constants {
-  private Constants() {}
+
+  private Constants() {
+  }
 
   /**
    * Eddystone-UID frame type value.

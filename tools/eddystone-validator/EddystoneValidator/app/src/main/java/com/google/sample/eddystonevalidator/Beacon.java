@@ -14,9 +14,6 @@
 
 package com.google.sample.eddystonevalidator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 class Beacon {
   final String deviceAddress;
   int rssi;
@@ -29,15 +26,21 @@ class Beacon {
   class UidStatus {
     String uidValue;
     String txPower;
-    List<String> errors = new ArrayList<>();
+
+    String errTx;
+    String errUid;
+    String errRfu;
 
     public String getErrors() {
-      if (errors.isEmpty()) {
-        return "";
-      }
       StringBuilder sb = new StringBuilder();
-      for (String error : errors) {
-        sb.append(error).append("\n");
+      if (errTx != null) {
+        sb.append(errTx).append("\n");
+      }
+      if (errUid != null) {
+        sb.append(errUid).append("\n");
+      }
+      if (errRfu != null) {
+        sb.append(errRfu).append("\n");
       }
       return sb.toString().trim();
     }
@@ -49,15 +52,37 @@ class Beacon {
     String temp;
     String advCnt;
     String secCnt;
-    List<String> errors = new ArrayList<>();
+
+    String errIdentialFrame;
+    String errVersion;
+    String errVoltage;
+    String errTemp;
+    String errPduCnt;
+    String errSecCnt;
+    String errRfu;
 
     public String getErrors() {
-      if (errors.isEmpty()) {
-        return "";
-      }
       StringBuilder sb = new StringBuilder();
-      for (String error : errors) {
-        sb.append(error).append("\n");
+      if (errIdentialFrame != null) {
+        sb.append(errIdentialFrame).append("\n");
+      }
+      if (errVersion != null) {
+        sb.append(errVersion).append("\n");
+      }
+      if (errVoltage != null) {
+        sb.append(errVoltage).append("\n");
+      }
+      if (errTemp != null) {
+        sb.append(errTemp).append("\n");
+      }
+      if (errPduCnt != null) {
+        sb.append(errPduCnt).append("\n");
+      }
+      if (errSecCnt != null) {
+        sb.append(errSecCnt).append("\n");
+      }
+      if (errRfu != null) {
+        sb.append(errRfu).append("\n");
       }
       return sb.toString().trim();
     }

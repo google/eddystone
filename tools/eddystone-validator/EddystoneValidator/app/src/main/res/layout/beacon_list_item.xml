@@ -109,6 +109,28 @@
 
             </LinearLayout>
 
+            <!-- Errors -->
+            <LinearLayout
+                android:id="@+id/uidErrorGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    android:text="Errors"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:id="@+id/uidErrors"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
@@ -227,6 +249,28 @@
 
                     <TextView
                         android:id="@+id/tlmSecCnt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <!-- Errors -->
+                <LinearLayout
+                    android:id="@+id/tlmErrorGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="italic"
+                        android:text="Errors"
+                        android:layout_marginRight="10dp" />
+
+                    <TextView
+                        android:id="@+id/tlmErrors"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 

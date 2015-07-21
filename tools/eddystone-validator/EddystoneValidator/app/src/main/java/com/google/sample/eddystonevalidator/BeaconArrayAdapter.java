@@ -78,6 +78,7 @@ public class BeaconArrayAdapter extends ArrayAdapter<Beacon> implements Filterab
     TextView uidNamespace = (TextView) convertView.findViewById(R.id.uidNamespace);
     TextView uidInstance = (TextView) convertView.findViewById(R.id.uidInstance);
     TextView uidTxPower = (TextView) convertView.findViewById(R.id.uidTxPower);
+    View uidErrorGroup = convertView.findViewById(R.id.uidErrorGroup);
 
     View uidGroup = convertView.findViewById(R.id.uidGroup);
     if (!beacon.hasUidFrame) {
@@ -86,8 +87,11 @@ public class BeaconArrayAdapter extends ArrayAdapter<Beacon> implements Filterab
     } else {
       if (beacon.uidStatus.getErrors().isEmpty()) {
         green(uidLabel);
+        uidErrorGroup.setVisibility(View.GONE);
       } else {
         red(uidLabel);
+        uidErrorGroup.setVisibility(View.VISIBLE);
+        ((TextView) convertView.findViewById(R.id.uidErrors)).setText(beacon.uidStatus.getErrors());
       }
       uidNamespace.setText(beacon.uidStatus.uidValue.substring(0, 20));
       uidInstance.setText(beacon.uidStatus.uidValue.substring(20, 31));
@@ -96,12 +100,12 @@ public class BeaconArrayAdapter extends ArrayAdapter<Beacon> implements Filterab
     }
 
     TextView tlmLabel = (TextView) convertView.findViewById(R.id.tlmLabel);
-
     TextView tlmVersion = (TextView) convertView.findViewById(R.id.tlmVersion);
     TextView tlmVoltage = (TextView) convertView.findViewById(R.id.tlmVoltage);
     TextView tlmTemp = (TextView) convertView.findViewById(R.id.tlmTemp);
     TextView tlmAdvCnt = (TextView) convertView.findViewById(R.id.tlmAdvCount);
     TextView tlmSecCnt = (TextView) convertView.findViewById(R.id.tlmSecCnt);
+    View tlmErrorGroup = convertView.findViewById(R.id.tlmErrorGroup);
 
     View tlmGroup = convertView.findViewById(R.id.tlmGroup);
     if (!beacon.hasTlmFrame) {
@@ -110,8 +114,12 @@ public class BeaconArrayAdapter extends ArrayAdapter<Beacon> implements Filterab
     } else {
       if (beacon.tlmStatus.toString().isEmpty()) {
         green(tlmLabel);
+        tlmErrorGroup.setVisibility(View.GONE);
       } else {
         red(tlmLabel);
+        tlmErrorGroup.setVisibility(View.VISIBLE);
+        ((TextView) convertView.findViewById(R.id.tlmErrors)).setText(beacon.tlmStatus.getErrors());
+
       }
       tlmVersion.setText(beacon.tlmStatus.version);
       tlmVoltage.setText(beacon.tlmStatus.voltage);
