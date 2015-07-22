@@ -15,7 +15,9 @@
 package com.google.sample.eddystonevalidator;
 
 class Constants {
-  private Constants() {}
+
+  private Constants() {
+  }
 
   /**
    * Eddystone-UID frame type value.
@@ -33,22 +35,12 @@ class Constants {
   static final byte TLM_FRAME_TYPE = 0x20;
 
   /**
-   * Minimum expected temperature value in beacon telemetry.
-   */
-  static final int MIN_EXPECTED_TEMP = 0;
-
-  /**
-   * Maximum expected temperature value in beacon telemetry.
-   */
-  static final int MAX_EXPECTED_TEMP = 60;
-
-  /**
-   * Minimum expected Tx power in beacon broadcast.
+   * Minimum expected Tx power (in dBm) in UID and URL frames.
    */
   static final int MIN_EXPECTED_TX_POWER = -100;
 
   /**
-   * Maximum expected Tx power in beacon broadcast.
+   * Maximum expected Tx power (in dBm) in UID and URL frames.
    */
   static final int MAX_EXPECTED_TX_POWER = 20;
 

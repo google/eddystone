@@ -14,14 +14,10 @@
 
 package com.google.sample.eddystonevalidator;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
+public class TestUtils {
+  private TestUtils() {}
 
-/**
- * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
- */
-public class ApplicationTest extends ApplicationTestCase<Application> {
-    public ApplicationTest() {
-        super(Application.class);
-    }
+  static final String DEVICE_ADDRESS = "00:01:02:03:04:05";
+  static final int INITIAL_RSSI = -100;
+  static final byte TX_POWER_LOW = (byte) -20;
 }

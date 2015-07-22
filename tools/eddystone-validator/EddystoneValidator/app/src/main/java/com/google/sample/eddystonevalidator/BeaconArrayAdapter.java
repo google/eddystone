@@ -59,48 +59,81 @@ public class BeaconArrayAdapter extends ArrayAdapter<Beacon> implements Filterab
   public View getView(int position, View convertView, ViewGroup parent) {
     if (convertView == null) {
       convertView = LayoutInflater.from(getContext())
-        .inflate(R.layout.beacon_list_item, parent, false);
+          .inflate(R.layout.beacon_list_item, parent, false);
     }
+
+    // Note: this is a listView and the convertView object here is likely to be
+    // a recycled view of some other row that isn't in view. You need to set every
+    // field regardless of emptiness to avoid displaying erroneous data.
 
     final Beacon beacon = getItem(position);
 
-    TextView deviceAddress = (TextView)convertView.findViewById(R.id.deviceAddress);
+    TextView deviceAddress = (TextView) convertView.findViewById(R.id.deviceAddress);
     deviceAddress.setText(beacon.deviceAddress);
 
-    TextView uidLabel = (TextView)convertView.findViewById(R.id.uidLabel);
-    TextView uidStatus = (TextView)convertView.findViewById(R.id.uidStatus);
+    TextView rssi = (TextView) convertView.findViewById(R.id.rssi);
+    rssi.setText(String.valueOf(beacon.rssi));
+
+    TextView uidLabel = (TextView) convertView.findViewById(R.id.uidLabel);
+    TextView uidNamespace = (TextView) convertView.findViewById(R.id.uidNamespace);
+    TextView uidInstance = (TextView) convertView.findViewById(R.id.uidInstance);
+    TextView uidTxPower = (TextView) convertView.findViewById(R.id.uidTxPower);
+    View uidErrorGroup = convertView.findViewById(R.id.uidErrorGroup);
+
+    View uidGroup = convertView.findViewById(R.id.uidGroup);
     if (!beacon.hasUidFrame) {
       grey(uidLabel);
-      uidStatus.setText("no data");
+      uidGroup.setVisibility(View.GONE);
     } else {
       if (beacon.uidStatus.getErrors().isEmpty()) {
         green(uidLabel);
+        uidErrorGroup.setVisibility(View.GONE);
       } else {
         red(uidLabel);
+        uidErrorGroup.setVisibility(View.VISIBLE);
+        ((TextView) convertView.findViewById(R.id.uidErrors)).setText(beacon.uidStatus.getErrors());
       }
-      uidStatus.setText(beacon.uidStatus.toString());
+      uidNamespace.setText(beacon.uidStatus.uidValue.substring(0, 20));
+      uidInstance.setText(beacon.uidStatus.uidValue.substring(20, 31));
+      uidTxPower.setText(beacon.uidStatus.txPower);
+      uidGroup.setVisibility(View.VISIBLE);
     }
 
-    TextView tlmLabel = (TextView)convertView.findViewById(R.id.tlmLabel);
-    TextView tlmStatus = (TextView)convertView.findViewById(R.id.tlmStatus);
+    TextView tlmLabel = (TextView) convertView.findViewById(R.id.tlmLabel);
+    TextView tlmVersion = (TextView) convertView.findViewById(R.id.tlmVersion);
+    TextView tlmVoltage = (TextView) convertView.findViewById(R.id.tlmVoltage);
+    TextView tlmTemp = (TextView) convertView.findViewById(R.id.tlmTemp);
+    TextView tlmAdvCnt = (TextView) convertView.findViewById(R.id.tlmAdvCount);
+    TextView tlmSecCnt = (TextView) convertView.findViewById(R.id.tlmSecCnt);
+    View tlmErrorGroup = convertView.findViewById(R.id.tlmErrorGroup);
+
+    View tlmGroup = convertView.findViewById(R.id.tlmGroup);
     if (!beacon.hasTlmFrame) {
       grey(tlmLabel);
-      tlmStatus.setText("not detected");
+      tlmGroup.setVisibility(View.GONE);
     } else {
       if (beacon.tlmStatus.toString().isEmpty()) {
         green(tlmLabel);
-        tlmStatus.setText("OK");
+        tlmErrorGroup.setVisibility(View.GONE);
       } else {
         red(tlmLabel);
-        tlmStatus.setText(beacon.tlmStatus.toString());
+        tlmErrorGroup.setVisibility(View.VISIBLE);
+        ((TextView) convertView.findViewById(R.id.tlmErrors)).setText(beacon.tlmStatus.getErrors());
+
       }
+      tlmVersion.setText(beacon.tlmStatus.version);
+      tlmVoltage.setText(beacon.tlmStatus.voltage);
+      tlmTemp.setText(beacon.tlmStatus.temp);
+      tlmAdvCnt.setText(beacon.tlmStatus.advCnt);
+      tlmSecCnt.setText(beacon.tlmStatus.secCnt);
+      tlmGroup.setVisibility(View.VISIBLE);
     }
 
-    TextView urlLabel = (TextView)convertView.findViewById(R.id.urlLabel);
-    TextView urlStatus = (TextView)convertView.findViewById(R.id.urlStatus);
+    TextView urlLabel = (TextView) convertView.findViewById(R.id.urlLabel);
+    TextView urlStatus = (TextView) convertView.findViewById(R.id.urlStatus);
     if (!beacon.hasUrlFrame) {
       grey(urlLabel);
-      urlStatus.setText("not detected");
+      urlStatus.setText("");
     } else {
       if (beacon.urlStatus.getErrors().isEmpty()) {
         green(urlLabel);
@@ -110,9 +143,9 @@ public class BeaconArrayAdapter extends ArrayAdapter<Beacon> implements Filterab
       urlStatus.setText(beacon.urlStatus.toString());
     }
 
-    LinearLayout frameStatusGroup = (LinearLayout)convertView.findViewById(R.id.frameStatusGroup);
+    LinearLayout frameStatusGroup = (LinearLayout) convertView.findViewById(R.id.frameStatusGroup);
     if (!beacon.frameStatus.getErrors().isEmpty()) {
-      TextView frameStatus = (TextView)convertView.findViewById(R.id.frameStatus);
+      TextView frameStatus = (TextView) convertView.findViewById(R.id.frameStatus);
       frameStatus.setText(beacon.frameStatus.toString());
       frameStatusGroup.setVisibility(View.VISIBLE);
     } else {

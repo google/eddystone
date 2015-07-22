@@ -16,7 +16,7 @@ package com.google.sample.eddystonevalidator;
 
 class Beacon {
   final String deviceAddress;
-
+  int rssi;
   long timestamp = System.currentTimeMillis();
 
   byte[] uidServiceData;
@@ -26,76 +26,63 @@ class Beacon {
   class UidStatus {
     String uidValue;
     String txPower;
-    String uidNotSet;
-    String uidNotInvariant;
-    String rfuBytes;
+
+    String errTx;
+    String errUid;
+    String errRfu;
 
     public String getErrors() {
       StringBuilder sb = new StringBuilder();
-      if (txPower != null) {
-        sb.append(txPower).append("\n");
+      if (errTx != null) {
+        sb.append(errTx).append("\n");
       }
-      if (uidNotSet != null) {
-        sb.append(uidNotSet).append("\n");
+      if (errUid != null) {
+        sb.append(errUid).append("\n");
       }
-      if (uidNotInvariant != null) {
-        sb.append(uidNotInvariant).append("\n");
-      }
-      if (rfuBytes != null) {
-        sb.append(rfuBytes).append("\n");
+      if (errRfu != null) {
+        sb.append(errRfu).append("\n");
       }
       return sb.toString().trim();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder();
-      if (uidValue != null) {
-        sb.append(uidValue).append("\n");
-      }
-      return sb.append(getErrors()).toString().trim();
     }
   }
 
   class TlmStatus {
-    String serviceDataStatic;
     String version;
     String voltage;
-    String temperature;
-    String pduCountNegative;
-    String pduCountStatic;
-    String uptimeNegative;
-    String uptimeStatic;
-    String rfuBytes;
+    String temp;
+    String advCnt;
+    String secCnt;
+
+    String errIdentialFrame;
+    String errVersion;
+    String errVoltage;
+    String errTemp;
+    String errPduCnt;
+    String errSecCnt;
+    String errRfu;
 
     public String getErrors() {
       StringBuilder sb = new StringBuilder();
-      if (serviceDataStatic != null) {
-        sb.append(serviceDataStatic).append("\n");
+      if (errIdentialFrame != null) {
+        sb.append(errIdentialFrame).append("\n");
       }
-      if (version != null) {
-        sb.append(version).append("\n");
+      if (errVersion != null) {
+        sb.append(errVersion).append("\n");
       }
-      if (voltage != null) {
-        sb.append(voltage).append("\n");
+      if (errVoltage != null) {
+        sb.append(errVoltage).append("\n");
       }
-      if (temperature != null) {
-        sb.append(temperature).append("\n");
+      if (errTemp != null) {
+        sb.append(errTemp).append("\n");
       }
-      if (pduCountNegative != null) {
-        sb.append(pduCountNegative).append("\n");
+      if (errPduCnt != null) {
+        sb.append(errPduCnt).append("\n");
       }
-      if (pduCountStatic != null) {
-        sb.append(pduCountStatic).append("\n");
+      if (errSecCnt != null) {
+        sb.append(errSecCnt).append("\n");
       }
-      if (uptimeNegative != null) {
-        sb.append(uptimeNegative).append("\n");
-      }
-      if (uptimeStatic != null) {
-        sb.append(uptimeStatic).append("\n");
-      }
-      if (rfuBytes != null) {
-        sb.append(rfuBytes).append("\n");
+      if (errRfu != null) {
+        sb.append(errRfu).append("\n");
       }
       return sb.toString().trim();
     }
@@ -168,8 +155,9 @@ class Beacon {
 
   FrameStatus frameStatus = new FrameStatus();
 
-  Beacon(String deviceAddress) {
+  Beacon(String deviceAddress, int rssi) {
     this.deviceAddress = deviceAddress;
+    this.rssi = rssi;
   }
 
   /**

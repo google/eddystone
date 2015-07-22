@@ -23,22 +23,25 @@ import java.util.Arrays;
 
 
 /**
- * Basic validation of an Eddystone-URL frame.
- * <p>
+ * Basic validation of an Eddystone-URL frame. <p>
+ *
  * @see <a href="https://github.com/google/eddystone/eddystone-url">URL frame specification</a>
  */
 class UrlValidator {
+
   private static final String TAG = UrlValidator.class.getSimpleName();
-  private UrlValidator() {}
+
+  private UrlValidator() {
+  }
 
   static void validate(String deviceAddress, byte[] serviceData, Beacon beacon) {
     beacon.hasUrlFrame = true;
 
     // Tx power should have reasonable values.
-    int txPower = (int)serviceData[1];
+    int txPower = (int) serviceData[1];
     if (txPower < MIN_EXPECTED_TX_POWER || txPower > MAX_EXPECTED_TX_POWER) {
       String err = String.format("Expected URL Tx power between %d and %d, got %d",
-                                 MIN_EXPECTED_TX_POWER, MAX_EXPECTED_TX_POWER, txPower);
+          MIN_EXPECTED_TX_POWER, MAX_EXPECTED_TX_POWER, txPower);
       beacon.urlStatus.txPower = err;
       logDeviceError(deviceAddress, err);
     }
@@ -55,12 +58,11 @@ class UrlValidator {
     String url = UrlUtils.decodeUrl(serviceData);
     if (beacon.urlServiceData == null) {
       beacon.urlServiceData = serviceData;
-    }
-    else {
+    } else {
       String previousUrl = UrlUtils.decodeUrl(beacon.urlServiceData);
       if (!url.equals(previousUrl)) {
         String err = String.format("URL should be invariant.\nLast: %s\nthis: %s",
-                                   previousUrl, url);
+            previousUrl, url);
         beacon.urlStatus.urlNotInvariant = err;
         logDeviceError(deviceAddress, err);
         beacon.urlServiceData = serviceData;
