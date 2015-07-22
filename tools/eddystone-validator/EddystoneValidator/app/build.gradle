@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply from: '../variants.gradle'
 
 android {
     compileSdkVersion 22
