@@ -184,13 +184,13 @@ public class TlmValidatorTest extends AndroidTestCase {
   }
 
   public void testTlmValidator_failsSecCountTooHigh() throws IOException {
-    // Highest expected value is 94608000, or 0x5a39a80
-    // See Constants.MAX_EXPECTED_PDU_COUNT.
+    // Highest expected value is 946080000, or 0x38640900 (yes, same as PduCnt).
+    // See TlmValidator.MAX_EXPECTED_PDU_COUNT.
     byte[] serviceData = tlmServiceData();
-    serviceData[10] = 0x05;
-    serviceData[11] = (byte) 0xa3;
-    serviceData[12] = (byte) 0x9a;
-    serviceData[13] = (byte) 0x81;
+    serviceData[10] = 0x38;
+    serviceData[11] = 0x64;
+    serviceData[12] = 0x09;
+    serviceData[13] = 0x01;
     TlmValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
 
     assertNotNull(beacon.tlmStatus.errSecCnt);
