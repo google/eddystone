@@ -115,21 +115,20 @@ static inline BOOL IsEqualOrBothNil(id a, id b) {
  */
 + (ESSFrameType)frameTypeForFrame:(NSDictionary *)advFrameList {
   NSData *frameData = advFrameList[[self eddystoneServiceID]];
-
   // It's an Eddystone ADV frame. Now check if it's a UID (ID) or TLM (telemetry) frame.
-  if (frameData) {
-    uint8_t frameType;
-    if ([frameData length] > 1) {
-      frameType = ((uint8_t *)[frameData bytes])[0];
+    if (frameData && [frameData length] > 1) {
+        uint8_t frameType[frameData.length];
+        [frameData getBytes:&frameType length:frameData.length];
 
-      if (frameType == kEddystoneUIDFrameTypeID) {
+      if (frameType[0] == kEddystoneUIDFrameTypeID) {
         return kESSEddystoneUIDFrameType;
-      } else if (frameType == kEddystoneTLMFrameTypeID) {
+      } else if (frameType[0] == kEddystoneURLFrameTypeID) {
+        return kESSEddystoneURLFrameType;
+      } else if (frameType[0] == kEddystoneTLMFrameTypeID) {
         return kESSEddystoneTelemetryFrameType;
       }
     }
-  }
-
+    
   return kESSEddystoneUnknownFrameType;
 }
 
