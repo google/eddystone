@@ -85,11 +85,13 @@ func ==(lhs: BeaconID, rhs: BeaconID) -> Bool {
 class BeaconInfo : NSObject {
 
   static let EddystoneUIDFrameTypeID: UInt8 = 0x00
+  static let EddystoneURLFrameTypeID: UInt8 = 0x10
   static let EddystoneTLMFrameTypeID: UInt8 = 0x20
 
   enum EddystoneFrameType {
     case UnknownFrameType
     case UIDFrameType
+    case URLFrameType
     case TelemetryFrameType
 
     var description: String {
@@ -98,6 +100,8 @@ class BeaconInfo : NSObject {
         return "Unknown Frame Type"
       case .UIDFrameType:
         return "UID Frame"
+      case .URLFrameType:
+        return "URL Frame"
       case .TelemetryFrameType:
         return "TLM Frame"
       }
@@ -128,6 +132,8 @@ class BeaconInfo : NSObject {
 
         if frameBytes[0] == EddystoneUIDFrameTypeID {
           return EddystoneFrameType.UIDFrameType
+        } else if frameBytes[0] == EddystoneURLFrameTypeID {
+          return EddystoneFrameType.URLFrameType
         } else if frameBytes[0] == EddystoneTLMFrameTypeID {
           return EddystoneFrameType.TelemetryFrameType
         }
