@@ -148,7 +148,9 @@ class BeaconScanner: NSObject, CBCentralManagerDelegate {
                   ]
                 }
             }
-          }
+          } else if eft == BeaconInfo.EddystoneFrameType.URLFrameType {
+            NSLog("Found URL Frame %@", serviceData);
+        }
       } else {
         NSLog("Unable to find service data; can't process Eddystone")
       }
