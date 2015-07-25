@@ -37,7 +37,7 @@ static const uint8_t kEddystoneTLMFrameTypeID = 0x20;
 typedef struct __attribute__((packed)) {
   uint8_t frameType;
   int8_t  txPower;
-  uint8_t zipBeaconID[16];
+  uint8_t zipBeaconID[18];
 } ESSEddystoneUIDFrameFields;
 
 // Test equality, ensuring that nil is equal to itself.
@@ -172,8 +172,10 @@ static inline BOOL IsEqualOrBothNil(id a, id b) {
   }
   [UIDFrameData getBytes:&uidFrame length:sizeof(ESSEddystoneUIDFrameFields)];
 
+  // Note: Excluding (RFU) Byte Offsets 18 & 19 when creating beaconID
   NSData *beaconIDData = [NSData dataWithBytes:&uidFrame.zipBeaconID
-                                        length:sizeof(uidFrame.zipBeaconID)];
+                                        length:sizeof(uidFrame.zipBeaconID) - 2];
+    
   ESSBeaconID *beaconID = [[ESSBeaconID alloc] initWithType:kESSBeaconTypeEddystone
                                                    beaconID:beaconIDData];
   if (beaconID == nil) {
