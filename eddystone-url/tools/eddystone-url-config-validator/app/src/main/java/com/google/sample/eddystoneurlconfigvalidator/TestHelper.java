@@ -517,23 +517,19 @@ public class TestHelper {
       return;
     }
     byte[] advPacket = getAdvPacket(result, action.serviceUuid);
-    if (advPacket.length <  1 || advPacket[0] != 0x10) {
+    byte frameType = (byte) (advPacket[0] & 0xF0); // Frame type is only the 4 higher-order bits.
+    if (advPacket.length <  1 || frameType != 0x10) {
       fail("Invalid Adv Packet: " + Arrays.toString(advPacket));
       return;
     }
     if (action.actionType == TestAction.ADV_FLAGS) {
-      byte flags = (byte) (advPacket[2] >> 4);
+      byte receivedFlags = (byte) (advPacket[0] & 0x0F); // Flags are only the 4 lower-order bits.
       byte expectedFlags = action.transmittedValue[0];
-      if (expectedFlags != flags) {
-        fail("Received: " + flags + ". Expected: " + expectedFlags);
+      if (expectedFlags != receivedFlags) {
+        fail("Received: " + receivedFlags + ". Expected: " + expectedFlags);
         return;
       }
     } else if (action.actionType == TestAction.ADV_URI) {
-      if (advPacket.length == 2 && action.transmittedValue.length != 0) {
-        fail("Received empty url. Expected: "
-            + Arrays.toString(action.transmittedValue));
-      }
-      advPacket[2] = (byte) (advPacket[2] & 0x0f);
       byte[] url = Arrays.copyOfRange(advPacket, 2, advPacket.length);
       if (!Arrays.equals(action.transmittedValue, url)) {
         fail("Received: " + Arrays.toString(url)
