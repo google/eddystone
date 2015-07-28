@@ -67,12 +67,6 @@ class CoreEddystoneURLTests {
     );
     basicTestsBuilder.add(
         new Builder()
-            .name("Write and Read Flags")
-            .reference("https://github.com/google/eddystone/blob/master/eddystone-url/docs/config-service-spec.md#35-flags")
-            .writeAndRead(ProtocolV2.FLAGS, TestData.MULTIPLE_GENERAL_DATA)
-    );
-    basicTestsBuilder.add(
-        new Builder()
             .name("Write and Read Tx Power Levels")
             .reference("https://github.com/google/eddystone/blob/master/eddystone-url/docs/config-service-spec.md#36-advertised-tx-power-levels")
             .writeAndRead(ProtocolV2.POWER_LEVELS, TestData.MULTIPLE_TX_POWER_LEVELS)
@@ -118,11 +112,6 @@ class CoreEddystoneURLTests {
         new Builder()
             .name("Has Valid Advertisement Packet")
             .checkAdvPacket(TEST_UUID)
-    );
-    basicTestsBuilder.add(
-        new Builder()
-            .name("Flag Written are Broadcasted")
-            .assertAdvFlags(TEST_UUID, TestData.BASIC_GENERAL_DATA[0])
     );
     basicTestsBuilder.add(
         new Builder()

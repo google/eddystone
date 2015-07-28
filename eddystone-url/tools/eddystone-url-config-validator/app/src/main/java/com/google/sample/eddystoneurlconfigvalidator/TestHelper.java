@@ -521,19 +521,7 @@ public class TestHelper {
       fail("Invalid Adv Packet: " + Arrays.toString(advPacket));
       return;
     }
-    if (action.actionType == TestAction.ADV_FLAGS) {
-      byte flags = (byte) (advPacket[2] >> 4);
-      byte expectedFlags = action.transmittedValue[0];
-      if (expectedFlags != flags) {
-        fail("Received: " + flags + ". Expected: " + expectedFlags);
-        return;
-      }
-    } else if (action.actionType == TestAction.ADV_URI) {
-      if (advPacket.length == 2 && action.transmittedValue.length != 0) {
-        fail("Received empty url. Expected: "
-            + Arrays.toString(action.transmittedValue));
-      }
-      advPacket[2] = (byte) (advPacket[2] & 0x0f);
+    if (action.actionType == TestAction.ADV_URI) {
       byte[] url = Arrays.copyOfRange(advPacket, 2, advPacket.length);
       if (!Arrays.equals(action.transmittedValue, url)) {
         fail("Received: " + Arrays.toString(url)
@@ -548,7 +536,6 @@ public class TestHelper {
     }
     mTestActions.remove();
     dispatch();
-
   }
 
   private BluetoothLeScanner getLeScanner() {
