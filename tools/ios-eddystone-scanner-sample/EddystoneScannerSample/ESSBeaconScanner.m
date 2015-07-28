@@ -119,6 +119,7 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
   if (frameType == kESSEddystoneTelemetryFrameType) {
     _deviceIDCache[peripheral.identifier] = [ESSBeaconInfo telemetryDataForFrame:serviceData];
   } else if (frameType == kESSEddystoneUIDFrameType) {
+    
     CBUUID *eddystoneServiceUUID = [ESSBeaconInfo eddystoneServiceID];
     NSData *eddystoneServiceData = serviceData[eddystoneServiceUUID];
 
@@ -172,6 +173,8 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
         }
       }
     }
+  } else if (frameType == kESSEddystoneURLFrameType) {
+    NSLog(@"Found URL Frame %@", serviceData);
   } else {
     NSLog(@"Unsupported frame type (%d) detected. Ignorning.", (int)frameType);
   }

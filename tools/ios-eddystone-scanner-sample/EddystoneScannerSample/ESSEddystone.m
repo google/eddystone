@@ -26,6 +26,7 @@ static NSString *const kEddystoneServiceID = @"FEAA";
  * values. See the Eddystone spec for complete details.
  */
 static const uint8_t kEddystoneUIDFrameTypeID = 0x00;
+static const uint8_t kEddystoneURLFrameTypeID = 0x10;
 static const uint8_t kEddystoneTLMFrameTypeID = 0x20;
 
 // Note that for these Eddystone structures, the endianness of the individual fields is big-endian,
@@ -37,6 +38,7 @@ typedef struct __attribute__((packed)) {
   uint8_t frameType;
   int8_t  txPower;
   uint8_t zipBeaconID[16];
+  uint8_t RFU[2];
 } ESSEddystoneUIDFrameFields;
 
 // Test equality, ensuring that nil is equal to itself.
@@ -115,21 +117,20 @@ static inline BOOL IsEqualOrBothNil(id a, id b) {
  */
 + (ESSFrameType)frameTypeForFrame:(NSDictionary *)advFrameList {
   NSData *frameData = advFrameList[[self eddystoneServiceID]];
-
   // It's an Eddystone ADV frame. Now check if it's a UID (ID) or TLM (telemetry) frame.
-  if (frameData) {
-    uint8_t frameType;
-    if ([frameData length] > 1) {
-      frameType = ((uint8_t *)[frameData bytes])[0];
+    if (frameData && [frameData length] > 1) {
+        uint8_t frameType[frameData.length];
+        [frameData getBytes:&frameType length:frameData.length];
 
-      if (frameType == kEddystoneUIDFrameTypeID) {
+      if (frameType[0] == kEddystoneUIDFrameTypeID) {
         return kESSEddystoneUIDFrameType;
-      } else if (frameType == kEddystoneTLMFrameTypeID) {
+      } else if (frameType[0] == kEddystoneURLFrameTypeID) {
+        return kESSEddystoneURLFrameType;
+      } else if (frameType[0] == kEddystoneTLMFrameTypeID) {
         return kESSEddystoneTelemetryFrameType;
       }
     }
-  }
-
+    
   return kESSEddystoneUnknownFrameType;
 }
 
@@ -172,8 +173,10 @@ static inline BOOL IsEqualOrBothNil(id a, id b) {
   }
   [UIDFrameData getBytes:&uidFrame length:sizeof(ESSEddystoneUIDFrameFields)];
 
+  // Note: Excluding (RFU) Byte Offsets 18 & 19 when creating beaconID
   NSData *beaconIDData = [NSData dataWithBytes:&uidFrame.zipBeaconID
                                         length:sizeof(uidFrame.zipBeaconID)];
+    
   ESSBeaconID *beaconID = [[ESSBeaconID alloc] initWithType:kESSBeaconTypeEddystone
                                                    beaconID:beaconIDData];
   if (beaconID == nil) {

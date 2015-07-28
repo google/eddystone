@@ -22,6 +22,7 @@ typedef NS_ENUM(NSUInteger, ESSBeaconType) {
 typedef NS_ENUM(NSUInteger, ESSFrameType) {
   kESSEddystoneUnknownFrameType = 0,
   kESSEddystoneUIDFrameType = 1,
+  kESSEddystoneURLFrameType = 2,
   kESSEddystoneTelemetryFrameType,
 };
 
