@@ -94,7 +94,7 @@ public class BeaconArrayAdapter extends ArrayAdapter<Beacon> implements Filterab
         ((TextView) convertView.findViewById(R.id.uidErrors)).setText(beacon.uidStatus.getErrors());
       }
       uidNamespace.setText(beacon.uidStatus.uidValue.substring(0, 20));
-      uidInstance.setText(beacon.uidStatus.uidValue.substring(20, 31));
+      uidInstance.setText(beacon.uidStatus.uidValue.substring(20, 32));
       uidTxPower.setText(beacon.uidStatus.txPower);
       uidGroup.setVisibility(View.VISIBLE);
     }
