@@ -82,8 +82,8 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
     } else {
       NSLog(@"Starting to scan for Eddystones");
       NSArray *services = @[
-                            [CBUUID UUIDWithString:kESSEddystoneServiceID]
-                            ];
+          [CBUUID UUIDWithString:kESSEddystoneServiceID]
+      ];
 
       // We do not want multiple discoveries of the same beacon to be coalesced into one.
       // (Unfortunately this is ignored when we are in the background.)
