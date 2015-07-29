@@ -14,6 +14,9 @@ Frame Type | High-Order 4 bits | Byte Value
 UID | `0000` | `0x00`
 URL | `0001` | `0x10`
 TLM | `0010` | `0x20`
+RESERVED | `0011` | `0x30`
+RESERVED | `0100` | `0x40`
+
 
 The four low-order bits are reserved for future use and must be `0000`.
 
