@@ -4,7 +4,7 @@
 
 Every Eddystone frame type must contain the following PDU data types:
 
-- The _Service Solicitation_ data type as defined in The Bluetooth Core Specification Supplement (CSS) v5, Part A, § 1.10. The _List of 16 bit Service Solicitation UUIDs_ must contain the Eddystone Service UUID of `0xFEAA`. This is included to allow background scanning on iOS devices.
+- The _Complete List of 16-bit Service UUIDs_ as defined in The Bluetooth Core Specification Supplement (CSS) v5, Part A, § 1.1. The _Complete List of 16-bit Service UUIDs_ must contain the Eddystone Service UUID of `0xFEAA`. This is included to allow background scanning on iOS devices.
 - The _Service Data_ data type, _Ibid._, § 1.11. The _Service Data - 16 bit UUID_ data type must be the Eddystone Service UUID of `0xFEAA`.
 
 The specific type of Eddystone frame is encoded in the high-order four bits of the first octet in the Service Data associated with the Service UUID. Permissible values are:
