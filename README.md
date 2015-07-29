@@ -14,7 +14,7 @@ The design of Eddystone has been driven by several key goals:
 ## Protocol Specification
 
 The common frame PDU types and the individual service data byte layouts for
-the Eddystone-UID, -URL and -TLM frame formats are documented in the
+the Eddystone-UID, -URL, -TLM and -KEY frame formats are documented in the
 [Eddystone Protocol Specification](protocol-specification.md).
 
 ## Tools and Code Samples

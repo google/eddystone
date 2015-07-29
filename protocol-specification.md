@@ -14,6 +14,7 @@ Frame Type | High-Order 4 bits | Byte Value
 UID | `0000` | `0x00`
 URL | `0001` | `0x10`
 TLM | `0010` | `0x20`
+KEY | `0011` | `0x30`
 
 The four low-order bits are reserved for future use and must be `0000`.
 
@@ -56,3 +57,7 @@ The Eddystone-URL frame forms the backbone of the [Physical Web](http://physical
 ## [Eddystone-TLM](eddystone-tlm)
 
 The Eddystone-TLM frame broadcasts telemetry information about the beacon itself such as battery voltage, device temperature, and counts of broadcast packets.
+
+## [Eddystone-KEY](eddystone-key)
+
+The Eddystone-KEY frame broadcasts a security key which can be used in two-factor authentication systems.
