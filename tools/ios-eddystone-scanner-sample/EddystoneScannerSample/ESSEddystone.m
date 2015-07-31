@@ -167,25 +167,28 @@ static inline BOOL IsEqualOrBothNil(id a, id b) {
   }
 
   ESSEddystoneUIDFrameFields uidFrame;
-
-  if ([UIDFrameData length] == sizeof(ESSEddystoneUIDFrameFields) || [UIDFrameData length] == sizeof(ESSEddystoneUIDFrameFields) - 2) {
+  
+  if ([UIDFrameData length] == sizeof(ESSEddystoneUIDFrameFields) ||
+    [UIDFrameData length] == sizeof(ESSEddystoneUIDFrameFields) - sizeof(uidFrame.RFU)) {
  
-      [UIDFrameData getBytes:&uidFrame length:(sizeof(ESSEddystoneUIDFrameFields) - sizeof(uidFrame.RFU))];
-
-      NSData *beaconIDData = [NSData dataWithBytes:&uidFrame.beaconID
+    [UIDFrameData getBytes:&uidFrame length:(sizeof(ESSEddystoneUIDFrameFields) -
+                                             sizeof(uidFrame.RFU))];
+    
+    NSData *beaconIDData = [NSData dataWithBytes:&uidFrame.beaconID
                                             length:sizeof(uidFrame.beaconID)];
-      ESSBeaconID *beaconID = [[ESSBeaconID alloc] initWithType:kESSBeaconTypeEddystone
+    
+    ESSBeaconID *beaconID = [[ESSBeaconID alloc] initWithType:kESSBeaconTypeEddystone
                                                        beaconID:beaconIDData];
-      if (beaconID == nil) {
-        return nil;
-      }
-
-      return [[ESSBeaconInfo alloc] initWithBeaconID:beaconID
-                                             txPower:@(uidFrame.txPower)
-                                                RSSI:RSSI
-                                           telemetry:telemetry];
-  } else {
+    if (beaconID == nil) {
       return nil;
+    }
+      
+    return [[ESSBeaconInfo alloc] initWithBeaconID:beaconID
+                                           txPower:@(uidFrame.txPower)
+                                              RSSI:RSSI
+                                         telemetry:telemetry];
+  } else {
+    return nil;
   }
 }
 
