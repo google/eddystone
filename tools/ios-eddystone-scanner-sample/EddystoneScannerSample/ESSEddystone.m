@@ -168,17 +168,17 @@ static inline BOOL IsEqualOrBothNil(id a, id b) {
 
   ESSEddystoneUIDFrameFields uidFrame;
   
-  if ([UIDFrameData length] == sizeof(ESSEddystoneUIDFrameFields) ||
-    [UIDFrameData length] == sizeof(ESSEddystoneUIDFrameFields) - sizeof(uidFrame.RFU)) {
+  if ([UIDFrameData length] == sizeof(ESSEddystoneUIDFrameFields)
+      || [UIDFrameData length] == sizeof(ESSEddystoneUIDFrameFields) - sizeof(uidFrame.RFU)) {
  
-    [UIDFrameData getBytes:&uidFrame length:(sizeof(ESSEddystoneUIDFrameFields) -
-                                             sizeof(uidFrame.RFU))];
+    [UIDFrameData getBytes:&uidFrame length:(sizeof(ESSEddystoneUIDFrameFields)
+        - sizeof(uidFrame.RFU))];
     
     NSData *beaconIDData = [NSData dataWithBytes:&uidFrame.beaconID
-                                            length:sizeof(uidFrame.beaconID)];
+                                          length:sizeof(uidFrame.beaconID)];
     
     ESSBeaconID *beaconID = [[ESSBeaconID alloc] initWithType:kESSBeaconTypeEddystone
-                                                       beaconID:beaconIDData];
+                                                     beaconID:beaconIDData];
     if (beaconID == nil) {
       return nil;
     }
