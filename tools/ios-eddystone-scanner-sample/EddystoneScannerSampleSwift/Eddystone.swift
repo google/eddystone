@@ -160,7 +160,7 @@ class BeaconInfo : NSObject {
           NSLog("Frame Data for UID Frame unexpectedly truncated in BeaconInfoForUIDFrameData.")
         }
 
-        let txPower = Int(frameBytes[1])
+        let txPower = Int(Int8(bitPattern:frameBytes[1]))
         let beaconID: [UInt8] = Array(frameBytes[2..<18])
         let bid = BeaconID(beaconType: BeaconID.BeaconType.Eddystone, beaconID: beaconID)
         return BeaconInfo(beaconID: bid, txPower: txPower, RSSI: RSSI, telemetry: telemetry)
