@@ -2,7 +2,7 @@
 
 ## Installing the BlueGiga Development Environment
 * Install the BlueGiga Development Environment - you will need to create an account
-at [BlueGiga](https://www.bluegiga.com/en-US/) see the gear icon located at the top right 
+at [BlueGiga](https://www.bluegiga.com/en-US/). See the gear icon located at the top right 
 of the page.
 * The project in this directory was built using the Bluegiga SDK 1.3.2-122
 * By default the install directory will be c:/Bluegiga/ble-1.3.2-122
