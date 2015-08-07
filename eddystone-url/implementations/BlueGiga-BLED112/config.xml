@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config>
+	<script force="true"/>
+  <user_data size="0x800"/>
+  <script_timeout value="2000" />
+</config>

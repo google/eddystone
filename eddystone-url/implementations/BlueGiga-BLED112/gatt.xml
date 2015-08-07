@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2015 Google Inc. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<configuration>
+	
+	<service uuid="1800">
+		<description>Generic Access Profile</description>
+		
+		<characteristic uuid="2a00">
+			<properties read="true" const="true"/>
+			<value>Eddystone-URL</value>
+		</characteristic>
+		
+		<characteristic uuid="2a01">
+			<properties read="true" const="true"/>
+			<value type="hex">0200</value>
+		</characteristic>
+	</service>
+	
+	<service uuid="180a">
+		<description>Device Information</description>
+
+		<characteristic uuid="2a24">
+			<properties read="true" const="true" />
+			<value>112</value>
+		</characteristic>
+		
+		<characteristic uuid="2a25">
+			<properties read="true" const="true" />
+			<value>Eddystone-URL-V1-2015-08-06:17:00</value>
+		</characteristic>
+    
+    <characteristic uuid="2a26">
+			<properties read="true" const="true" />
+			<value>BLE GUI-1.3.2.122</value>
+		</characteristic>
+		
+		<characteristic uuid="2a27">
+			<properties read="true" const="true" />
+			<value>1.0</value>
+		</characteristic>
+    
+    <characteristic uuid="2a29">
+			<properties read="true" const="true" />
+			<value>Bluegiga BLED112</value>
+		</characteristic>
+    
+	</service>
+
+	<service uuid="ee0c2080-8786-40ba-ab96-99b91ac981d8">
+	    <description>Eddystone-URL Beacon Configuration</description>
+	
+		<characteristic uuid="ee0c2081-8786-40ba-ab96-99b91ac981d8" id="esurl_lockstate">
+		    <description>Lock State</description>
+		    <properties read="true"/>
+		    <value length="1" type="user"/>
+		</characteristic>
+		
+		<characteristic uuid="ee0c2082-8786-40ba-ab96-99b91ac981d8" id="esurl_lock">
+		    <description>Lock</description>
+		    <properties write="true"/>
+		    <value length="16" type="user"/>
+		</characteristic>
+		
+		<characteristic uuid="ee0c2083-8786-40ba-ab96-99b91ac981d8" id="esurl_unlock">
+		    <description>Unlock</description>
+		    <properties write="true" />
+		    <value length="16" type="user"/>
+		</characteristic>
+		
+		<characteristic uuid="ee0c2084-8786-40ba-ab96-99b91ac981d8" id="esurl_data">
+		    <description>ES URL Data</description>
+		    <properties read="true" write="true" />
+		    <value length="18" type="user"/>		
+		</characteristic>
+		
+		<characteristic uuid="ee0c2085-8786-40ba-ab96-99b91ac981d8" id="esurl_flags">
+		    <description>ES Flags</description>
+		    <properties read="true" write="true"/>
+		    <value length="1"  type="user"/>		
+		</characteristic>
+		
+		<characteristic uuid="ee0c2086-8786-40ba-ab96-99b91ac981d8" id="esurl_adv_txpower_levels">
+		    <description>Adv Tx Power Levels</description>
+		    <properties read="true" write="true"/>
+		    <value length="4" type="user"/>	
+		</characteristic>
+		
+		<characteristic uuid="ee0c2087-8786-40ba-ab96-99b91ac981d8" id="esurl_txpower_mode">
+		    <description>TX power mode</description>
+		    <properties read="true" write="true"/>
+		    <value length="1" type="user"/>	
+		</characteristic>
+		
+		<characteristic uuid="ee0c2088-8786-40ba-ab96-99b91ac981d8" id="esurl_beacon_period">
+		    <description>Beacon period</description>
+		    <properties read="true" write="true"/>
+		    <value length="2" type="user"/>	
+		</characteristic>
+		
+		<characteristic uuid="ee0c2089-8786-40ba-ab96-99b91ac981d8" id="esurl_reset">
+		    <description>Reset</description>
+		    <properties read="true" write="true"/>
+		    <value length="1" type="user"/>	
+		</characteristic>		
+		
+		<characteristic uuid="ee0c208a-8786-40ba-ab96-99b91ac981d8" id="esurl_radio_txpower_levels">
+	           <description>Radio Tx Power Levels</description>
+			<properties read="true" write="true"/>
+			<value length="4" type="user"/>
+		</characteristic>
+
+	</service>
+
+</configuration>
