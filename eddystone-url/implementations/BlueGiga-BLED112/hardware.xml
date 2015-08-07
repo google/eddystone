@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<hardware>
+	<sleeposc enable="false" ppm="30" />
+  <usb enable="true" endpoint="none" />
+  <txpower power="15" bias="5" />
+	<script enable="true" />
+</hardware>
+

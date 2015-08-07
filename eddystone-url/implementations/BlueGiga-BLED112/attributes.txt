@@ -1,0 +1,10 @@
+esurl_lockstate 19
+esurl_lock 22
+esurl_unlock 25
+esurl_data 28
+esurl_flags 31
+esurl_adv_txpower_levels 34
+esurl_txpower_mode 37
+esurl_beacon_period 40
+esurl_reset 43
+esurl_radio_txpower_levels 46

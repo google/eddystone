@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<gatt in="gatt.xml" />
+	<hardware in="hardware.xml" />
+	<usb_main in="cdc.xml" />
+	<config in="config.xml" />
+	<script in="eddystone-url.bgs" />
+	<image out="eddystone-url.hex" />
+	<boot fw="boot" />
+	<device type="ble112" />
+</project>
+
