@@ -1,0 +1,82 @@
+<project buildenvironment="{067c869e-5bd9-4595-9f4c-60348133ad8e}" buildenvironmentname="uEnergy" executionenvironmentoption="XAP2+ P0 ELF DWARF BINUTILS UENERGYSDK" buildenvironmentoption="UENERGYSDK" executionenvironmentname="uEnergy" name="CSR uEnergy" executionenvironment="{39e65239-59f4-4d78-b84a-26eaebfaa4de}" >
+ <folder name="C Files" >
+  <extension name="c" />
+  <file path="battery_service.c" />
+  <file path="esurl_beacon.c" />
+  <file path="beaconing.c" />
+  <file path="buzzer.c" />
+  <file path="debug_interface.c" />
+  <file path="dev_info_service.c" />
+  <file path="gap_service.c" />
+  <file path="gatt_access.c" />
+  <file path="hw_access.c" />
+  <file path="led.c" />
+  <file path="nvm_access.c" />
+  <file path="constants.c" >
+   <properties>
+    <configuration name="Debug" />
+   </properties>
+  </file>
+  <file path="esurl_beacon_service.c" />
+ </folder>
+ <folder name="Header Files" >
+  <extension name="h" />
+  <file path="user_config.h" />
+  <file path="appearance.h" />
+  <file path="battery_service.h" />
+  <file path="battery_uuids.h" />
+  <file path="esurl_beacon.h" />
+  <file path="beaconing.h" />
+  <file path="buzzer.h" />
+  <file path="debug_interface.h" />
+  <file path="dev_info_service.h" />
+  <file path="dev_info_uuids.h" />
+  <file path="gap_conn_params.h" />
+  <file path="gap_service.h" />
+  <file path="gap_uuids.h" />
+  <file path="gatt_access.h" />
+  <file path="gatt_service_uuids.h" />
+  <file path="hw_access.h" />
+  <file path="led.h" />
+  <file path="nvm_access.h" />
+  <file path="esurl_beacon_service.h" />
+  <file path="esurl_beacon_uuids.h" />
+  <file path="constants.h" />
+ </folder>
+ <folder name="Assembler Files" >
+  <extension name="asm" />
+ </folder>
+ <folder name="GATT db files" >
+  <extension name="db" />
+  <file path="battery_service_db.db" />
+  <file path="app_gatt_db.db" />
+  <file path="dev_info_service_db.db" />
+  <file path="gap_service_db.db" />
+  <file path="gatt_service_db.db" />
+  <file path="esurl_beacon_service_db.db" />
+ </folder>
+ <file path="esurl_beacon_csr100x.keyr" />
+ <file path="esurl_beacon_csr101x_A05.keyr" />
+ <properties currentconfiguration="Release" >
+  <configuration name="Debug" >
+   <property key="csr100x_keyr" >esurl_beacon_csr100x.keyr</property>
+   <property key="csr101x_a05_keyr" >esurl_beacon_csr101x_A05.keyr</property>
+   <property key="debugtransport" ></property>
+   <property key="defines" ></property>
+   <property key="hw_version" >0</property>
+   <property key="libs" ></property>
+   <property key="master_db" >app_gatt_db.db</property>
+   <property key="output" ></property>
+  </configuration>
+  <configuration name="Release" >
+   <property key="csr100x_keyr" >esurl_beacon_csr100x.keyr</property>
+   <property key="csr101x_a05_keyr" >esurl_beacon_csr101x_A05.keyr</property>
+   <property key="debugtransport" ></property>
+   <property key="defines" ></property>
+   <property key="hw_version" >1</property>
+   <property key="libs" ></property>
+   <property key="master_db" >app_gatt_db.db</property>
+   <property key="output" ></property>
+  </configuration>
+ </properties>
+</project>

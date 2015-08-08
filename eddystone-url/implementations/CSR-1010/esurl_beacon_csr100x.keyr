@@ -1,0 +1,61 @@
+>DECIMAL_CS_VERSION=66
+
+// (0001) - Bluetooth device address
+&BDADDR = 1510 5b00 0002
+
+// (0002) - Crystal frequency trim
+&CRYSTAL_FTRIM = 0027
+
+// Depending on the NVM size, an application can specify the memory area to
+// be used for NVM storage. The start of NVM is used to store the application
+// and firmware library. Any space left over is available for the application
+// to use for data storage. The following CS keys control this storage:
+//
+// nvm_start_address: The first address in NVM which is available to the
+//                    application to store data (link keys, GATT database
+//                    values, etc).
+//                    For an NVM of size 512kbit this defaults to 0xF000 bytes
+//                    offset in NVM i.e. 480 kbits or 60 kbytes.
+// nvm_size:          The amount of space available in the NVM that can be used
+//                    by the application to store data, in 16-bit words.
+//                    For an NVM of size 512kbit, this defaults to 64 words
+//                    i.e. 1 kbit or 128 bytes.
+//
+// For SPI Flash devices there are two additional CS keys:
+//
+// spi_flash_block_size:
+//                    The size of a SPI Flash block, in bytes. This must be a
+//                    multiple of nvm_size.
+//                    Default is 4096 bytes. So if the NVM size is 128 bytes
+//                    (i.e. nvm_size=64) this provides 32 "pages".
+// nvm_spi_flash_number_of_blocks:
+//                    The number of SPI Flash blocks allocated to the
+//                    application.
+//                    Default is 1, maximum is 2. nvm_start_address needs to
+//                    take into account the number and size of the blocks.
+//                    E.g. if spi_flash_block_size=4096, and
+//                    nvm_spi_flash_number_of_blocks=2, then nvm_start_address
+//                    needs to change to <= 0xE000. Furthermore
+//                    nvm_start_address must align with the start of a SPI
+//                    Flash memory block - i.e. nvm_start_address must be a
+//                    multiple of spi_flash_block_size.
+//
+// Care must be taken not to allocate more space than is available.
+// So the following must hold true:
+// SPI Flash:
+//   nvm_start_address + spi_flash_block_size * nvm_spi_flash_number_of_blocks
+//                           <= size of chip in bytes
+// EEPROM:
+//   nvm_start_address + nvm_size * 2 <= size of chip in bytes.
+
+&nvm_start_address = F000 // Default value (in hex) for a 512kbit EEPROM
+&nvm_size = 40            // Default value (number of words in hex) for a 512kbit EEPROM
+
+//&nvm_start_address = 7F80 // Value (in hex) for a 256kbit EEPROM
+//&nvm_size = 40            // Number of words (in hex) for 256kbit EEPROM
+
+//&nvm_start_address = 3F80 // Value (in hex) for a 128kbit EEPROM
+//&nvm_size = 40            // Number of words (in hex) for 128kbit EEPROM
+
+// UART connection speed. By default, 115200 baud.
+&UART_RATE = 01d9

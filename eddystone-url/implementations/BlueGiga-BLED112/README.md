@@ -1,6 +1,6 @@
-# BlueGiga BLED112 Eddystone-URL Beacon on Windows
+# BlueGiga BLED112 Eddystone-URL Beacon
 
-## Installing the BlueGiga Development Environment
+## Installing the Windows BlueGiga Development Environment
 * Install the BlueGiga Development Environment - you will need to create an account
 at [BlueGiga](https://www.bluegiga.com/en-US/). See the gear icon located at the top right 
 of the page.
