@@ -12,3 +12,4 @@ To date, in this directory you will find the following implementations:
 * BlueGiga BLED112
 * Cambridge Silicon Radio CSR1010 (Beacon Development Board)
 * RFduino
+* Linux (bluez)
