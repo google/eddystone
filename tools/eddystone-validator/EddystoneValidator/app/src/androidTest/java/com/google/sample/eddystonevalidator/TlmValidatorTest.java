@@ -14,15 +14,15 @@
 
 package com.google.sample.eddystonevalidator;
 
-import static com.google.sample.eddystonevalidator.Constants.TLM_FRAME_TYPE;
-import static com.google.sample.eddystonevalidator.TestUtils.DEVICE_ADDRESS;
-import static com.google.sample.eddystonevalidator.TestUtils.INITIAL_RSSI;
-
 import android.test.AndroidTestCase;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+
+import static com.google.sample.eddystonevalidator.Constants.TLM_FRAME_TYPE;
+import static com.google.sample.eddystonevalidator.TestUtils.DEVICE_ADDRESS;
+import static com.google.sample.eddystonevalidator.TestUtils.INITIAL_RSSI;
 
 /**
  * Basic tests for the TlmValidator class.
@@ -97,28 +97,6 @@ public class TlmValidatorTest extends AndroidTestCase {
     TlmValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
 
     assertNotNull(beacon.tlmStatus.errVoltage);
-    assertFalse(beacon.tlmStatus.getErrors().isEmpty());
-  }
-
-  public void testTlmValidator_failsTempTooLow() throws IOException {
-    byte[] serviceData = tlmServiceData();
-    // -1 °C. No doubt that's a valid operating temperature for most beacons
-    // but are you really validating your beacons when it's this cold?
-    serviceData[4] = (byte) 0xff;
-    serviceData[5] = 0x00;
-    TlmValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
-
-    assertNotNull(beacon.tlmStatus.errTemp);
-    assertFalse(beacon.tlmStatus.getErrors().isEmpty());
-  }
-
-  public void testTlmValidator_failsTempTooHigh() throws IOException {
-    byte[] serviceData = tlmServiceData();
-    serviceData[4] = 0x3d;
-    serviceData[5] = 0x00;  // 61 °C.
-    TlmValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
-
-    assertNotNull(beacon.tlmStatus.errTemp);
     assertFalse(beacon.tlmStatus.getErrors().isEmpty());
   }
 
