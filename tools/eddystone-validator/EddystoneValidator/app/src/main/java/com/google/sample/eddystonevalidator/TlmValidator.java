@@ -102,7 +102,7 @@ public class TlmValidator {
     // it shouldn't be negative or unreasonably high.
     short voltage = buf.getShort();
     beacon.tlmStatus.voltage = String.valueOf(voltage);
-    if (voltage < MIN_EXPECTED_VOLTAGE || voltage > MAX_EXPECTED_VOLTAGE) {
+    if (voltage != 0 && (voltage < MIN_EXPECTED_VOLTAGE || voltage > MAX_EXPECTED_VOLTAGE)) {
       String err = String.format("Expected TLM voltage to be between %d and %d, got %d",
           MIN_EXPECTED_VOLTAGE, MAX_EXPECTED_VOLTAGE, voltage);
       beacon.tlmStatus.errVoltage = err;

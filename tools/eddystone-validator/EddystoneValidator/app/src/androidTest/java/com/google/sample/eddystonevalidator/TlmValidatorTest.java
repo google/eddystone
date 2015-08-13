@@ -74,8 +74,18 @@ public class TlmValidatorTest extends AndroidTestCase {
     serviceData[1] = 0x10;
     TlmValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
 
-    assertNotNull(beacon.tlmStatus.errVersion);
+    assertTrue(beacon.hasTlmFrame);
     assertFalse(beacon.tlmStatus.getErrors().isEmpty());
+  }
+
+  public void testTlmValidator_passesVoltagePowered() throws Exception {
+    // Devices that are powered should set the voltage to 0.
+    byte[] serviceData = tlmServiceData();
+    serviceData[2] = 0x00;
+    serviceData[3] = 0x00;
+    TlmValidator.validate(DEVICE_ADDRESS, serviceData, beacon);
+
+    assertTrue(beacon.tlmStatus.getErrors().isEmpty());
   }
 
   public void testTlmValidator_failsVoltageTooLow() throws IOException {
