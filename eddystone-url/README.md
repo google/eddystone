@@ -71,7 +71,9 @@ below.
 |14..32   | 0x0e..0x20 | Reserved for Future Use
 |127..255 | 0x7F..0xFF | Reserved for Future Use
 
-Note: URLs are written only with the graphic printable characters of the US-ASCII coded character set. The octets 00-20 and 7F-FF hexadecimal are not used. See “Excluded US-ASCII Characters” in RFC 2936.
+Note: 
+* URLs are written only with the graphic printable characters of the US-ASCII coded character set. The octets **00-20** and **7F-FF** hexadecimal are not used. See “Excluded US-ASCII Characters” in RFC 2936.
+* Range **07-13** define the same top level domains as **00-06** without a /.
 
 ## See Also
 
