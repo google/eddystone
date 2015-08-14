@@ -48,22 +48,6 @@ class SpecEddystoneURLTests {
     );
     specEddystoneURLTestsBuilder.add(
         new Builder()
-            .name("Try Short Flags")
-            .reference(
-                "https://github.com/google/eddystone/blob/master/eddystone-url/docs/config-service-spec.md#13-return-codes")
-            .write(ProtocolV2.FLAGS, TestData.SHORT_FLAGS,
-                BluetoothGatt.GATT_INVALID_ATTRIBUTE_LENGTH)
-    );
-    specEddystoneURLTestsBuilder.add(
-        new Builder()
-            .name("Try Long Flags")
-            .reference(
-                "https://github.com/google/eddystone/blob/master/eddystone-url/docs/config-service-spec.md#13-return-codes")
-            .write(ProtocolV2.FLAGS, TestData.LONG_FLAGS,
-                BluetoothGatt.GATT_INVALID_ATTRIBUTE_LENGTH)
-    );
-    specEddystoneURLTestsBuilder.add(
-        new Builder()
             .name("Try Short Advertised Tx Power Levels")
             .reference(
                 "https://github.com/google/eddystone/blob/master/eddystone-url/docs/config-service-spec.md#13-return-codes")
@@ -249,27 +233,6 @@ class SpecEddystoneURLTests {
               .name("Locked: Try Long Data")
               .reference("https://github.com/google/eddystone/blob/master/eddystone-url/docs/config-service-spec.md#32-lock")
               .write(ProtocolV2.DATA, TestData.LONG_URI, TestData.VALID_LENGTH_AUTHORIZATION_ERRORS)
-      );
-      specEddystoneURLTestsBuilder.add(
-          new Builder()
-              .name("Locked: Try Short Flags")
-              .reference("https://github.com/google/eddystone/blob/master/eddystone-url/docs/config-service-spec.md#32-lock")
-              .write(ProtocolV2.FLAGS, TestData.SHORT_FLAGS,
-                  TestData.VALID_LENGTH_AUTHORIZATION_ERRORS)
-      );
-      specEddystoneURLTestsBuilder.add(
-          new Builder()
-              .name("Locked: Try Valid Flags")
-              .reference("https://github.com/google/eddystone/blob/master/eddystone-url/docs/config-service-spec.md#32-lock")
-              .write(ProtocolV2.FLAGS, TestData.BASIC_GENERAL_DATA,
-                  ConfigUriBeacon.INSUFFICIENT_AUTHORIZATION)
-      );
-      specEddystoneURLTestsBuilder.add(
-          new Builder()
-              .name("Locked: Try Long Flags")
-              .reference("https://github.com/google/eddystone/blob/master/eddystone-url/docs/config-service-spec.md#32-lock")
-              .write(ProtocolV2.FLAGS, TestData.LONG_FLAGS,
-                  TestData.VALID_LENGTH_AUTHORIZATION_ERRORS)
       );
       specEddystoneURLTestsBuilder.add(
           new Builder()
