@@ -9,7 +9,7 @@ under the licenses described in each subdirectory. These projects serve as a gui
 write you own Eddystone-URL beacon code. We encourage you to add additional examples.
 To date, in this directory you will find the following implementations:
 
-* BlueGiga BLED112
-* Cambridge Silicon Radio CSR1010 (Beacon Development Board)
-* RFduino
-* Linux (bluez)
+* [BlueGiga BLED112](BlueGiga-BLED112)
+* [Cambridge Silicon Radio CSR1010 (Beacon Development Board)](CSR-1010)
+* [RFduino](RFduino)
+* [Linux (bluez)](linux-url-advertiser)
