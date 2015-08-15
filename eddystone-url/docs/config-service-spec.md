@@ -144,7 +144,11 @@ Note: URI Data must be between 0 and 18 bytes in length.
 |  Type | uint8 |
 |  Lock State | For write, must be unlocked.|
 
-The Flags characteristic is a single unsigned byte value containing the Eddystone-URL Flags.
+The Flags characteristic is a single unsigned byte value. The top 4-bits are defined by the
+Eddystone-URL Frame code as 0001, and the bottom 4-bits are reserved flags for future use, and must
+be set to 0000. As a result, the characteristic currently has a fixed value of 0x10, and although it is
+a read/write value, it should not be changed. When the lower 4-bit flags are defined,
+this documentation will be updated, and the flag values can be written accordingly.
 
 ### 3.6 Advertised TX Power Levels
 
