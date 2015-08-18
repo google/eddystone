@@ -1,0 +1,24 @@
+{
+  "name": "eddystone-advertising-library",
+  "version": "0.3",
+  "homepage": "https://github.com/google/eddystone/tree/master/libraries/eddystone-advertising-library",
+  "authors": [
+    "Giovanni Ortuño Urquidi <gd.ortuno@gmail.com>",
+    "Jeffrey Yasskin <jyasskin@chromium.org>"
+  ],
+  "description": "A library to easily broadcast valid Eddystone advertisements.",
+  "main": "eddystone-advertising.js",
+  "keywords": [
+    "ble",
+    "eddystone",
+    "chrome-app"
+  ],
+  "license": "https://github.com/google/eddystone/blob/master/LICENSE",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
