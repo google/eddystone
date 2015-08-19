@@ -4,6 +4,8 @@
 The purpose of the Eddystone-URL Validator app is to allow developers to test
 their implementations of the Eddystone-URL [Configuration Service](../../docs/config-service-spec.md).
 The app consists of two sets of tests: Core Eddystone-URL Tests and Spec Eddystone-URL Tests.
+NOTE: The validator is designed to work on Android Lollipop (5.1) or later, and will not run on earlier
+Android releases.
 
 ### Core Eddystone-URL Tests ###
 The Core Eddystone-URL Tests are design to make sure the app works seamlessly with the Physical Web App 
