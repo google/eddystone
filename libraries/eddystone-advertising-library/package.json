@@ -1,0 +1,45 @@
+{
+  "name": "eddystone-advertising-library",
+  "version": "0.3.0",
+  "description": "A library to easily broadcast valid Eddystone advertisements.",
+  "main": "eddystone-advertising.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "iojs --harmony_arrow_functions `which gulp` test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/google/eddystone.git"
+  },
+  "keywords": [
+    "eddystone",
+    "ble",
+    "chrome-app"
+  ],
+  "author": "Giovanni Ortuño Urquidi <gd.ortuno@gmail.com>",
+  "contributors": [
+    "Jeffrey Yasskin <jyasskin@chromium.org>"
+  ],
+  "license": {
+    "type": "Apache-2.0",
+    "url": "https://github.com/google/eddystone/blob/master/LICENSE"
+  },
+  "bugs": {
+    "url": "https://github.com/google/eddystone/issues"
+  },
+  "homepage": "https://github.com/google/eddystone/tree/master/libraries/eddystone-advertising-library#readme",
+  "devDependencies": {
+    "bower": "^1.4.1",
+    "chai": "^3.2.0",
+    "del": "^1.2.1",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-david": "^0.2.3",
+    "gulp-jshint": "^1.11.2",
+    "gulp-mocha": "^2.1.3",
+    "jshint-stylish": "^2.0.1",
+    "mocha": "^2.2.5"
+  }
+}
