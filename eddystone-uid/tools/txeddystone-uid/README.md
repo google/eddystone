@@ -25,3 +25,5 @@ None.
 
 Import the `TxEddystone-UID` project in this directory into Android Studio and
 select `Run > Run app`.
+
+A pre-build APK is available in the [project's releases](https://github.com/google/eddystone/releases).
