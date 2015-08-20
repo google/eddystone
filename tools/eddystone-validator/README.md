@@ -20,3 +20,5 @@ None.
 
 Import the EddystoneValidator folder into Android Studio as an existing
 project and select `Run > Run app`.
+
+A pre-built APK is available in the [project's releases](https://github.com/google/eddystone/releases).
