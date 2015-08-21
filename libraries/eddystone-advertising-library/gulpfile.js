@@ -7,20 +7,40 @@ var concat = require('gulp-concat');
 var mocha = require('gulp-mocha');
 var jshint = require('gulp-jshint');
 var david = require('gulp-david');
+var gulpJsdoc2md = require('gulp-jsdoc-to-markdown');
+var rename = require('gulp-rename');
+var diff = require('gulp-diff');
 
 var del = require('del');
 // jshint ignore:end
 
-
 gulp.task('default', () => {
 });
 
+gulp.task('docs', () => {
+  // TODO: Figure out how templates work so that we can include
+  // the documentation directly in the README.md.
+  return gulp.src('eddystone-advertising.js')
+             .pipe(gulpJsdoc2md())
+             .pipe(rename(path => path.extname = '.md'))
+             .pipe(gulp.dest(''));
+});
+
 gulp.task('test', [
+  'test:docs',
   'test:dependencies',
   'test:style',
   'test:chrome-os',
   'clean']
 );
+
+gulp.task('test:docs', () => {
+  return gulp.src('eddystone-advertising.js')
+             .pipe(gulpJsdoc2md())
+             .pipe(rename(path => path.extname = '.md'))
+             .pipe(diff())
+             .pipe(diff.reporter({fail: true}));
+});
 
 gulp.task('test:dependencies', () => {
   return gulp.src('package.json')
@@ -40,6 +60,7 @@ gulp.task('test:style', () => {
 gulp.task('test:chrome-os', () => {
   return gulp.src(['test/setup/chrome-os.js',
                    'test/eddystone-tests.js',
+                   'test/eddystone-url-tests.js',
                    'eddystone-advertising.js'])
              .pipe(concat('chrome-os-tests.js'))
              .pipe(gulp.dest('./temp/'))

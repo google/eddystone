@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "iojs --harmony_arrow_functions `which gulp` test"
+    "test": "iojs --harmony_arrow_functions `which gulp` test",
+    "generate-docs": "iojs --harmony_arrow_functions `which gulp` docs"
   },
   "repository": {
     "type": "git",
@@ -37,9 +38,13 @@
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-david": "^0.2.3",
+    "gulp-diff": "^0.3.1",
+    "gulp-jsdoc-to-markdown": "^1.1.1",
     "gulp-jshint": "^1.11.2",
     "gulp-mocha": "^2.1.3",
+    "gulp-rename": "^1.2.2",
     "jshint-stylish": "^2.0.1",
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5",
+    "text-encoding": "^0.5.2"
   }
 }
