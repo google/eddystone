@@ -1,5 +1,25 @@
 (() => {
   'use strict';
+  /**
+     Possible Eddystone types.
+     See: https://github.com/google/eddystone/blob/master/protocol-specification.md
+     @readonly
+     @private
+     @enum {string}
+   */
+  const EddystoneFrameType = {
+    URL: 'url',
+    UID: 'uid',
+    TLM: 'tlm'
+  };
+
+  /**
+     Object that contains the characteristics of the package to adverstise.
+     @typedef {Object} EddystoneAdvertisementOptions
+     @property {EddystoneType} type Type of Eddystone.
+     @property {string} url? The URL to advertise
+     @property {number} txPower? The Tx Power to advertise
+   */
 
   /**
       Assigned UUID for Eddystone Beacons
@@ -182,8 +202,124 @@
   }
 
   class Eddystone {
+    constructor() {
+    }
+  }
+  /**
+     This class wraps the underlying ChromeOS BLE Advertising API.
+     TODO: Add link to API.
+     @private
+     @class EddystoneChromeOS
+   */
+  class EddystoneChromeOS {
+    /**
+       ChromeOS Specific Advertisement
+       @typedef {Object} ChromeOSAdvertisement
+       @private
+       @property {string} type
+       @property {Array} serviceUuids
+       @property {Object} serviceData {uuid: {string}, data: {number[]}}
+     */
+
+    /**
+       Function that registers an Eddystone BLE advertisement.
+       @param {EddystoneAdvertisementOptions} options The characteristics of the
+       advertisement.
+       @returns {Promise} Which `fulfills` with an {EddystoneAdvertisement} if the
+       advertisement was registered successfully, `rejects` with the an `error`
+       otherwise.
+     */
+    static registerAdvertisement(options) {
+      return new Promise((resolve, reject) => {
+        let chrome_adv = EddystoneChromeOS._constructAdvertisement(options);
+
+        chrome.bluetoothLowEnergy.registerAdvertisement(chrome_adv, (advertisement_id) => {
+          if (chrome.runtime.lastError) {
+            reject(new Error(chrome.runtime.lastError.message));
+            return;
+          }
+          resolve(new EddystoneAdvertisement(advertisement_id, options));
+        });
+      });
+    }
+    /**
+       Construct the ChromeOS specific advertisement to register.
+       @params {EddystoneAdvertisementOptions} options The characteristics of the
+       advertisement.
+       @returns {ChromeOSAdvertisement} advertisement
+       @throws {Error} If the frame type is not supported
+       @throws {Error} If the Tx Power value is not in the allowed range. See:
+       https://github.com/google/eddystone/tree/master/eddystone-url#tx-power-level
+       @throws {Error} If the URL Scheme prefix is unsupported. For a list of
+       supported Scheme prefixes see:
+       https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix
+       @throws {Error} If the URL contains an invalid character. For a list of
+       invalid characters see the Note in:
+       https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding
+     */
+    static _constructAdvertisement(options) {
+      if (options.type === EddystoneFrameType.URL) {
+        return {
+          type: 'broadcast',
+          serviceUuids: [EDDYSTONE_UUID],
+          serviceData: [{
+            uuid: EDDYSTONE_UUID,
+            data: EddystoneURL.constructServiceData(options.url, options.txPower)
+          }]
+        };
+      } else {
+        throw new Error('Unsupported Frame Type: ' + options.type);
+      }
+    }
+  }
+
+  /**
+     This is the object that holds the information about the registered BLE
+     Advertisement.
+     @class
+   */
+  class EddystoneAdvertisement {
+    /**
+       @constructs EddystoneAdvertisement
+       @param {number} id Unique between browser restarts
+       @param {EddystoneAdvertisementOptions} options The options used when
+       creating the advertisement.
+       @throws {Error} If type is an unsupported Frame Type.
+     */
+    constructor(id, options) {
+      /**
+         @member EddystoneAdvertisement#id {number} The ID of this advertisment.
+       */
+      this.id = undefined;
+      /**
+         @member EddystoneAdvertisement#type {string} The Eddystone Type
+       */
+      this.type = undefined;
+      /**
+         @member EddystoneAdvertisement#url? {string} URL being advertised.
+         Only present if `type === 'url'`.
+       */
+      this.url = undefined;
+      /**
+         @member EddystoneAdvertisement#txPower? {number} Tx Power included in
+         the advertisement. Only present if `type === 'url'`.
+       */
+      this.txPower = undefined;
+      if (options.type == EddystoneFrameType.URL) {
+        this.id = id;
+        this.type = options.type;
+        this.url = options.url;
+        this.txPower = options.txPower;
+      } else {
+        throw new Error('Unsupported Frame Type');
+      }
+    }
   }
 
   window.eddystone = new Eddystone();
   window.EddystoneURL = EddystoneURL;
+  // TODO: We don't really need EddystoneChromeOS to be global but we need
+  // to test it. Once we add a compiling step we can use gulp-strip-code or
+  // similar to remove testing statements.
+  window.EddystoneChromeOS = EddystoneChromeOS;
 })();
