@@ -58,13 +58,18 @@ gulp.task('test:style', () => {
 
 // TODO: Maybe use browserify instead of concatenating to test.
 gulp.task('test:chrome-os', () => {
-  return gulp.src(['test/setup/chrome-os.js',
-                   'test/eddystone-tests.js',
-                   'test/eddystone-url-tests.js',
-                   'eddystone-advertising.js'])
-             .pipe(concat('chrome-os-tests.js'))
-             .pipe(gulp.dest('./temp/'))
-             .pipe(mocha({reporter: 'spec'}));
+  return gulp.src([
+    // Setup
+    'test/setup/chrome-os.js',
+    // Library
+    'eddystone-advertising.js',
+    // Tests
+    'test/eddystone-tests.js',
+    'test/eddystone-url-tests.js',
+    'test/eddystone-chrome-os-tests.js'
+  ]).pipe(concat('chrome-os-tests.js'))
+    .pipe(gulp.dest('./temp/'))
+    .pipe(mocha({reporter: 'spec'}));
 });
 
 gulp.task('clean', ['test:chrome-os'], cb => {
