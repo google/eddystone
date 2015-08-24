@@ -1,5 +1,9 @@
 ## Classes
 <dl>
+<dt><a href="#Eddystone">Eddystone</a></dt>
+<dd><p>Exposes platform independent functions to register/unregister Eddystone
+     Advertisements.</p>
+</dd>
 <dt><a href="#EddystoneURL">EddystoneURL</a></dt>
 <dd><p>This class provides helper functions that relate to Eddystone-URL.
       <a href="https://github.com/google/eddystone/tree/master/eddystone-url">https://github.com/google/eddystone/tree/master/eddystone-url</a></p>
@@ -15,6 +19,35 @@
 <dd><p>Object that contains the characteristics of the package to adverstise.</p>
 </dd>
 </dl>
+<a name="Eddystone"></a>
+## Eddystone
+Exposes platform independent functions to register/unregister Eddystone
+     Advertisements.
+
+**Kind**: global class  
+
+* [Eddystone](#Eddystone)
+  * [.advertisements](#Eddystone+advertisements) : <code>[Array.&lt;EddystoneAdvertisement&gt;](#EddystoneAdvertisement)</code>
+  * [.registerAdvertisement()](#Eddystone+registerAdvertisement) ⇒ <code>Promise</code>
+
+<a name="Eddystone+advertisements"></a>
+### eddystone.advertisements : <code>[Array.&lt;EddystoneAdvertisement&gt;](#EddystoneAdvertisement)</code>
+Contains all
+         previously registered advertisements.<br>
+**Note:** In a Chrome App, if the event page gets killed users won't
+         be able to unregister the advertisement.
+
+**Kind**: instance property of <code>[Eddystone](#Eddystone)</code>  
+<a name="Eddystone+registerAdvertisement"></a>
+### eddystone.registerAdvertisement() ⇒ <code>Promise</code>
+Function to register an Eddystone BLE advertisement.
+
+**Kind**: instance method of <code>[Eddystone](#Eddystone)</code>  
+**Returns**: <code>Promise</code> - Which `fulfills` with an [EddystoneAdvertisement](#EddystoneAdvertisement)
+       if the advertisement was registered successfully, `rejects` with `error`
+       otherwise.  
+**Params**: <code>[EddystoneAdvertisementOptions](#EddystoneAdvertisementOptions)</code> options The characteristics
+       of the advertised Eddystone  
 <a name="EddystoneURL"></a>
 ## EddystoneURL
 This class provides helper functions that relate to Eddystone-URL.
