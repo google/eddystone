@@ -14,3 +14,4 @@ To date, in this directory you will find the following implementations:
 * [RFduino](RFduino)
 * [Linux (bluez)](linux-url-advertiser)
 * [ARM mbed (Nordic nRF51-dongle, nRF51-DK))](mbed_EddystoneURL_Beacon)
+* [Node.js (node-eddystone-beacon)](https://github.com/don/node-eddystone-beacon)
