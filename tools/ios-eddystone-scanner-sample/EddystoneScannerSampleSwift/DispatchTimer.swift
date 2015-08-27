@@ -67,7 +67,7 @@ class DispatchTimer: NSObject {
   }
 
   func reschedule() {
-    let start = dispatch_time(DISPATCH_TIME_NOW, Int64(self.delay + Double(NSEC_PER_SEC)))
+    let start = dispatch_time(DISPATCH_TIME_NOW, Int64(self.delay * Double(NSEC_PER_SEC)))
 
     // Leeway is 10% of timer delay
     dispatch_source_set_timer(self.source, start, DISPATCH_TIME_FOREVER,
