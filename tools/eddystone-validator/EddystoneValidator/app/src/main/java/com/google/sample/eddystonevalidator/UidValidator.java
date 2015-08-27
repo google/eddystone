@@ -39,7 +39,7 @@ public class UidValidator {
 
     // Tx power should have reasonable values.
     int txPower = (int) serviceData[1];
-    beacon.uidStatus.txPower = String.valueOf(txPower);
+    beacon.uidStatus.txPower = txPower;
     if (txPower < MIN_EXPECTED_TX_POWER || txPower > MAX_EXPECTED_TX_POWER) {
       String err = String
           .format("Expected UID Tx power between %d and %d, got %d", MIN_EXPECTED_TX_POWER,

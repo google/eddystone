@@ -25,7 +25,7 @@ class Beacon {
 
   class UidStatus {
     String uidValue;
-    String txPower;
+    int txPower;
 
     String errTx;
     String errUid;
