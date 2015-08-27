@@ -30,7 +30,7 @@ class ViewController: UIViewController, BeaconScannerDelegate {
     NSLog("FIND: %@", beaconInfo.description)
   }
   func didLoseBeacon(beaconScanner: BeaconScanner, beaconInfo: BeaconInfo) {
-
+    NSLog("LOST: %@", beaconInfo.description)
   }
   func didUpdateBeacon(beaconScanner: BeaconScanner, beaconInfo: BeaconInfo) {
     NSLog("UPDATE: %@", beaconInfo.description)
