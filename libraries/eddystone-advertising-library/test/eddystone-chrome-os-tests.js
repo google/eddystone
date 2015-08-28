@@ -115,4 +115,18 @@ describe('EddystoneChromeOS', () => {
       });
     });
   });
+  describe('unregisterAdvertisement()', () => {
+    // Hooks
+    afterEach(() => cleanChromeMock());
+    it('Unregistering fails', () => {
+      mockUnregisteringFails();
+      return expect(EddystoneChromeOS.unregisterAdvertisement({id: 1}))
+                                     .to.be.rejected;
+    });
+    it('Unregistering succeeds', () => {
+      mockUnregisteringSucceeds();
+      return expect(EddystoneChromeOS.unregisterAdvertisement({id: 1}))
+                                     .to.be.fulfilled;
+    });
+  });
 });

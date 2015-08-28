@@ -28,7 +28,7 @@ Exposes platform independent functions to register/unregister Eddystone
 
 * [Eddystone](#Eddystone)
   * [.advertisements](#Eddystone+advertisements) : <code>[Array.&lt;EddystoneAdvertisement&gt;](#EddystoneAdvertisement)</code>
-  * [.registerAdvertisement()](#Eddystone+registerAdvertisement) ⇒ <code>Promise</code>
+  * [.registerAdvertisement()](#Eddystone+registerAdvertisement) ⇒ <code>[Promise.&lt;EddystoneAdvertisement&gt;](#EddystoneAdvertisement)</code>
 
 <a name="Eddystone+advertisements"></a>
 ### eddystone.advertisements : <code>[Array.&lt;EddystoneAdvertisement&gt;](#EddystoneAdvertisement)</code>
@@ -39,13 +39,13 @@ Contains all
 
 **Kind**: instance property of <code>[Eddystone](#Eddystone)</code>  
 <a name="Eddystone+registerAdvertisement"></a>
-### eddystone.registerAdvertisement() ⇒ <code>Promise</code>
+### eddystone.registerAdvertisement() ⇒ <code>[Promise.&lt;EddystoneAdvertisement&gt;](#EddystoneAdvertisement)</code>
 Function to register an Eddystone BLE advertisement.
 
 **Kind**: instance method of <code>[Eddystone](#Eddystone)</code>  
-**Returns**: <code>Promise</code> - Which `fulfills` with an [EddystoneAdvertisement](#EddystoneAdvertisement)
-       if the advertisement was registered successfully, `rejects` with `error`
-       otherwise.  
+**Returns**: <code>[Promise.&lt;EddystoneAdvertisement&gt;](#EddystoneAdvertisement)</code> - Which `fulfills` with an
+       [EddystoneAdvertisement](#EddystoneAdvertisement) if the advertisement was registered
+       successfully, `rejects` with `Error` otherwise.  
 **Params**: <code>[EddystoneAdvertisementOptions](#EddystoneAdvertisementOptions)</code> options The characteristics
        of the advertised Eddystone  
 <a name="EddystoneURL"></a>
@@ -117,8 +117,9 @@ This is the object that holds the information about the registered BLE
   * [new EddystoneAdvertisement(id, options)](#new_EddystoneAdvertisement_new)
   * [.id](#EddystoneAdvertisement+id) : <code>number</code>
   * [.type](#EddystoneAdvertisement+type) : <code>string</code>
-  * [.url?](#EddystoneAdvertisement+url?) : <code>string</code>
-  * [.txPower?](#EddystoneAdvertisement+txPower?) : <code>number</code>
+  * [.url](#EddystoneAdvertisement+url) : <code>string</code> &#124; <code>undefined</code>
+  * [.txPower](#EddystoneAdvertisement+txPower) : <code>number</code> &#124; <code>undefined</code>
+  * [.unregisterAdvertisement()](#EddystoneAdvertisement+unregisterAdvertisement) ⇒ <code>Promise.&lt;void&gt;</code>
 
 <a name="new_EddystoneAdvertisement_new"></a>
 ### new EddystoneAdvertisement(id, options)
@@ -138,18 +139,27 @@ The ID of this advertisment.
 The Eddystone Type
 
 **Kind**: instance property of <code>[EddystoneAdvertisement](#EddystoneAdvertisement)</code>  
-<a name="EddystoneAdvertisement+url?"></a>
-### eddystoneAdvertisement.url? : <code>string</code>
+<a name="EddystoneAdvertisement+url"></a>
+### eddystoneAdvertisement.url : <code>string</code> &#124; <code>undefined</code>
 URL being advertised.
          Only present if `type === 'url'`.
 
 **Kind**: instance property of <code>[EddystoneAdvertisement](#EddystoneAdvertisement)</code>  
-<a name="EddystoneAdvertisement+txPower?"></a>
-### eddystoneAdvertisement.txPower? : <code>number</code>
+<a name="EddystoneAdvertisement+txPower"></a>
+### eddystoneAdvertisement.txPower : <code>number</code> &#124; <code>undefined</code>
 Tx Power included in
          the advertisement. Only present if `type === 'url'`.
 
 **Kind**: instance property of <code>[EddystoneAdvertisement](#EddystoneAdvertisement)</code>  
+<a name="EddystoneAdvertisement+unregisterAdvertisement"></a>
+### eddystoneAdvertisement.unregisterAdvertisement() ⇒ <code>Promise.&lt;void&gt;</code>
+Unregisters the current advertisement.
+
+**Kind**: instance method of <code>[EddystoneAdvertisement](#EddystoneAdvertisement)</code>  
+**Returns**: <code>Promise.&lt;void&gt;</code> - Which `fulfills` if the advertisement was unregistered
+       successfully, rejects with `Error` otherwise. If the promise rejects,
+       the advertisement may still be broadcasting. The only way to recover may
+       be to reboot your machine.  
 <a name="EddystoneAdvertisementOptions"></a>
 ## EddystoneAdvertisementOptions : <code>Object</code>
 Object that contains the characteristics of the package to adverstise.
@@ -160,6 +170,6 @@ Object that contains the characteristics of the package to adverstise.
 | Name | Type | Description |
 | --- | --- | --- |
 | type | <code>EddystoneType</code> | Type of Eddystone. |
-| url? | <code>string</code> | The URL to advertise |
-| txPower? | <code>number</code> | The Tx Power to advertise |
+| url | <code>string</code> &#124; <code>undefined</code> | The URL to advertise |
+| txPower | <code>number</code> &#124; <code>undefined</code> | The Tx Power to advertise |
 

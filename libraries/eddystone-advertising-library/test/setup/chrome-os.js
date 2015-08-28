@@ -46,6 +46,28 @@ var window = global;
     chrome.bluetoothLowEnergy.registerAdvertisement = register;
   };
 
+  // This method sets up `chrome` mock so that unregistering a BLE advertisement
+  // fails.
+  global.mockUnregisteringFails = function() {
+    _checkCleanChromeMock();
+    _clean = false;
+    let unregister = sinon.stub();
+    unregister.onFirstCall().callsArgAsync(1);
+    chrome.bluetoothLowEnergy.unregisterAdvertisement = unregister;
+
+    chrome.runtime.lastError = {message: 'Failed to unregister.'};
+  };
+
+  // This method sets up `chrome` mock so that unregistering a BLE advertisement
+  // succeeds.
+  global.mockUnregisteringSucceeds = function() {
+    _checkCleanChromeMock();
+    _clean = false;
+    let unregister = sinon.stub();
+    unregister.onFirstCall().callsArgAsync(1);
+    chrome.bluetoothLowEnergy.unregisterAdvertisement = unregister;
+  };
+
   function _checkCleanChromeMock() {
     if (!_clean) {
       throw new Error('Need to clean chrome before starting another test.');

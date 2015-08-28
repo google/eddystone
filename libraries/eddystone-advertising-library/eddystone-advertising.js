@@ -17,8 +17,8 @@
      Object that contains the characteristics of the package to adverstise.
      @typedef {Object} EddystoneAdvertisementOptions
      @property {EddystoneType} type Type of Eddystone.
-     @property {string} url? The URL to advertise
-     @property {number} txPower? The Tx Power to advertise
+     @property {string|undefined} url The URL to advertise
+     @property {number|undefined} txPower The Tx Power to advertise
    */
 
   /**
@@ -106,9 +106,9 @@
        Function to register an Eddystone BLE advertisement.
        @params {EddystoneAdvertisementOptions} options The characteristics
        of the advertised Eddystone
-       @returns {Promise} Which `fulfills` with an {@link EddystoneAdvertisement}
-       if the advertisement was registered successfully, `rejects` with `error`
-       otherwise.
+       @returns {Promise.<EddystoneAdvertisement>} Which `fulfills` with an
+       {@link EddystoneAdvertisement} if the advertisement was registered
+       successfully, `rejects` with `Error` otherwise.
      */
     registerAdvertisement(options) {
       let self = this;
@@ -310,9 +310,9 @@
        Function that registers an Eddystone BLE advertisement.
        @param {EddystoneAdvertisementOptions} options The characteristics of the
        advertisement.
-       @returns {Promise} Which `fulfills` with an {EddystoneAdvertisement} if the
-       advertisement was registered successfully, `rejects` with the an `error`
-       otherwise.
+       @returns {Promise.<EddystoneAdvertisement>} Which `fulfills` with an
+       {EddystoneAdvertisement} if the advertisement was registered
+       successfully, `rejects` with `Error` otherwise.
      */
     static registerAdvertisement(options) {
       return new Promise((resolve, reject) => {
@@ -327,6 +327,26 @@
         });
       });
     }
+
+    /**
+       Function to unregister an advertisement.
+       @param {EddystoneAdvertisement} advertisement The advertisement to
+       unregister.
+       @returns {Promise.<void>} Which `fulfills` if the advertisement was
+       unregistered successfully, `rejects` with `Error` otherwise.
+     */
+    static unregisterAdvertisement(advertisement) {
+      return new Promise((resolve, reject) => {
+        chrome.bluetoothLowEnergy.unregisterAdvertisement(advertisement.id, () => {
+          if (chrome.runtime.lastError) {
+            reject(new Error(chrome.runtime.lastError.message));
+            return;
+          }
+          resolve();
+        });
+      });
+    }
+
     /**
        Construct the ChromeOS specific advertisement to register.
        @params {EddystoneAdvertisementOptions} options The characteristics of the
@@ -381,12 +401,12 @@
        */
       this.type = undefined;
       /**
-         @member EddystoneAdvertisement#url? {string} URL being advertised.
+         @member EddystoneAdvertisement#url {string|undefined} URL being advertised.
          Only present if `type === 'url'`.
        */
       this.url = undefined;
       /**
-         @member EddystoneAdvertisement#txPower? {number} Tx Power included in
+         @member EddystoneAdvertisement#txPower {number|undefined} Tx Power included in
          the advertisement. Only present if `type === 'url'`.
        */
       this.txPower = undefined;
@@ -399,6 +419,17 @@
         throw new Error('Unsupported Frame Type');
       }
     }
+
+    /**
+       Unregisters the current advertisement.
+       @returns {Promise.<void>} Which `fulfills` if the advertisement was unregistered
+       successfully, rejects with `Error` otherwise. If the promise rejects,
+       the advertisement may still be broadcasting. The only way to recover may
+       be to reboot your machine.
+     */
+    unregisterAdvertisement() {
+      return Eddystone._getPlatform().unregisterAdvertisement(this);
+    }
   }
 
   window.eddystone = new Eddystone();
@@ -408,4 +439,5 @@
   // similar to remove testing statements.
   window.Eddystone = Eddystone;
   window.EddystoneChromeOS = EddystoneChromeOS;
+  window.EddystoneAdvertisement = EddystoneAdvertisement;
 })();
