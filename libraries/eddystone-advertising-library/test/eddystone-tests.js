@@ -137,4 +137,25 @@ describe('Eddystone', () => {
                              .to.be.rejectedWith(error);
     });
   });
+  describe('unregister()', () => {
+    'use strict';
+    // Hooks
+    afterEach(() => {
+      if (eddystone._platform.unregisterAdvertisement.restore) {
+        eddystone._platform.unregisterAdvertisement.restore();
+      }
+      eddystone.advertisements = [];
+    });
+
+    it('Fail to unregister advertisement', () => {
+      let advertisement = new EddystoneAdvertisement(100 /* id */, {
+        type: 'url',
+        url: 'https://www.example.com/',
+        txPower: -10
+      });
+      let error = new Error('Failed');
+      sinon.stub(eddystone._platform, 'unregisterAdvertisement').returns(Promise.reject(error));
+      return expect(advertisement.unregisterAdvertisement()).to.be.rejectedWith(error);
+    });
+  });
 });
