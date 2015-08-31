@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<iarUserArgVars>
+  <group active="true" name="CC26xx TI-RTOS">
+    <variable>
+      <name>TI_BLE_SDK</name>
+      <value>C:\ti\simplelink\ble_cc26xx_2_01_00_44423</value>
+    </variable>
+    <variable>
+      <name>TI_RTOS_DRIVERS_BASE</name>
+      <value>C:\ti\tirtos_simplelink_2_13_00_06\packages</value>
+    </variable>
+    <variable>
+      <name>CC26XXWARE</name>
+      <value>C:\ti\tirtos_simplelink_2_13_00_06\products\cc26xxware_2_21_01_15600</value>
+    </variable>
+    <variable>
+      <name>XDCROOT</name>
+      <value>C:\ti\xdctools_3_31_01_33_core</value>
+    </variable>
+    <variable>
+      <name>XDCPATH</name>
+      <value>C:\ti\tirtos_simplelink_2_13_00_06\products\bios_6_42_00_08\packages</value>
+    </variable>
+    <variable>
+      <name>BOUNDARY</name>
+      <value>C:\Program Files (x86)\Texas Instruments\Boundary</value>
+    </variable>
+  </group>
+</iarUserArgVars>
+

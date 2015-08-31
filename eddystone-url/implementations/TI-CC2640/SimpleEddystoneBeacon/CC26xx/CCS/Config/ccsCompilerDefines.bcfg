@@ -1,0 +1,6 @@
+/* WARNING - Do not modify this line. Modifications below this line can be overwritten by the Boundary tool */
+/* Boundary auto gen parser version 1.0.3 */
+/* CCS Compiler Command Line Options */
+/* Auto-generated compiler option(s) */
+
+--define=ICALL_STACK0_ADDR=0x0000E000
