@@ -4,8 +4,10 @@
   /**
      Possible Eddystone frame types.
      @see {@link https://github.com/google/eddystone/blob/master/protocol-specification.md|Protocol Specification}
+     @see {@link https://github.com/google/eddystone/tree/master/eddystone-url|Eddystone-URL}
+     @see {@link https://github.com/google/eddystone/tree/master/eddystone-uid|Eddystone-UID}
+     @see {@link https://github.com/google/eddystone/tree/master/eddystone-tlm|Eddystone-TLM}
      @readonly
-     @private
      @enum {string}
    */
   const EddystoneFrameType = {
@@ -23,8 +25,7 @@
   const EDDYSTONE_UUID = 'FEAA';
 
   /**
-     This is the object that holds the information about the registered BLE
-     Advertisement.
+     Represents the Advertisement being broadcasted.
      @class
    */
   class EddystoneAdvertisement {
@@ -73,10 +74,11 @@
 
     /**
        Unregisters the current advertisement.
-       @returns {Promise.<void>} Which `fulfills` if the advertisement was unregistered
-       successfully, rejects with `Error` otherwise. If the promise rejects,
-       the advertisement may still be broadcasting. The only way to recover may
-       be to reboot your machine.
+       @fulfill {void} - If the advertisement was unregistered successfully.
+       @reject {Error} - If the advertisement failed to be registered. If
+       the promise rejects the advertisment may still be broadcasting. The only
+       way to recover may be to reboot your machine.
+       @returns {Promise.<void>}
      */
     unregisterAdvertisement() {
       return this._platform.unregisterAdvertisement(this);

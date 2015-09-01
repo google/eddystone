@@ -24,14 +24,15 @@
        Function that registers an Eddystone BLE advertisement.
        @param {EddystoneAdvertisementOptions} options The characteristics of the
        advertisement.
-       @returns {Promise.<EddystoneAdvertisement>} Which `fulfills` with an {EddystoneAdvertisement} if the
-       advertisement was registered successfully, `rejects` with `Error`
-       otherwise.
+       @fulfill {EddystoneAdvertisement} - If the advertisement was registered
+       successfully.
+       @reject {Error} - If the advertisement failed to be regsitered.
+       @returns {Promise.<EddystoneAdvertisement>}
      */
     static registerAdvertisement(options) {
       return new Promise((resolve, reject) => {
         let chrome_adv = EddystoneChromeOS._constructAdvertisement(options);
-        
+
         chrome.bluetoothLowEnergy.registerAdvertisement(chrome_adv, (advertisement_id) => {
           if (chrome.runtime.lastError) {
             reject(new Error(chrome.runtime.lastError.message));
@@ -41,13 +42,14 @@
         });
       });
     }
-    
+
     /**
        Function to unregister an advertisement.
        @param {EddystoneAdvertisement} advertisement The advertisement to
        unregister.
-       @returns {Promise.<void>} Which `fulfills` if the advertisement was unregistered
-       successfully, `rejects` with `Error` otherwise.
+       @fulfill {void} - If the advertisment was unregistered successfully.
+       @reject {Error} - If the advertisment failed to be unregistered.
+       @returns {Promise.<void>}
      */
     static unregisterAdvertisement(advertisement) {
       return new Promise((resolve, reject) => {
@@ -60,7 +62,7 @@
         });
       });
     }
-    
+
     /**
        Construct the ChromeOS specific advertisement to register.
        @params {EddystoneAdvertisementOptions} options The characteristics of the

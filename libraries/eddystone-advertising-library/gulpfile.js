@@ -8,6 +8,7 @@ var mocha = require('gulp-mocha');
 var jshint = require('gulp-jshint');
 var david = require('gulp-david');
 var gulpJsdoc2md = require('gulp-jsdoc-to-markdown');
+var fs = require('fs');
 var rename = require('gulp-rename');
 var diff = require('gulp-diff');
 
@@ -80,11 +81,11 @@ gulp.task('clean', ['test:chrome-os'], cb => {
 });
 
 function getJsDocPipe() {
-  // TODO: Figure out how templates work so that we can include
-  // the documentation directly in the README.md.
   return gulp.src('lib/*.js')
-             .pipe(concat('eddystone-advertising.md'))
-             .pipe(gulpJsdoc2md());
+             .pipe(concat('README.md'))
+             .pipe(gulpJsdoc2md({
+               template: fs.readFileSync('jsdoc2md/README.hbs', 'utf-8')
+             }));
 }
 
 function getBrowserifyPipe() {
