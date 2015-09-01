@@ -11,6 +11,11 @@ var gulpJsdoc2md = require('gulp-jsdoc-to-markdown');
 var rename = require('gulp-rename');
 var diff = require('gulp-diff');
 
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var uglify = require('gulp-uglify');
+
 var del = require('del');
 // jshint ignore:end
 
@@ -18,28 +23,36 @@ gulp.task('default', () => {
 });
 
 gulp.task('docs', () => {
-  // TODO: Figure out how templates work so that we can include
-  // the documentation directly in the README.md.
-  return gulp.src('eddystone-advertising.js')
-             .pipe(gulpJsdoc2md())
-             .pipe(rename(path => path.extname = '.md'))
-             .pipe(gulp.dest(''));
+  return getJsDocPipe()
+    .pipe(gulp.dest(''));
 });
 
 gulp.task('test', [
   'test:docs',
   'test:dependencies',
+  'test:browserify',
   'test:style',
-  'test:chrome-os',
-  'clean']
+  'test:unit']
 );
 
+gulp.task('browserify', () => {
+
+  return getBrowserifyPipe()
+    .pipe(gulp.dest(''));
+});
+
+gulp.task('test:browserify', () => {
+  'use strict';
+
+  return getBrowserifyPipe()
+    .pipe(diff())
+    .pipe(diff.reporter({fail: true}));
+});
+
 gulp.task('test:docs', () => {
-  return gulp.src('eddystone-advertising.js')
-             .pipe(gulpJsdoc2md())
-             .pipe(rename(path => path.extname = '.md'))
-             .pipe(diff())
-             .pipe(diff.reporter({fail: true}));
+  return getJsDocPipe()
+    .pipe(diff('.'))
+    .pipe(diff.reporter({fail: true}));
 });
 
 gulp.task('test:dependencies', () => {
@@ -49,29 +62,41 @@ gulp.task('test:dependencies', () => {
 });
 
 gulp.task('test:style', () => {
-  return gulp.src(['eddystone-advertising.js', 'gulpfile.js','test/*.js',
-                   'test/**/*.js'])
+  return gulp.src(['gulpfile.js',
+                   'lib/*.js',
+                   'test/unit/*.js'])
              .pipe(jshint())
              .pipe(jshint.reporter('jshint-stylish'))
              .pipe(jshint.reporter('fail'));
 });
 
-// TODO: Maybe use browserify instead of concatenating to test.
-gulp.task('test:chrome-os', () => {
-  return gulp.src([
-    // Setup
-    'test/setup/chrome-os.js',
-    // Library
-    'eddystone-advertising.js',
-    // Tests
-    'test/eddystone-tests.js',
-    'test/eddystone-url-tests.js',
-    'test/eddystone-chrome-os-tests.js'
-  ]).pipe(concat('chrome-os-tests.js'))
-    .pipe(gulp.dest('./temp/'))
-    .pipe(mocha({reporter: 'spec'}));
+gulp.task('test:unit', () => {
+  return gulp.src('test/unit/*.js', {read: false})
+             .pipe(mocha({reporter: 'spec'}));
 });
 
 gulp.task('clean', ['test:chrome-os'], cb => {
   del('temp/', cb);
 });
+
+function getJsDocPipe() {
+  // TODO: Figure out how templates work so that we can include
+  // the documentation directly in the README.md.
+  return gulp.src('lib/*.js')
+             .pipe(concat('eddystone-advertising.md'))
+             .pipe(gulpJsdoc2md());
+}
+
+function getBrowserifyPipe() {
+  'use strict';
+
+  return browserify('./lib/exports.js', {
+    // Ignore external modules, in this case TextEncoder.
+    bundleExternal: false
+  }).bundle()
+    .pipe(source('eddystone-advertising.js'))
+    .pipe(buffer());
+    // Uncomment once uglify supports arrow functions:
+    // https://github.com/mishoo/UglifyJS2/issues/448
+    /* .pipe(uglify()); */
+}
