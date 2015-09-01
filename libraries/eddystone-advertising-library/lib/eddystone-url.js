@@ -10,7 +10,7 @@
 
   /**
      Eddystone-URL Frame type.
-     See: https://github.com/google/eddystone/tree/master/eddystone-url#frame-specification
+     @see {@link https://github.com/google/eddystone/tree/master/eddystone-url#frame-specification|Eddystone-URL} 
      @private
      @constant {number}
      @default
@@ -19,7 +19,7 @@
 
   /**
      These schemes are used to encode/decode a URL Scheme prefix.
-     See: https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix
+     @see {@link https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix|URL Scheme Prefix}
      @private
      @constant {string[]}
      @default
@@ -33,7 +33,7 @@
 
   /**
      These codes are used to encode/decode a URL.
-     See: https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding
+     @see {@link https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding|HTTP URL Encoding}
      @private
      @constant {string[]}
      @default
@@ -58,31 +58,31 @@
   // The Eddystone-URL spec says to use 'us-ascii' encoding but not all
   // browsers support it, so we use 'utf-8' which is a super set of
   // 'us-ascii' and wildly supported. We later check the encoded characters
-  // are in the range allowed by the Eddystone-URL Spec:
+  // are in the range allowed by the Eddystone-URL Spec.
   // https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding
   let encoder = new TextEncoder('utf-8');
 
   /**
      This class provides helper functions that relate to Eddystone-URL.
-     https://github.com/google/eddystone/tree/master/eddystone-url
+     @see {@link https://github.com/google/eddystone/tree/master/eddystone-url|Eddystone-URL}
      @class
    */
   class EddystoneURL {
     /**
        Constructs a valid Eddystone-URL service data from a URL and a Tx Power
-       value. See:
-       https://github.com/google/eddystone/tree/master/eddystone-url#frame-specification
+       value.
+       @see {@link https://github.com/google/eddystone/tree/master/eddystone-url#frame-specification|URL Frame Specification}
        @param {string} url The URL to use in the service data.
        @param {number} txPower The Tx Power to use in the service data.
        @returns {number[]} The service data.
-       @throws {Error} If the Tx Power value is not in the allowed range. See:
-       https://github.com/google/eddystone/tree/master/eddystone-url#tx-power-level
+       @throws {Error} If the Tx Power value is not in the allowed range. See
+       {@link https://github.com/google/eddystone/tree/master/eddystone-url#tx-power-level|Tx Power Level}.
        @throws {Error} If the URL Scheme prefix is unsupported. For a list of
-       supported Scheme prefixes see:
-       https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix
+       supported Scheme prefixes see
+       {@link https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix|URL Scheme Prefix}
        @throws {Error} If the URL contains an invalid character. For a list of
-       invalid characters see the Note in:
-       https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding
+       invalid characters see the Note in
+       {@link https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding|HTTP URL Encoding}
      */
     static constructServiceData(url, txPower) {
       // Check that it's a valid Tx Power
@@ -93,11 +93,11 @@
       Array.prototype.push.apply(base_frame, EddystoneURL.encodeURL(url));
       return base_frame;
     }
-    
+
     /**
        Encodes the given string using the encoding defined in the Eddystone-URL
-       Spec:
-       https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url
+       Spec.
+       @see {@link https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url|Eddystone-URL}
        @param {string} url The url to encode.
        @returns {number[]} The encoded url.
        @throws {Error} If the URL Scheme prefix is unsupported. For a list of
@@ -109,12 +109,12 @@
      */
     static encodeURL(url) {
       let encoded_url = [];
-      
+
       let scheme = EddystoneURL._encodeURLScheme(url);
       encoded_url.push(scheme.encoded);
-      
+
       let position = scheme.length;
-      
+
       while (position < url.length) {
         let encoded_fragment = EddystoneURL._encodeURLFragment(url,
                                                                position);
@@ -123,10 +123,10 @@
       }
       return encoded_url;
     }
-    
+
     /**
-       Encodes the URL scheme of an URL. See:
-       https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix
+       Encodes the URL scheme of an URL.
+       @see {@link https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix|URL Scheme Prefix}
        @private
        @param {string} url
        @returns {Object} {encoded: number, length: number}. `encoded`: value after encoding, `length`: length before encoding.
@@ -144,7 +144,7 @@
       }
       throw new Error('URL Scheme not supported.');
     }
-    
+
     /**
        This functions finds the next substring that can be encoded from the
        give starting_position.
@@ -153,8 +153,7 @@
        @param {number} starting_position The position to begin looking for a substring to encode.
        @return {Object} {encoded: number, realLength: number}. `encoded`: value after encoding, `realLength`: length before encoding.
        @throws {Error} If the URL contains a invalid character. For a list of
-       invalid characters see the Note in:
-       https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding
+       invalid characters see the Note in {@link https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding| HTTP URL Encoding}
      */
     static _encodeURLFragment(url, starting_position) {
       for (let i = 0; i < URL_CODES.length; i++) {

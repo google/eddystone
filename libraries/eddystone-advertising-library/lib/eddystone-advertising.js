@@ -4,9 +4,10 @@
   let EddystoneFrameType = require('./eddystone-advertisement.js').EddystoneFrameType;
 
   /**
-     Object that contains the characteristics of the package to adverstise.
+     Object that contains the characteristics of the package to advertise.
      @typedef {Object} EddystoneAdvertisementOptions
-     @property {EddystoneType} type Type of Eddystone.
+     @property {EddystoneFrameType} type Type of Eddystone. For now only `'url'` is
+     supported.
      @property {string|undefined} url The URL to advertise
      @property {number|undefined} txPower The Tx Power to advertise
    */
@@ -23,9 +24,9 @@
     constructor() {
       this._platform = platform();
       /**
-         @member Eddystone#advertisements {EddystoneAdvertisement[]} Contains all
-         previously registered advertisements.<br>
-       ***Note:** In a Chrome App, if the event page gets killed users won't
+         @member Eddystone#advertisements {EddystoneAdvertisement[]} Contains
+         all previously registered advertisements.<br>
+         ***Note:** In a Chrome App, if the event page gets killed users won't
          be able to unregister the advertisement.
        */
       this.advertisements = [];
@@ -33,10 +34,11 @@
     /**
        Function to register an Eddystone BLE advertisement.
        @params {EddystoneAdvertisementOptions} options The characteristics
-       of the advertised Eddystone
-       @returns {Promise.<EddystoneAdvertisement>} Which `fulfills` with an
-       {@link EddystoneAdvertisement} if the advertisement was registered
-       successfully, `rejects` with `Error` otherwise.
+       of the advertised Eddystone.
+       @fulfill {EddystoneAdvertisement} - If the advertisement was registered
+       successfully.
+       @reject {Error} - If the advertisement failed to be registered.
+       @returns {Promise.<EddystoneAdvertisement>}
      */
     registerAdvertisement(options) {
       let self = this;

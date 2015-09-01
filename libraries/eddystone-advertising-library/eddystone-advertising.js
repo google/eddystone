@@ -5,8 +5,10 @@
   /**
      Possible Eddystone frame types.
      @see {@link https://github.com/google/eddystone/blob/master/protocol-specification.md|Protocol Specification}
+     @see {@link https://github.com/google/eddystone/tree/master/eddystone-url|Eddystone-URL}
+     @see {@link https://github.com/google/eddystone/tree/master/eddystone-uid|Eddystone-UID}
+     @see {@link https://github.com/google/eddystone/tree/master/eddystone-tlm|Eddystone-TLM}
      @readonly
-     @private
      @enum {string}
    */
   const EddystoneFrameType = {
@@ -24,8 +26,7 @@
   const EDDYSTONE_UUID = 'FEAA';
 
   /**
-     This is the object that holds the information about the registered BLE
-     Advertisement.
+     Represents the Advertisement being broadcasted.
      @class
    */
   class EddystoneAdvertisement {
@@ -74,10 +75,11 @@
 
     /**
        Unregisters the current advertisement.
-       @returns {Promise.<void>} Which `fulfills` if the advertisement was unregistered
-       successfully, rejects with `Error` otherwise. If the promise rejects,
-       the advertisement may still be broadcasting. The only way to recover may
-       be to reboot your machine.
+       @fulfill {void} - If the advertisement was unregistered successfully.
+       @reject {Error} - If the advertisement failed to be registered. If
+       the promise rejects the advertisment may still be broadcasting. The only
+       way to recover may be to reboot your machine.
+       @returns {Promise.<void>}
      */
     unregisterAdvertisement() {
       return this._platform.unregisterAdvertisement(this);
@@ -95,9 +97,10 @@
   let EddystoneFrameType = require('./eddystone-advertisement.js').EddystoneFrameType;
 
   /**
-     Object that contains the characteristics of the package to adverstise.
+     Object that contains the characteristics of the package to advertise.
      @typedef {Object} EddystoneAdvertisementOptions
-     @property {EddystoneType} type Type of Eddystone.
+     @property {EddystoneFrameType} type Type of Eddystone. For now only `'url'` is
+     supported.
      @property {string|undefined} url The URL to advertise
      @property {number|undefined} txPower The Tx Power to advertise
    */
@@ -114,9 +117,9 @@
     constructor() {
       this._platform = platform();
       /**
-         @member Eddystone#advertisements {EddystoneAdvertisement[]} Contains all
-         previously registered advertisements.<br>
-       ***Note:** In a Chrome App, if the event page gets killed users won't
+         @member Eddystone#advertisements {EddystoneAdvertisement[]} Contains
+         all previously registered advertisements.<br>
+         ***Note:** In a Chrome App, if the event page gets killed users won't
          be able to unregister the advertisement.
        */
       this.advertisements = [];
@@ -124,10 +127,11 @@
     /**
        Function to register an Eddystone BLE advertisement.
        @params {EddystoneAdvertisementOptions} options The characteristics
-       of the advertised Eddystone
-       @returns {Promise.<EddystoneAdvertisement>} Which `fulfills` with an
-       {@link EddystoneAdvertisement} if the advertisement was registered
-       successfully, `rejects` with `Error` otherwise.
+       of the advertised Eddystone.
+       @fulfill {EddystoneAdvertisement} - If the advertisement was registered
+       successfully.
+       @reject {Error} - If the advertisement failed to be registered.
+       @returns {Promise.<EddystoneAdvertisement>}
      */
     registerAdvertisement(options) {
       let self = this;
@@ -208,14 +212,15 @@
        Function that registers an Eddystone BLE advertisement.
        @param {EddystoneAdvertisementOptions} options The characteristics of the
        advertisement.
-       @returns {Promise.<EddystoneAdvertisement>} Which `fulfills` with an {EddystoneAdvertisement} if the
-       advertisement was registered successfully, `rejects` with `Error`
-       otherwise.
+       @fulfill {EddystoneAdvertisement} - If the advertisement was registered
+       successfully.
+       @reject {Error} - If the advertisement failed to be regsitered.
+       @returns {Promise.<EddystoneAdvertisement>}
      */
     static registerAdvertisement(options) {
       return new Promise((resolve, reject) => {
         let chrome_adv = EddystoneChromeOS._constructAdvertisement(options);
-        
+
         chrome.bluetoothLowEnergy.registerAdvertisement(chrome_adv, (advertisement_id) => {
           if (chrome.runtime.lastError) {
             reject(new Error(chrome.runtime.lastError.message));
@@ -225,13 +230,14 @@
         });
       });
     }
-    
+
     /**
        Function to unregister an advertisement.
        @param {EddystoneAdvertisement} advertisement The advertisement to
        unregister.
-       @returns {Promise.<void>} Which `fulfills` if the advertisement was unregistered
-       successfully, `rejects` with `Error` otherwise.
+       @fulfill {void} - If the advertisment was unregistered successfully.
+       @reject {Error} - If the advertisment failed to be unregistered.
+       @returns {Promise.<void>}
      */
     static unregisterAdvertisement(advertisement) {
       return new Promise((resolve, reject) => {
@@ -244,7 +250,7 @@
         });
       });
     }
-    
+
     /**
        Construct the ChromeOS specific advertisement to register.
        @params {EddystoneAdvertisementOptions} options The characteristics of the
@@ -292,7 +298,7 @@
 
   /**
      Eddystone-URL Frame type.
-     See: https://github.com/google/eddystone/tree/master/eddystone-url#frame-specification
+     @see {@link https://github.com/google/eddystone/tree/master/eddystone-url#frame-specification|Eddystone-URL} 
      @private
      @constant {number}
      @default
@@ -301,7 +307,7 @@
 
   /**
      These schemes are used to encode/decode a URL Scheme prefix.
-     See: https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix
+     @see {@link https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix|URL Scheme Prefix}
      @private
      @constant {string[]}
      @default
@@ -315,7 +321,7 @@
 
   /**
      These codes are used to encode/decode a URL.
-     See: https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding
+     @see {@link https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding|HTTP URL Encoding}
      @private
      @constant {string[]}
      @default
@@ -340,31 +346,31 @@
   // The Eddystone-URL spec says to use 'us-ascii' encoding but not all
   // browsers support it, so we use 'utf-8' which is a super set of
   // 'us-ascii' and wildly supported. We later check the encoded characters
-  // are in the range allowed by the Eddystone-URL Spec:
+  // are in the range allowed by the Eddystone-URL Spec.
   // https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding
   let encoder = new TextEncoder('utf-8');
 
   /**
      This class provides helper functions that relate to Eddystone-URL.
-     https://github.com/google/eddystone/tree/master/eddystone-url
+     @see {@link https://github.com/google/eddystone/tree/master/eddystone-url|Eddystone-URL}
      @class
    */
   class EddystoneURL {
     /**
        Constructs a valid Eddystone-URL service data from a URL and a Tx Power
-       value. See:
-       https://github.com/google/eddystone/tree/master/eddystone-url#frame-specification
+       value.
+       @see {@link https://github.com/google/eddystone/tree/master/eddystone-url#frame-specification|URL Frame Specification}
        @param {string} url The URL to use in the service data.
        @param {number} txPower The Tx Power to use in the service data.
        @returns {number[]} The service data.
-       @throws {Error} If the Tx Power value is not in the allowed range. See:
-       https://github.com/google/eddystone/tree/master/eddystone-url#tx-power-level
+       @throws {Error} If the Tx Power value is not in the allowed range. See
+       {@link https://github.com/google/eddystone/tree/master/eddystone-url#tx-power-level|Tx Power Level}.
        @throws {Error} If the URL Scheme prefix is unsupported. For a list of
-       supported Scheme prefixes see:
-       https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix
+       supported Scheme prefixes see
+       {@link https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix|URL Scheme Prefix}
        @throws {Error} If the URL contains an invalid character. For a list of
-       invalid characters see the Note in:
-       https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding
+       invalid characters see the Note in
+       {@link https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding|HTTP URL Encoding}
      */
     static constructServiceData(url, txPower) {
       // Check that it's a valid Tx Power
@@ -375,11 +381,11 @@
       Array.prototype.push.apply(base_frame, EddystoneURL.encodeURL(url));
       return base_frame;
     }
-    
+
     /**
        Encodes the given string using the encoding defined in the Eddystone-URL
-       Spec:
-       https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url
+       Spec.
+       @see {@link https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url|Eddystone-URL}
        @param {string} url The url to encode.
        @returns {number[]} The encoded url.
        @throws {Error} If the URL Scheme prefix is unsupported. For a list of
@@ -391,12 +397,12 @@
      */
     static encodeURL(url) {
       let encoded_url = [];
-      
+
       let scheme = EddystoneURL._encodeURLScheme(url);
       encoded_url.push(scheme.encoded);
-      
+
       let position = scheme.length;
-      
+
       while (position < url.length) {
         let encoded_fragment = EddystoneURL._encodeURLFragment(url,
                                                                position);
@@ -405,10 +411,10 @@
       }
       return encoded_url;
     }
-    
+
     /**
-       Encodes the URL scheme of an URL. See:
-       https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix
+       Encodes the URL scheme of an URL.
+       @see {@link https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix|URL Scheme Prefix}
        @private
        @param {string} url
        @returns {Object} {encoded: number, length: number}. `encoded`: value after encoding, `length`: length before encoding.
@@ -426,7 +432,7 @@
       }
       throw new Error('URL Scheme not supported.');
     }
-    
+
     /**
        This functions finds the next substring that can be encoded from the
        give starting_position.
@@ -435,8 +441,7 @@
        @param {number} starting_position The position to begin looking for a substring to encode.
        @return {Object} {encoded: number, realLength: number}. `encoded`: value after encoding, `realLength`: length before encoding.
        @throws {Error} If the URL contains a invalid character. For a list of
-       invalid characters see the Note in:
-       https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding
+       invalid characters see the Note in {@link https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding| HTTP URL Encoding}
      */
     static _encodeURLFragment(url, starting_position) {
       for (let i = 0; i < URL_CODES.length; i++) {
