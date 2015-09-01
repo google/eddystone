@@ -1,5 +1,3 @@
-[CC2640 Bluetooth low energy Software Developer's Guide](www.ti.com/litv/pdf/swru393)# Texas Instruments CC2640 Eddystone Beacon Sample Application
-
 ## Setup for TI SimpleLink Bluetooth Smart Development Environment
 * Register for a myTI user account at www.ti.com. This is needed to obtain TI SDKs and tools.
 * Download [CC2640 Bluetooth low energy Software Developer's Guide](www.ti.com/litv/pdf/swru393).
@@ -14,6 +12,7 @@
 * The default install directory of the BLE-Stack 2.1 is C:\ti\simplelink\ble_cc26xx_2_01_00_44423.
   If it is installed in a different path, the value of TI_BLE_SDK variable should be changed accordingly. With CCS, TI_BLE_SDK is found at Properties->Resource->Linked Resources->Path Variables when SimpleEddystoneBeacon project is opened. For IAR, TI_BLE_SDK is found in SimpleEddystoneBeacon.custom_argvars.
 * The project directory can be copied into c:\ti\simplelink\ble_cc26xx_2_01_00_44423\Projects\ble\.
+* SensorTag configurations are combined with OAD as well. Before building SensorTag configurations, read *CC2640 BLE OAD User's Guide*, especially Chapter 9 carefully. *CC2640 BLE OAD User's Guide* can be found at C:\ti\simplelink\ble_cc26xx_2_01_00_44423\Documents.
 
 ## Operations and Usages
 * The system will start with UID frame advertising.
