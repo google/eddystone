@@ -1,7 +1,7 @@
 {
   "name": "eddystone-advertising-library",
   "version": "0.3",
-  "homepage": "https://github.com/google/eddystone/tree/master/libraries/eddystone-advertising-library",
+  "homepage": "https://github.com/google/eddystone/tree/master/libraries/javascript/eddystone-advertising",
   "authors": [
     "Giovanni Ortuño Urquidi <gd.ortuno@gmail.com>",
     "Jeffrey Yasskin <jyasskin@chromium.org>"

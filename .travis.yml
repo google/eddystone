@@ -2,4 +2,4 @@ language: node_js
 node_js:
   - "iojs"
 before_install:
-  - cd libraries/eddystone-advertising-library
+  - cd libraries/javascript/eddystone-advertising

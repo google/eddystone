@@ -31,7 +31,7 @@
   "bugs": {
     "url": "https://github.com/google/eddystone/issues"
   },
-  "homepage": "https://github.com/google/eddystone/tree/master/libraries/eddystone-advertising-library#readme",
+  "homepage": "https://github.com/google/eddystone/tree/master/libraries/javascript/eddystone-advertising#readme",
   "devDependencies": {
     "bower": "^1.4.1",
     "browserify": "^11.0.1",
