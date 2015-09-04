@@ -1,0 +1,7 @@
+/* WARNING - Do not modify this line. Modifications below this line can be overwritten by the Boundary tool */
+/* Boundary auto gen parser version 1.0.3 */
+/* IAR Linker Command Line Options */
+/* Auto-generated linker option(s) */
+
+--config_def ICALL_STACK0_ADDR=0x0000F000
+--config_def ICALL_RAM0_ADDR=0x200043E4

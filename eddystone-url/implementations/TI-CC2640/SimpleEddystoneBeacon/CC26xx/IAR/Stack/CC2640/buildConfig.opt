@@ -1,0 +1,152 @@
+/**************************************************************************************************
+    Filename:       buildConfigSrc.opt
+
+    Description:    This file contains the Bluetooth Low Energy (BLE) build
+                    config options. 
+
+* Copyright (c) 2015, Texas Instruments Incorporated
+* All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions
+* are met:
+*
+* *  Redistributions of source code must retain the above copyright
+*    notice, this list of conditions and the following disclaimer.
+*
+* *  Redistributions in binary form must reproduce the above copyright
+*    notice, this list of conditions and the following disclaimer in the
+*    documentation and/or other materials provided with the distribution.
+*
+* *  Neither the name of Texas Instruments Incorporated nor the names of
+*    its contributors may be used to endorse or promote products derived
+*    from this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+* THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+* PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+* CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+* EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+* PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+* OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+* OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+**************************************************************************************************/
+
+/*
+    The following is a list of all possible build defines and corresponding options
+    that can be set for each define:
+
+    GATT_DB_OFF_CHIP        - Indicates that the GATT database is maintained off the chip on the 
+                            Application Processor (AP).
+
+    GAP_PRIVACY             - Applicable to the Peripheral Privacy feature only.
+    GAP_PRIVACY_RECONNECT   - The Peripheral Privacy Flag attribute is included in the GATT database 
+                            when either of GAP_PRIVACY or GAP_PRIVACY_RECONNECT is defined.
+                            - The Reconnection Address attribute is included in the GATT database 
+                            when GAP_PRIVACY_RECONNECT is defined.
+
+    GAP_BOND_MGR            - Used to include the Bond Manager
+
+    L2CAP_CO_CHANNELS       - Used to include the L2CAP Connection Oriented Channel support
+
+    GATT_NO_SERVICE_CHANGED - Used to exclude service changed characteristic from GATT Service
+                            Note: Either L2CAP_CO_CHANNELS or GATT_NO_SERVICE_CHANGED must be defined
+                            exclusively for any project.
+    
+    HOST_CONFIG             (BLE Host Build Configurations) Possible Options:
+        PERIPHERAL_CFG      - Used to include the GAP Peripheral Role support
+        CENTRAL_CFG         - Used to include the GAP Central Role support 
+        OBSERVER_CFG        - Used to include the GAP Observer Role support 
+        BROADCASTER_CFG     - Used to include the GAP Broadcaster Role support 
+
+    HCI_TL_FULL             - All supported HCI commands are available via the Tranport Layer's NPI. 
+                            - Intended for NP solution.
+    HCI_TL_PTM              - Only those HCI commands needed for Production Test Mode are available 
+                            via the Transport Layer's NPI
+                            - Intended for SOC solutions where, during production, accesss is temporarily
+                            needed (e.g. for PHY testing using Direct Test Mode, etc.).
+    HCI_TL_NONE             - No supported HCI commands are available via the Transport Layer's NPI.
+                            - Intended for SOC solutions.
+
+    CTRL_V41_CONFIG         (BLE v4.1 Features) Possible Options:
+        PING_CFG            - Feature that was added to the Controller to ready it for Secure Connections.
+                            It ensures connection authentication is maintained
+        SLV_FEAT_EXCHG_CFG  - Feature that allows the Slave to initiate a formerly prohibited feature 
+                            exchange control procedure
+        CONN_PARAM_REQ_CFG  - LL Topology feature that allows the Master or Slave to initiate a connection 
+                            parameter control procedure used to exchange and negotiate not only a change in 
+                            connection parameters, but offset adjustments and connection interval 
+                            periodicities as well.
+        MST_SLV_CFG         - Feature that allows a device to assume both the Master and Slave connection role
+                            at the same time in support of more complicated topologies that can be leveraged 
+                            by applications and future features, such as Mesh.
+
+    Below is general information for using and/or changing this configuration option file:
+
+    Combo Roles:        Combo roles can be set by defining multiple roles for HOST_CONFIG. The possible 
+                        combo roles and HOST_CONFIG defines are:
+                        Peirpheral + Observer   :                   PERIPHERAL_CFG+OBSERVER_CFG
+                        Central + Broadcaster   :                   CENTRAL_CFG+BROADCASTER_CFG
+                        Peripheral + Central    :                   PERIPHERAL_CFG+CENTRAL_CFG
+                        Broadcaster + Observer  :                   BROADCASTER_CFG+OBSERVER_CFG
+
+    LibSearch Tool:     There is a pre build action for every stack project that runs a tool 
+                        LibSearch.exe. This tool aims to automatically import the correct library
+                        files into your project based on the defines in this file.
+
+                        The locations of all library files and their correspond options are
+                        <install dir>/Projects/ble/Libraries/CC26xx/IAR/CC2650/bin for stack libs
+                        and at <install dir>/Projects/ble/Libraries/CC26xx/IAR/Common/bin for 
+                        HCI Transport Layer libs
+
+                        If an library is found that was built with matching options, it will be 
+                        copied into the project local directory at <App ewp dir>/../../Lib/ and 
+                        subsequently linked with the stack.
+
+                        If you experience a build error with LibSearch.exe, expand the build error 
+                        message by clicking Tools->Options->Messages->Show build messages:->All. 
+                        The error messages printed out by the LibSearch tool should now appear in 
+                        your Build Message window.
+
+    Restrictions:       For CTRL_V41_CONFIG, either all options should be defined or no options should
+                        be defined. This is based on the stack library files provided. In order to
+                        reduce the number of stack combinations, only libraries with default
+                        v4.1 features (for size constrained projects) or with all of the 
+                        v4.1 features are provided in the release.
+*/
+
+/* BLE Host Build Configurations */
+-DHOST_CONFIG=PERIPHERAL_CFG
+/* -DHOST_CONFIG=CENTRAL_CFG */
+/* -DHOST_CONFIG=OBSERVER_CFG */
+/* -DHOST_CONFIG=BROADCASTER_CFG */
+/* -DHOST_CONFIG=PERIPHERAL_CFG+OBSERVER_CFG */
+/* -DHOST_CONFIG=CENTRAL_CFG+BROADCASTER_CFG */
+/* -DHOST_CONFIG=PERIPHERAL_CFG+CENTRAL_CFG */
+/* -DHOST_CONFIG=OBSERVER_CFG+BROADCASTER_CFG */
+
+/* GATT Database being off chip*/
+/* -DGATT_DB_OFF_CHIP*/
+
+/* GAP Privacy Feature */
+/* -DGAP_PRIVACY */
+/* -DGAP_PRIVACY_RECONNECT */
+
+/* Include GAP Bond Manager */
+-DGAP_BOND_MGR
+
+/* Host Build Options */
+/* -DL2CAP_CO_CHANNELS */ 
+-DGATT_NO_SERVICE_CHANGED 
+
+/* Include Transport Layer (Full or PTM) */
+-DHCI_TL_NONE
+/* -DHCI_TL_PTM */
+/* -DHCI_TL_FULL */
+
+/* BLE Core Spec V4.1 Controller Feature Partition Build Configuration. Comment out to use default Controller Configuration  */
+/* -DCTRL_V41_CONFIG=PING_CFG+SLV_FEAT_EXCHG_CFG+CONN_PARAM_REQ_CFG+MST_SLV_CFG */
+
