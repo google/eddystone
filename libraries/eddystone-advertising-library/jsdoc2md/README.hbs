@@ -18,7 +18,7 @@ eddystone.registerAdvertisement({
   type: 'url',
   url: 'https://example.com',
   txPower: -20
-}).then(advertisement => console.log("Advertising: " + advertisement.url))
+}).then(advertisement => console.log('Advertising: ' + advertisement.url))
   .catch(error => console.log(error.message));
 ```
 
@@ -26,7 +26,7 @@ To stop advertising:
 **Example**
 ```js
 advertisement.unregisterAdvertisement().then(() => {
-  console.log("Advertisment unregistered successfully.");
+  console.log('Advertisment unregistered successfully.');
 }).catch(error => console.log(error.message));
 ```
 Or if you have multiple advertisments:

@@ -1,6 +1,8 @@
 {
   "indent"  : 2,         // Number of spaces to use for indentation
-  "quotmark": "single",  // Require single quotes
+  // TODO(g-ortuno): The following option is deprecated. Add a JSCS step in gulp
+  // for linting errors.
+  "quotmark": "single",  // Require single quotes.
   "varstmt" : true,      // Disallow any var statements. Only 'let' and 'const' are allowed
   "esnext"  : true,      // Allow ES6 syntax
   "browser" : true,      // Web Browser (window, document, etc)
