@@ -1,6 +1,6 @@
 # Eddystone-UID
 
-The Eddystone-UID frame broadcasts an opaque, unique 16-byte Beacon ID composed of a 10-byte namespace ID and a 6-byte instance ID. The Beacon ID may be useful in mapping a device to a record in external storage. The namespace ID may be used to group a particular set of beacons, while the instance ID identifies individual devices in the group. The division of namespace and instance IDs may also be used to optimize BLE scanning strategies, e.g. by filtering only on the namespace.
+The Eddystone-UID frame broadcasts an opaque, unique 16-byte Beacon ID composed of a 10-byte namespace and a 6-byte instance. The Beacon ID may be useful in mapping a device to a record in external storage. The namespace portion of the ID may be used to group a particular set of beacons, while the instance portion of the ID identifies individual devices in the group. The division of the ID into namespace and instance components may also be used to optimize BLE scanning strategies, e.g. by filtering only on the namespace.
 
 ## Frame Specification
 
@@ -10,7 +10,7 @@ Byte offset | Field | Description
 ------------|-------|------------
 0 | Frame Type | Value = `0x00`
 1 | Ranging Data | Calibrated Tx power at 0 m
-2 | NID[0] | 10-byte ID Namespace
+2 | NID[0] | 10-byte Namespace
 3 | NID[1]
 4 | NID[2]
 5 | NID[3]
@@ -20,7 +20,7 @@ Byte offset | Field | Description
 9 | NID[7]
 10 | NID[8]
 11 | NID[9]
-12 | BID[0] | 6-byte ID Instance
+12 | BID[0] | 6-byte Instance
 13 | BID[1]
 14 | BID[2]
 15 | BID[3]
@@ -35,8 +35,8 @@ All multi-byte values are big-endian.
 
 - The length of this frame is fixed and takes up the full 31 bytes of the ADV packet. The value of the Service Data Length byte must be `0x17`. Existing UID implementations that truncate the frame to omit the RFU bytes will use `0x15`, but in future should include the RFU bytes and the full length.
 - The Ranging Data is the Tx power in dBm emitted by the beacon at 0 meters. Note that this is different from other beacon protocol specifications that require the Tx power to be measured at 1 m. The value is an 8-bit integer as specified by the [Tx Power Level Characteristic](https://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.tx_power_level.xml) and ranges from -100 dBm to +20 dBm to a resolution of 1 dBm. See Transmit Power below for more details.
-- The 10-byte ID Namespace is unique self-assigned beacon ID namespace. See UID Construction below for recommendations on generating this unique namespace.
-- The 6-byte ID Instance is unique within the namespace. See UID Construction below for recommendations on ensuring beacon id uniqueness.
+- The 10-byte Namespace ID component is unique self-assigned beacon ID namespace. See UID Construction below for recommendations on generating this unique namespace.
+- The 6-byte Instance ID component is unique within the namespace. See UID Construction below for recommendations on ensuring beacon ID uniqueness.
 
 ## Tx Power
 
@@ -46,7 +46,7 @@ Note to developers: the best way to determine the precise value to put into this
 
 ## UID Construction
 
-An Eddystone-UID beacon ID is 16 bytes long, consisting of a 10-byte namespace and 6-byte instance ID. The namespace is intended to ensure ID uniqueness across multiple Eddystone implementers and may be used to filter on-device scanning for beacons. We recommend two methods for generating a unique 10-byte namespace: a truncated hash of your FQDN, or an elided UUID.
+An Eddystone-UID beacon ID is 16 bytes long, consisting of a 10-byte namespace component and 6-byte instance component. The namespace is intended to ensure ID uniqueness across multiple Eddystone implementers and may be used to filter on-device scanning for beacons. We recommend two methods for generating a unique 10-byte namespace: a truncated hash of your FQDN, or an elided UUID.
 
 ### Truncated Hash of FQDN
 
