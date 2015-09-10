@@ -9,7 +9,7 @@
      @property {EddystoneFrameType} type Type of Eddystone. For now only `'url'` is
      supported.
      @property {string|undefined} url The URL to advertise
-     @property {number|undefined} txPower The Tx Power to advertise
+     @property {number|undefined} advertisedTxPower The Tx Power to advertise
    */
 
   /**
@@ -84,8 +84,8 @@
       if (!('url' in options)) {
         throw new TypeError('Required member url is undefined.');
       }
-      if (!('txPower' in options)) {
-        throw new TypeError('Required member txPower is undefined.');
+      if (!('advertisedTxPower' in options)) {
+        throw new TypeError('Required member advertisedTxPower is undefined.');
       }
     }
   }

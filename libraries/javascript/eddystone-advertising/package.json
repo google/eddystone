@@ -7,9 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "iojs --harmony_arrow_functions `which gulp` test",
-    "generate-docs": "iojs --harmony_arrow_functions `which gulp` docs",
-    "browserify": "iojs --harmony_arrow_functions `which gulp` browserify"
+    "test": "gulp test",
+    "generate-docs": "gulp docs",
+    "browserify": "gulp browserify"
   },
   "repository": {
     "type": "git",

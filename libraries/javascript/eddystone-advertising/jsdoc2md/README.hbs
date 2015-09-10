@@ -6,6 +6,7 @@ worry about these low level details. The library exposes simple functions that
 developers can use to advertise a Valid Eddystone packet from their device.
 
 ** NOTE ** Currently only ChromeOS is supported.
+** NOTE ** Currently only Eddystone-URL is supported.
 
 ## Usage
 The Eddystone Advertising Library creates `window.eddystone` of type
@@ -14,22 +15,25 @@ The Eddystone Advertising Library creates `window.eddystone` of type
 To advertise a url:
 **Example**
 ```js
+let registered_adv;
 eddystone.registerAdvertisement({
   type: 'url',
   url: 'https://example.com',
-  txPower: -20
-}).then(advertisement => console.log('Advertising: ' + advertisement.url))
-  .catch(error => console.log(error.message));
+  advertisedTxPower: -20
+}).then(advertisement => {
+  registered_adv = advertisement;
+  console.log('Advertising: ' + advertisement.url)
+}).catch(error => console.log(error.message));
 ```
 
 To stop advertising:
 **Example**
 ```js
-advertisement.unregisterAdvertisement().then(() => {
-  console.log('Advertisment unregistered successfully.');
+registered_adv.unregisterAdvertisement().then(() => {
+  console.log('Advertisement unregistered successfully.');
 }).catch(error => console.log(error.message));
 ```
-Or if you have multiple advertisments:
+Or if you have multiple advertisements:
 ```js
 eddystone.advertisements.forEach(advertisement => {
   advertisement.unregisterAdvertisement()

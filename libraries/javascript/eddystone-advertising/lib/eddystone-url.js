@@ -73,7 +73,7 @@
        value.
        @see {@link https://github.com/google/eddystone/tree/master/eddystone-url#frame-specification|URL Frame Specification}
        @param {string} url The URL to use in the service data.
-       @param {number} txPower The Tx Power to use in the service data.
+       @param {number} advertisedTxPower The Tx Power to use in the service data.
        @returns {number[]} The service data.
        @throws {Error} If the Tx Power value is not in the allowed range. See
        {@link https://github.com/google/eddystone/tree/master/eddystone-url#tx-power-level|Tx Power Level}.
@@ -84,12 +84,12 @@
        invalid characters see the Note in
        {@link https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding|HTTP URL Encoding}
      */
-    static constructServiceData(url, txPower) {
+    static constructServiceData(url, advertisedTxPower) {
       // Check that it's a valid Tx Power
-      if (txPower < -100 || txPower > 20) {
-        throw new Error('Invalid Tx Power value: ' + txPower);
+      if (advertisedTxPower < -100 || advertisedTxPower > 20) {
+        throw new Error('Invalid Tx Power value: ' + advertisedTxPower);
       }
-      let base_frame = [EDDYSTONE_URL_FRAME_TYPE, txPower];
+      let base_frame = [EDDYSTONE_URL_FRAME_TYPE, advertisedTxPower];
       Array.prototype.push.apply(base_frame, EddystoneURL.encodeURL(url));
       return base_frame;
     }

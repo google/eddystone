@@ -32,7 +32,8 @@
   class EddystoneAdvertisement {
     /**
        @constructs EddystoneAdvertisement
-       @param {number} id Unique between browser restarts
+       @param {number} id Unique between browser restarts meaning the id will
+       no longer be valid upon browser restart.
        @param {EddystoneAdvertisementOptions} options The options used when
        creating the advertisement.
        @param {Object} platform The underlying platform; used to unregister the
@@ -59,15 +60,15 @@
        */
       this.url = undefined;
       /**
-         @member EddystoneAdvertisement#txPower {number|undefined} Tx Power included in
+         @member EddystoneAdvertisement#advertisedTxPower {number|undefined} Tx Power included in
          the advertisement. Only present if `type === 'url'`.
        */
-      this.txPower = undefined;
+      this.advertisedTxPower = undefined;
       if (options.type == EddystoneFrameType.URL) {
         this.id = id;
         this.type = options.type;
         this.url = options.url;
-        this.txPower = options.txPower;
+        this.advertisedTxPower = options.advertisedTxPower;
       } else {
         throw new Error('Unsupported Frame Type');
       }
@@ -102,7 +103,7 @@
      @property {EddystoneFrameType} type Type of Eddystone. For now only `'url'` is
      supported.
      @property {string|undefined} url The URL to advertise
-     @property {number|undefined} txPower The Tx Power to advertise
+     @property {number|undefined} advertisedTxPower The Tx Power to advertise
    */
 
   /**
@@ -177,8 +178,8 @@
       if (!('url' in options)) {
         throw new TypeError('Required member url is undefined.');
       }
-      if (!('txPower' in options)) {
-        throw new TypeError('Required member txPower is undefined.');
+      if (!('advertisedTxPower' in options)) {
+        throw new TypeError('Required member advertisedTxPower is undefined.');
       }
     }
   }
@@ -273,7 +274,7 @@
           serviceUuids: [EDDYSTONE_UUID],
           serviceData: [{
             uuid: EDDYSTONE_UUID,
-            data: EddystoneURL.constructServiceData(options.url, options.txPower)
+            data: EddystoneURL.constructServiceData(options.url, options.advertisedTxPower)
           }]
         };
       } else {
@@ -361,7 +362,7 @@
        value.
        @see {@link https://github.com/google/eddystone/tree/master/eddystone-url#frame-specification|URL Frame Specification}
        @param {string} url The URL to use in the service data.
-       @param {number} txPower The Tx Power to use in the service data.
+       @param {number} advertisedTxPower The Tx Power to use in the service data.
        @returns {number[]} The service data.
        @throws {Error} If the Tx Power value is not in the allowed range. See
        {@link https://github.com/google/eddystone/tree/master/eddystone-url#tx-power-level|Tx Power Level}.
@@ -372,12 +373,12 @@
        invalid characters see the Note in
        {@link https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding|HTTP URL Encoding}
      */
-    static constructServiceData(url, txPower) {
+    static constructServiceData(url, advertisedTxPower) {
       // Check that it's a valid Tx Power
-      if (txPower < -100 || txPower > 20) {
-        throw new Error('Invalid Tx Power value: ' + txPower);
+      if (advertisedTxPower < -100 || advertisedTxPower > 20) {
+        throw new Error('Invalid Tx Power value: ' + advertisedTxPower);
       }
-      let base_frame = [EDDYSTONE_URL_FRAME_TYPE, txPower];
+      let base_frame = [EDDYSTONE_URL_FRAME_TYPE, advertisedTxPower];
       Array.prototype.push.apply(base_frame, EddystoneURL.encodeURL(url));
       return base_frame;
     }

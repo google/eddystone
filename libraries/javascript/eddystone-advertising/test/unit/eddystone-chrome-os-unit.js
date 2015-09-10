@@ -38,7 +38,7 @@ describe('EddystoneChromeOS', () => {
         expect(EddystoneChromeOS._constructAdvertisement({
           type: 'url',
           url: url,
-          txPower: tx_power
+          advertisedTxPower: tx_power
         })).to.eql({
           type: 'broadcast',
           serviceUuids: ['FEAA'],
@@ -53,7 +53,7 @@ describe('EddystoneChromeOS', () => {
         expect(() => EddystoneChromeOS._constructAdvertisement({
           type: 'url',
           url: url,
-          txPower: -101
+          advertisedTxPower: -101
         })).to.throw(Error, /Invalid Tx Power value/);
       });
 
@@ -61,12 +61,12 @@ describe('EddystoneChromeOS', () => {
         expect(() => EddystoneChromeOS._constructAdvertisement({
           type: 'url',
           url: 'INVALID',
-          txPower: tx_power
+          advertisedTxPower: tx_power
         })).to.throw(Error, /Scheme/);
         expect(() => EddystoneChromeOS._constructAdvertisement({
           type: 'url',
           url: 'http://' + String.fromCharCode(0x0),
-          txPower: tx_power
+          advertisedTxPower: tx_power
         })).to.throw(Error, /character/);
       });
 
@@ -74,12 +74,12 @@ describe('EddystoneChromeOS', () => {
         expect(() => EddystoneChromeOS._constructAdvertisement({
           type: 'url',
           url: 'INVALID',
-          txPower: -101
+          advertisedTxPower: -101
         })).to.throw(Error);
         expect(() => EddystoneChromeOS._constructAdvertisement({
           type: 'url',
           url: 'http://' + String.fromCharCode(0x0),
-          txPower: -101
+          advertisedTxPower: -101
         })).to.throw(Error);
       });
     });
@@ -89,7 +89,7 @@ describe('EddystoneChromeOS', () => {
     let valid_options = {
       type: 'url',
       url: 'https://www.example.com',
-      txPower: -10
+      advertisedTxPower: -10
     };
     // Hooks
     afterEach(() => cleanChromeMock());
@@ -104,7 +104,7 @@ describe('EddystoneChromeOS', () => {
       mockRegisteringSucceeds();
       return expect(EddystoneChromeOS.registerAdvertisement(valid_options))
                                      .to.eventually.have.all.keys(
-                                       'id', 'url', 'txPower', 'type',
+                                       'id', 'url', 'advertisedTxPower', 'type',
                                        '_platform');
     });
 

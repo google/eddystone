@@ -22,26 +22,26 @@ describe('Eddystone', () => {
   after(() => global._eddystone_test = undefined);
 
   describe('checkURLOptions', () => {
-    it('No url, no txPower', () => {
+    it('No url, no advertisedTxPower', () => {
       expect(() => Eddystone._checkURLOptions({})).to.throw(TypeError, /url/);
     });
 
-    it('No url, yes txPower', () => {
-      expect(() => Eddystone._checkURLOptions({txPower: 0})).to.throw(TypeError, /url|txPower/);
+    it('No url, yes advertisedTxPower', () => {
+      expect(() => Eddystone._checkURLOptions({advertisedTxPower: 0})).to.throw(TypeError, /url|advertisedTxPower/);
     });
 
-    it('Yes url, no txPower', () => {
-      expect(() => Eddystone._checkURLOptions({url: ''})).to.throw(TypeError, /txPower/);
+    it('Yes url, no advertisedTxPower', () => {
+      expect(() => Eddystone._checkURLOptions({url: ''})).to.throw(TypeError, /advertisedTxPower/);
     });
 
-    it('Yes url, yes txPower', () => {
-      expect(() => Eddystone._checkURLOptions({url: '', txPower: 0})).to.not.throw();
+    it('Yes url, yes advertisedTxPower', () => {
+      expect(() => Eddystone._checkURLOptions({url: '', advertisedTxPower: 0})).to.not.throw();
     });
   });
 
   describe('checkAdvertisementOptions()', () => {
     describe('general', () => {
-      it('Unsupported type, no url, no txPower', () => {
+      it('Unsupported type, no url, no advertisedTxPower', () => {
         expect(() => Eddystone._checkAdvertisementOptions({type: 'uid'}))
                               .to.throw(TypeError, /Frame Type/);
       });
@@ -52,52 +52,52 @@ describe('Eddystone', () => {
     });
 
     describe('url', () => {
-      it('No type, no url, no txPower', () => {
+      it('No type, no url, no advertisedTxPower', () => {
         expect(() => Eddystone._checkAdvertisementOptions({}))
                               .to.throw(TypeError, /type/);
       });
 
-      it('Yes type, no url, no txPower', () => {
+      it('Yes type, no url, no advertisedTxPower', () => {
         expect(() => Eddystone._checkAdvertisementOptions({type: 'url'}))
-                              .to.throw(TypeError, /url|txPower/);
+                              .to.throw(TypeError, /url|advertisedTxPower/);
       });
 
-      it('No type, no url, yes txPower', () => {
-        expect(() => Eddystone._checkAdvertisementOptions({txPower: 0}))
+      it('No type, no url, yes advertisedTxPower', () => {
+        expect(() => Eddystone._checkAdvertisementOptions({advertisedTxPower: 0}))
                               .to.throw(TypeError, /type/);
       });
 
-      it('Yes type, no url, yes txPower', () => {
+      it('Yes type, no url, yes advertisedTxPower', () => {
         expect(() => Eddystone._checkAdvertisementOptions({
           type: 'url',
-          txPower: 0
+          advertisedTxPower: 0
         })).to.throw(TypeError, /url/);
       });
 
-      it('No type, yes url, no txPower', () => {
+      it('No type, yes url, no advertisedTxPower', () => {
         expect(() => Eddystone._checkAdvertisementOptions({url: ''}))
                               .to.throw(TypeError, /type/);
       });
 
-      it('Yes type, yes url, no txPower', () => {
+      it('Yes type, yes url, no advertisedTxPower', () => {
         expect(() => Eddystone._checkAdvertisementOptions({
           type: 'url',
           url: ''
-        })).to.throw(TypeError, /txPower/);
+        })).to.throw(TypeError, /advertisedTxPower/);
       });
 
-      it('No type, yes url, yes txPower', () => {
+      it('No type, yes url, yes advertisedTxPower', () => {
         expect(() => Eddystone._checkAdvertisementOptions({
           url: '',
-          txPower: 0
+          advertisedTxPower: 0
         })).to.throw(TypeError, /type/);
       });
 
-      it('Yes type, yes url, yes txPower', () => {
+      it('Yes type, yes url, yes advertisedTxPower', () => {
         expect(() => Eddystone._checkAdvertisementOptions({
           type: 'url',
           url: '',
-          txPower: 0
+          advertisedTxPower: 0
         })).to.not.throw();
       });
     });
@@ -107,7 +107,7 @@ describe('Eddystone', () => {
     let options = {
       type: 'url',
       url: 'http://example.com',
-      txPower: -20
+      advertisedTxPower: -20
     };
 
     it('Invalid options', () => {

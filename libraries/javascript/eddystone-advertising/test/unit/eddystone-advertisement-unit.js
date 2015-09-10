@@ -31,13 +31,13 @@ describe('EddystoneAdvertisement', () => {
         id, {
           type: type,
           url: url,
-          txPower: tx_power
+          advertisedTxPower: tx_power
         },
         {});
       expect(adv.id).to.eql(id);
       expect(adv.type).to.eql(type);
       expect(adv.url).to.eql(url);
-      expect(adv.txPower).to.eql(tx_power);
+      expect(adv.advertisedTxPower).to.eql(tx_power);
       expect(adv._platform).to.eql({});
     });
   });
@@ -47,7 +47,7 @@ describe('EddystoneAdvertisement', () => {
       let advertisement = new EddystoneAdvertisement(100 /* id */, {
         type: 'url',
         url: 'https://www.example.com/',
-        txPower: -10
+        advertisedTxPower: -10
       }, {});
       let error = new Error('Failed');
       advertisement._platform.unregisterAdvertisement = sinon.stub().returns(Promise.reject(error));
@@ -58,7 +58,7 @@ describe('EddystoneAdvertisement', () => {
       let advertisement = new EddystoneAdvertisement(100 /* id */, {
         type: 'url',
         url: 'https://www.example.com/',
-        txPower: -10
+        advertisedTxPower: -10
       }, {});
       advertisement._platform.unregisterAdvertisement = sinon.stub().returns(
         Promise.resolve());

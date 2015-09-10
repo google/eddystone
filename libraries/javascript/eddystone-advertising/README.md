@@ -6,6 +6,7 @@ worry about these low level details. The library exposes simple functions that
 developers can use to advertise a Valid Eddystone packet from their device.
 
 ** NOTE ** Currently only ChromeOS is supported.
+** NOTE ** Currently only Eddystone-URL is supported.
 
 ## Usage
 The Eddystone Advertising Library creates `window.eddystone` of type
@@ -14,22 +15,25 @@ The Eddystone Advertising Library creates `window.eddystone` of type
 To advertise a url:
 **Example**
 ```js
+let registered_adv;
 eddystone.registerAdvertisement({
   type: 'url',
   url: 'https://example.com',
-  txPower: -20
-}).then(advertisement => console.log('Advertising: ' + advertisement.url))
-  .catch(error => console.log(error.message));
+  advertisedTxPower: -20
+}).then(advertisement => {
+  registered_adv = advertisement;
+  console.log('Advertising: ' + advertisement.url)
+}).catch(error => console.log(error.message));
 ```
 
 To stop advertising:
 **Example**
 ```js
-advertisement.unregisterAdvertisement().then(() => {
-  console.log('Advertisment unregistered successfully.');
+registered_adv.unregisterAdvertisement().then(() => {
+  console.log('Advertisement unregistered successfully.');
 }).catch(error => console.log(error.message));
 ```
-Or if you have multiple advertisments:
+Or if you have multiple advertisements:
 ```js
 eddystone.advertisements.forEach(advertisement => {
   advertisement.unregisterAdvertisement()
@@ -74,7 +78,7 @@ Represents the Advertisement being broadcasted.
   * [.id](#EddystoneAdvertisement+id) : <code>number</code>
   * [.type](#EddystoneAdvertisement+type) : <code>string</code>
   * [.url](#EddystoneAdvertisement+url) : <code>string</code> &#124; <code>undefined</code>
-  * [.txPower](#EddystoneAdvertisement+txPower) : <code>number</code> &#124; <code>undefined</code>
+  * [.advertisedTxPower](#EddystoneAdvertisement+advertisedTxPower) : <code>number</code> &#124; <code>undefined</code>
   * [.unregisterAdvertisement()](#EddystoneAdvertisement+unregisterAdvertisement) ⇒ <code>Promise.&lt;void&gt;</code>
 
 <a name="new_EddystoneAdvertisement_new"></a>
@@ -82,7 +86,7 @@ Represents the Advertisement being broadcasted.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| id | <code>number</code> | Unique between browser restarts |
+| id | <code>number</code> | Unique between browser restarts meaning the id will        no longer be valid upon browser restart. |
 | options | <code>[EddystoneAdvertisementOptions](#EddystoneAdvertisementOptions)</code> | The options used when        creating the advertisement. |
 | platform | <code>Object</code> | The underlying platform; used to unregister the        advertisement. |
 
@@ -102,8 +106,8 @@ URL being advertised.
          Only present if `type === 'url'`.
 
 **Kind**: instance property of <code>[EddystoneAdvertisement](#EddystoneAdvertisement)</code>  
-<a name="EddystoneAdvertisement+txPower"></a>
-### eddystoneAdvertisement.txPower : <code>number</code> &#124; <code>undefined</code>
+<a name="EddystoneAdvertisement+advertisedTxPower"></a>
+### eddystoneAdvertisement.advertisedTxPower : <code>number</code> &#124; <code>undefined</code>
 Tx Power included in
          the advertisement. Only present if `type === 'url'`.
 
@@ -154,11 +158,11 @@ This class provides helper functions that relate to Eddystone-URL.
 **See**: [Eddystone-URL](https://github.com/google/eddystone/tree/master/eddystone-url)  
 
 * [EddystoneURL](#EddystoneURL)
-  * [.constructServiceData(url, txPower)](#EddystoneURL.constructServiceData) ⇒ <code>Array.&lt;number&gt;</code>
+  * [.constructServiceData(url, advertisedTxPower)](#EddystoneURL.constructServiceData) ⇒ <code>Array.&lt;number&gt;</code>
   * [.encodeURL(url)](#EddystoneURL.encodeURL) ⇒ <code>Array.&lt;number&gt;</code>
 
 <a name="EddystoneURL.constructServiceData"></a>
-### EddystoneURL.constructServiceData(url, txPower) ⇒ <code>Array.&lt;number&gt;</code>
+### EddystoneURL.constructServiceData(url, advertisedTxPower) ⇒ <code>Array.&lt;number&gt;</code>
 Constructs a valid Eddystone-URL service data from a URL and a Tx Power
        value.
 
@@ -180,7 +184,7 @@ Constructs a valid Eddystone-URL service data from a URL and a Tx Power
 | Param | Type | Description |
 | --- | --- | --- |
 | url | <code>string</code> | The URL to use in the service data. |
-| txPower | <code>number</code> | The Tx Power to use in the service data. |
+| advertisedTxPower | <code>number</code> | The Tx Power to use in the service data. |
 
 <a name="EddystoneURL.encodeURL"></a>
 ### EddystoneURL.encodeURL(url) ⇒ <code>Array.&lt;number&gt;</code>
@@ -236,5 +240,5 @@ Object that contains the characteristics of the package to advertise.
 | --- | --- | --- |
 | type | <code>[EddystoneFrameType](#EddystoneFrameType)</code> | Type of Eddystone. For now only `'url'` is      supported. |
 | url | <code>string</code> &#124; <code>undefined</code> | The URL to advertise |
-| txPower | <code>number</code> &#124; <code>undefined</code> | The Tx Power to advertise |
+| advertisedTxPower | <code>number</code> &#124; <code>undefined</code> | The Tx Power to advertise |
 

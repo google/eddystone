@@ -85,7 +85,7 @@
           serviceUuids: [EDDYSTONE_UUID],
           serviceData: [{
             uuid: EDDYSTONE_UUID,
-            data: EddystoneURL.constructServiceData(options.url, options.txPower)
+            data: EddystoneURL.constructServiceData(options.url, options.advertisedTxPower)
           }]
         };
       } else {

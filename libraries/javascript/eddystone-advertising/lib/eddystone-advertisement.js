@@ -31,7 +31,8 @@
   class EddystoneAdvertisement {
     /**
        @constructs EddystoneAdvertisement
-       @param {number} id Unique between browser restarts
+       @param {number} id Unique between browser restarts meaning the id will
+       no longer be valid upon browser restart.
        @param {EddystoneAdvertisementOptions} options The options used when
        creating the advertisement.
        @param {Object} platform The underlying platform; used to unregister the
@@ -58,15 +59,15 @@
        */
       this.url = undefined;
       /**
-         @member EddystoneAdvertisement#txPower {number|undefined} Tx Power included in
+         @member EddystoneAdvertisement#advertisedTxPower {number|undefined} Tx Power included in
          the advertisement. Only present if `type === 'url'`.
        */
-      this.txPower = undefined;
+      this.advertisedTxPower = undefined;
       if (options.type == EddystoneFrameType.URL) {
         this.id = id;
         this.type = options.type;
         this.url = options.url;
-        this.txPower = options.txPower;
+        this.advertisedTxPower = options.advertisedTxPower;
       } else {
         throw new Error('Unsupported Frame Type');
       }
