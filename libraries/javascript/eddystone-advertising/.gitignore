@@ -1,0 +1,10 @@
+# OSX files
+.DS_Store
+
+# emacs
+*~
+\#*\#
+
+bower_components
+node_modules
+npm-debug.log
