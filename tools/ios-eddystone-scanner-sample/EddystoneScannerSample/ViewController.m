@@ -15,6 +15,7 @@
 #import "ViewController.h"
 
 #import "ESSBeaconScanner.h"
+#import "ESSEddystone.h"
 
 @interface ViewController () <ESSBeaconScannerDelegate> {
   ESSBeaconScanner *_scanner;
@@ -42,14 +43,53 @@
   _scanner = nil;
 }
 
-- (void)beaconScanner:(ESSBeaconScanner *)scanner
-        didFindBeacon:(id)beaconInfo {
+/**
+ * Called when an Eddystone is seen for the first time.
+ */
+- (void)beaconScanner:(ESSBeaconScanner *)scanner didFindBeacon:(ESSBeaconInfo *)beaconInfo {
   NSLog(@"I Saw an Eddystone!: %@", beaconInfo);
 }
 
-- (void)beaconScanner:(ESSBeaconScanner *)scanner didUpdateBeacon:(id)beaconInfo {
-  NSLog(@"I Updated an Eddystone!: %@", beaconInfo);
+/**
+ * Called when a previously seen Eddystone is no longer detected.
+ */
+- (void)beaconScanner:(ESSBeaconScanner *)scanner didLoseBeacon:(ESSBeaconInfo *)beaconInfo {
+  NSLog(@"I Lost an Eddystone!: %@", beaconInfo);
 }
 
+/**
+ * Called when an already seen Eddystone is redetected.
+ */
+- (void)beaconScanner:(ESSBeaconScanner *)scanner didUpdateBeacon:(ESSBeaconInfo *)beaconInfo updatedFrame:(ESSFrameType)frameType {
+  //NSLog(@"I Updated an Eddystone!: %@, %lu", beaconInfo, (unsigned long)frameType);
+  
+  // Log out specific beacon frame data.
+  switch (frameType) {
+    case kESSEddystoneUIDFrameType: {
+      // Lookup & log the friendly data for the UID frame.
+      ESSBeaconUID *uidData = [ESSBeaconInfo dataForUIDFrame:beaconInfo.uidFrame];
+      NSLog(@"UID FRAME: txPower: %d idNamespace: %@ idInstance: %@", uidData.txPower, uidData.idNamespace, uidData.idInstance);
+    }
+      break;
+      
+    case kESSEddystoneURLFrameType: {
+      // Lookup & log the friendly data for the UID frame.
+      ESSBeaconURL *urlData = [ESSBeaconInfo dataForURLFrame:beaconInfo.urlFrame];
+      NSLog(@"URL FRAME: txPower: %d urlString: %@", urlData.txPower, urlData.urlString);
+    }
+      break;
+      
+    case kESSEddystoneTLMFrameType: {
+      // Lookup & log the friendly data for the TLM frame.
+      ESSBeaconTLM *tlmData = [ESSBeaconInfo dataForTLMFrame:beaconInfo.tlmFrame];
+      NSLog(@"TLM FRAME: version: %u voltage: %d temperature: %f pduCount: %d uptime: %d", tlmData.version, tlmData.voltage, tlmData.temperature, tlmData.advCount, tlmData.uptime);
+    }
+      break;
+      
+    case kESSEddystoneUnknownFrameType:
+      // Do Nothing!
+      break;
+  }
+}
 
 @end

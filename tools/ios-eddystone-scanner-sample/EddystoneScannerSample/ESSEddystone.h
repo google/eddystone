@@ -22,29 +22,86 @@ typedef NS_ENUM(NSUInteger, ESSBeaconType) {
 typedef NS_ENUM(NSUInteger, ESSFrameType) {
   kESSEddystoneUnknownFrameType = 0,
   kESSEddystoneUIDFrameType = 1,
-  kESSEddystoneTelemetryFrameType,
+  kESSEddystoneURLFrameType = 2,
+  kESSEddystoneTLMFrameType = 3,
 };
 
 /**
  *=-----------------------------------------------------------------------------------------------=
- * ESSBeaconID
+ * ESSBeaconUID
  *=-----------------------------------------------------------------------------------------------=
  */
-@interface ESSBeaconID : NSObject <NSCopying>
+@interface ESSBeaconUID : NSObject
 
 /**
- * Currently there's only the Eddystone format, but we'd like to leave the door open to other
- * possibilities, so let's have a beacon type here in the info.
+ * TX power of the UID frame.
  */
-@property(nonatomic, assign, readonly) ESSBeaconType beaconType;
+@property(nonatomic, assign) int txPower;
 
 /**
- * The raw beaconID data.
+ * 10-byte ID Namespace.
  */
-@property(nonatomic, copy, readonly) NSData *beaconID;
+@property(nonatomic, assign) NSString *idNamespace;
+
+/**
+ * 6-byte ID Instance.
+ */
+@property(nonatomic, assign) NSString *idInstance;
 
 @end
 
+/**
+ *=-----------------------------------------------------------------------------------------------=
+ * ESSBeaconURL
+ *=-----------------------------------------------------------------------------------------------=
+ */
+@interface ESSBeaconURL : NSObject
+
+/**
+ * TX Power reading of the URL frame.
+ */
+@property(nonatomic, assign) int txPower;
+
+/**
+ * Friendly URL string.
+ */
+@property(nonatomic, assign) NSString *urlString;
+
+@end
+
+/**
+ *=-----------------------------------------------------------------------------------------------=
+ * ESSBeaconTLM
+ *=-----------------------------------------------------------------------------------------------=
+ */
+@interface ESSBeaconTLM : NSObject
+
+/**
+ *  TLM version.
+ */
+@property(nonatomic, assign) unsigned int version;
+
+/**
+ * Battery voltage 1 mV/bit.
+ */
+@property(nonatomic, assign) unsigned int voltage;
+
+/**
+ * Beacon temperature.
+ */
+@property(nonatomic, assign) double temperature;
+
+/**
+ * Advertising PDU count.
+ */
+@property(nonatomic, assign) unsigned int advCount;
+
+/**
+ * Time since power-on or reboot.
+ */
+@property(nonatomic, assign) unsigned int uptime;
+
+@end
 
 /**
  *=-----------------------------------------------------------------------------------------------=
@@ -54,29 +111,38 @@ typedef NS_ENUM(NSUInteger, ESSFrameType) {
 @interface ESSBeaconInfo : NSObject
 
 /**
+ * The unique perhiperal identifier for the beacon device.
+ */
+@property(nonatomic, copy) NSUUID *identifier;
+
+/**
  * The most recent RSSI we got for this sighting. Sometimes the OS cannot compute one reliably, so
  * this value can be null.
  */
-@property(nonatomic, strong, readonly) NSNumber *RSSI;
-
-
-/**
- * The beaconID for this Eddystone. All beacons have an ID.
- */
-@property(nonatomic, strong, readonly) ESSBeaconID *beaconID;
+@property(nonatomic, strong) NSNumber *RSSI;
 
 /**
- * The telemetry that may or may not have been seen for this beacon. If it's set, the contents of
- * it aren't terribly relevant to us, in general. See the Eddystone spec for more information
- * if you're really interested in the exact details.
+ * The raw UID frame data that may or may not have been seen for the beacon.
  */
-@property(nonatomic, copy, readonly) NSData *telemetry;
+@property(nonatomic, copy) NSData *uidFrame;
 
 /**
- * Transmission power reported by beacon. This is in dB.
+ * The raw URL frame data that may or may not have been seen for the beacon.
  */
-@property(nonatomic, strong, readonly) NSNumber *txPower;
+@property(nonatomic, copy) NSData *urlFrame;
 
+/**
+ * The raw TLM frame data that may or may not have been seen for the beacon.
+ */
+@property(nonatomic, copy) NSData *tlmFrame;
+
+/**
+ * Initialise the beacon info with predefined raw data.
+ */
+- (instancetype)initWithFrameData:(NSNumber *)RSSI
+                              uid:(NSData *)uid
+                              url:(NSData *)url
+                              tlm:(NSData *)tlm;
 
 /**
  * The scanner has seen a frame for an Eddystone. We'll need to know what type of Eddystone frame
@@ -85,25 +151,23 @@ typedef NS_ENUM(NSUInteger, ESSFrameType) {
 + (ESSFrameType)frameTypeForFrame:(NSDictionary *)advFrameList;
 
 /**
- * Given some advertisement data that we have already verified is a TLM frame (using
- * frameTypeForFrame:), return the actual telemetry data for that frame.
- */
-+ (NSData *)telemetryDataForFrame:(NSDictionary *)advFrameList;
-
-/**
- * Given the service data for a frame we know to be a UID frame, an RSSI sighting,
- * and -- optionally -- telemetry data (if we've seen it), create a new ESSBeaconInfo object to
- * represent this Eddystone
- */
-+ (instancetype)beaconInfoForUIDFrameData:(NSData *)UIDFrameData
-                                telemetry:(NSData *)telemetry
-                                     RSSI:(NSNumber *)initialRSSI;
-
-/**
  * Convenience method to save everybody from creating these things all the time.
  */
 + (CBUUID *)eddystoneServiceID;
 
-+ (ESSBeaconInfo *)testBeaconFromBeaconIDString:(NSString *)beaconID;
+/**
+ * Calculate the friendly encoded data for a UID frame. May be null if the UID data is not available.
+ */
++ (ESSBeaconUID *)dataForUIDFrame:(NSData *)rawFrameData;
+
+/**
+ * Calculate the friendly encoded data for a URL frame. May be null if the UID data is not available.
+ */
++ (ESSBeaconURL *)dataForURLFrame:(NSData *)rawFrameData;
+
+/**
+ * Calculate the friendly encoded data for a TLM frame. May be null if the UID data is not available.
+ */
++ (ESSBeaconTLM *)dataForTLMFrame:(NSData *)rawFrameData;
 
 @end

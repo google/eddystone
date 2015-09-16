@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #import <Foundation/Foundation.h>
+#import "ESSEddystone.h"
 
 @class ESSBeaconScanner;
 
@@ -21,13 +22,9 @@
 
 @optional
 
-- (void)beaconScanner:(ESSBeaconScanner *)scanner
-        didFindBeacon:(id)beaconInfo;
-- (void)beaconScanner:(ESSBeaconScanner *)scanner
-        didLoseBeacon:(id)beaconInfo;
-
-- (void)beaconScanner:(ESSBeaconScanner *)scanner
-      didUpdateBeacon:(id)beaconInfo;
+- (void)beaconScanner:(ESSBeaconScanner *)scanner didFindBeacon:(ESSBeaconInfo*)beaconInfo;
+- (void)beaconScanner:(ESSBeaconScanner *)scanner didLoseBeacon:(ESSBeaconInfo*)beaconInfo;
+- (void)beaconScanner:(ESSBeaconScanner *)scanner didUpdateBeacon:(ESSBeaconInfo*)beaconInfo updatedFrame:(ESSFrameType)frameType;
 
 @end
 
