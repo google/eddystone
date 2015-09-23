@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/google/eddystone.svg?style=flat-square)](https://travis-ci.org/google/eddystone)
+
 # Eddystone Advertising Library
 
 The Eddystone Advertising Library abstracts low level concepts of the Eddystone
