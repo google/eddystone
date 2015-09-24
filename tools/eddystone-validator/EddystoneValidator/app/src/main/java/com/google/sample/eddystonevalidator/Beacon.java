@@ -96,7 +96,6 @@ class Beacon {
   class UrlStatus {
     String urlValue;
     String urlNotSet;
-    String urlNotInvariant;
     String txPower;
 
     public String getErrors() {
@@ -106,9 +105,6 @@ class Beacon {
       }
       if (urlNotSet != null) {
         sb.append(urlNotSet).append("\n");
-      }
-      if (urlNotInvariant != null) {
-        sb.append(urlNotInvariant).append("\n");
       }
       return sb.toString().trim();
     }

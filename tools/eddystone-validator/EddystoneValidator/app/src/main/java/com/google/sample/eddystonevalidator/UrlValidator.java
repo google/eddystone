@@ -54,22 +54,7 @@ class UrlValidator {
       logDeviceError(deviceAddress, err);
     }
 
-    // If we have a previous frame, verify the URL isn't changing.
-    String url = UrlUtils.decodeUrl(serviceData);
-    if (beacon.urlServiceData == null) {
-      beacon.urlServiceData = serviceData;
-    } else {
-      String previousUrl = UrlUtils.decodeUrl(beacon.urlServiceData);
-      if (!url.equals(previousUrl)) {
-        String err = String.format("URL should be invariant.\nLast: %s\nthis: %s",
-            previousUrl, url);
-        beacon.urlStatus.urlNotInvariant = err;
-        logDeviceError(deviceAddress, err);
-        beacon.urlServiceData = serviceData;
-      }
-    }
-
-    beacon.urlStatus.urlValue = url;
+    beacon.urlStatus.urlValue = UrlUtils.decodeUrl(serviceData);
   }
 
   private static void logDeviceError(String deviceAddress, String err) {
