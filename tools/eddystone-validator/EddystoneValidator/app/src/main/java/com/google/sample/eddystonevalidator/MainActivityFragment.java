@@ -111,7 +111,6 @@ public class MainActivityFragment extends Fragment {
         }
 
         byte[] serviceData = scanRecord.getServiceData(EDDYSTONE_SERVICE_UUID);
-        Log.v(TAG, deviceAddress + " " + Utils.toHexString(serviceData));
         validateServiceData(deviceAddress, serviceData);
       }
 
@@ -247,6 +246,7 @@ public class MainActivityFragment extends Fragment {
       logDeviceError(deviceAddress, err);
       return;
     }
+    Log.v(TAG, deviceAddress + " " + Utils.toHexString(serviceData));
     switch (serviceData[0]) {
       case Constants.UID_FRAME_TYPE:
         UidValidator.validate(deviceAddress, serviceData, beacon);
