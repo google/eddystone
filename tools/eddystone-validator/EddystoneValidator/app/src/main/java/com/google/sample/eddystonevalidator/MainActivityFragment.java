@@ -64,7 +64,7 @@ public class MainActivityFragment extends Fragment {
 
   // Remove devices from the list we haven't seen in a while.
   // TODO: make this configurable.
-  private static final int LOST_TIMEOUT_MILLIS = 3000;
+  private static final int LOST_TIMEOUT_MILLIS = 5000;
 
   private static final Handler handler = new Handler(Looper.getMainLooper());
 
