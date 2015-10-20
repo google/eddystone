@@ -15,9 +15,15 @@
 package com.google.sample.eddystonevalidator;
 
 class Beacon {
+  private static final String BULLET = "● ";
   final String deviceAddress;
   int rssi;
+  // TODO: rename to make explicit the validation intent of this timestamp. We use it to
+  // remember a recent frame to make sure that non-monotonic TLM values increase.
   long timestamp = System.currentTimeMillis();
+
+  // Used to remove devices from the listview when they haven't been seen in a while.
+  long lastSeenTimestamp = System.currentTimeMillis();
 
   byte[] uidServiceData;
   byte[] tlmServiceData;
@@ -34,13 +40,13 @@ class Beacon {
     public String getErrors() {
       StringBuilder sb = new StringBuilder();
       if (errTx != null) {
-        sb.append(errTx).append("\n");
+        sb.append(BULLET).append(errTx).append("\n");
       }
       if (errUid != null) {
-        sb.append(errUid).append("\n");
+        sb.append(BULLET).append(errUid).append("\n");
       }
       if (errRfu != null) {
-        sb.append(errRfu).append("\n");
+        sb.append(BULLET).append(errRfu).append("\n");
       }
       return sb.toString().trim();
     }
@@ -64,25 +70,25 @@ class Beacon {
     public String getErrors() {
       StringBuilder sb = new StringBuilder();
       if (errIdentialFrame != null) {
-        sb.append(errIdentialFrame).append("\n");
+        sb.append(BULLET).append(errIdentialFrame).append("\n");
       }
       if (errVersion != null) {
-        sb.append(errVersion).append("\n");
+        sb.append(BULLET).append(errVersion).append("\n");
       }
       if (errVoltage != null) {
-        sb.append(errVoltage).append("\n");
+        sb.append(BULLET).append(errVoltage).append("\n");
       }
       if (errTemp != null) {
-        sb.append(errTemp).append("\n");
+        sb.append(BULLET).append(errTemp).append("\n");
       }
       if (errPduCnt != null) {
-        sb.append(errPduCnt).append("\n");
+        sb.append(BULLET).append(errPduCnt).append("\n");
       }
       if (errSecCnt != null) {
-        sb.append(errSecCnt).append("\n");
+        sb.append(BULLET).append(errSecCnt).append("\n");
       }
       if (errRfu != null) {
-        sb.append(errRfu).append("\n");
+        sb.append(BULLET).append(errRfu).append("\n");
       }
       return sb.toString().trim();
     }
@@ -101,10 +107,10 @@ class Beacon {
     public String getErrors() {
       StringBuilder sb = new StringBuilder();
       if (txPower != null) {
-        sb.append(txPower).append("\n");
+        sb.append(BULLET).append(txPower).append("\n");
       }
       if (urlNotSet != null) {
-        sb.append(urlNotSet).append("\n");
+        sb.append(BULLET).append(urlNotSet).append("\n");
       }
       return sb.toString().trim();
     }
@@ -127,13 +133,13 @@ class Beacon {
     public String getErrors() {
       StringBuilder sb = new StringBuilder();
       if (nullServiceData != null) {
-        sb.append(nullServiceData).append("\n");
+        sb.append(BULLET).append(nullServiceData).append("\n");
       }
       if (tooShortServiceData != null) {
-        sb.append(tooShortServiceData).append("\n");
+        sb.append(BULLET).append(tooShortServiceData).append("\n");
       }
       if (invalidFrameType != null) {
-        sb.append(invalidFrameType).append("\n");
+        sb.append(BULLET).append(invalidFrameType).append("\n");
       }
       return sb.toString().trim();
     }

@@ -17,8 +17,10 @@ package com.google.sample.eddystonevalidator;
 public class Utils {
   private static final char[] HEX = "0123456789ABCDEF".toCharArray();
 
-
   static String toHexString(byte[] bytes) {
+    if (bytes.length == 0) {
+      return "";
+    }
     char[] chars = new char[bytes.length * 2];
     for (int i = 0; i < bytes.length; i++) {
       int c = bytes[i] & 0xFF;
