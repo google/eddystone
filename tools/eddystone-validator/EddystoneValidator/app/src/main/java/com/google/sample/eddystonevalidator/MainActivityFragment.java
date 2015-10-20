@@ -29,6 +29,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.ParcelUuid;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -42,8 +44,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Main UI and logic for scanning and validation of results.
@@ -57,6 +61,12 @@ public class MainActivityFragment extends Fragment {
   private static final ScanSettings SCAN_SETTINGS =
       new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).setReportDelay(0)
           .build();
+
+  // Remove devices from the list we haven't seen in a while.
+  // TODO: make this configurable.
+  private static final int LOST_TIMEOUT_MILLIS = 5000;
+
+  private static final Handler handler = new Handler(Looper.getMainLooper());
 
   // The Eddystone Service UUID, 0xFEAA.
   private static final ParcelUuid EDDYSTONE_SERVICE_UUID =
@@ -95,7 +105,9 @@ public class MainActivityFragment extends Fragment {
           deviceToBeaconMap.put(deviceAddress, beacon);
           arrayAdapter.add(beacon);
         } else {
+          deviceToBeaconMap.get(deviceAddress).lastSeenTimestamp = System.currentTimeMillis();
           deviceToBeaconMap.get(deviceAddress).rssi = result.getRssi();
+
         }
 
         byte[] serviceData = scanRecord.getServiceData(EDDYSTONE_SERVICE_UUID);
@@ -124,6 +136,24 @@ public class MainActivityFragment extends Fragment {
         }
       }
     };
+
+    // Remove devices we haven't seen in a while.
+    Runnable removeLostDevices = new Runnable() {
+      @Override
+      public void run() {
+        long time = System.currentTimeMillis();
+        Iterator<Entry<String, Beacon>> itr = deviceToBeaconMap.entrySet().iterator();
+        while (itr.hasNext()) {
+          Beacon beacon = itr.next().getValue();
+          if ((time - beacon.lastSeenTimestamp) > LOST_TIMEOUT_MILLIS) {
+            itr.remove();
+            arrayAdapter.remove(beacon);
+          }
+        }
+        handler.postDelayed(this, LOST_TIMEOUT_MILLIS);
+      }
+    };
+    handler.postDelayed(removeLostDevices, LOST_TIMEOUT_MILLIS);
   }
 
   @Override
