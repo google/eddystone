@@ -30,6 +30,9 @@ public class TlmValidator {
 
   private static final String TAG = TlmValidator.class.getSimpleName();
 
+  // TODO: tests
+  static final byte MIN_SERVICE_DATA_LEN = 14;
+
   // TLM frames only support version 0x00 for now.
   static final byte EXPECTED_VERSION = 0x00;
 
@@ -83,6 +86,14 @@ public class TlmValidator {
         logDeviceError(deviceAddress, err);
         beacon.tlmServiceData = serviceData;
       }
+    }
+
+    if (serviceData.length < MIN_SERVICE_DATA_LEN) {
+      String err = String.format("TLM frame too short, needs at least %d bytes, got %d",
+          MIN_SERVICE_DATA_LEN, serviceData.length);
+      beacon.frameStatus.tooShortServiceData = err;
+      logDeviceError(deviceAddress, err);
+      return;
     }
 
     ByteBuffer buf = ByteBuffer.wrap(serviceData);

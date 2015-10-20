@@ -121,12 +121,16 @@ class Beacon {
 
   class FrameStatus {
     String nullServiceData;
+    String tooShortServiceData;
     String invalidFrameType;
 
     public String getErrors() {
       StringBuilder sb = new StringBuilder();
       if (nullServiceData != null) {
         sb.append(nullServiceData).append("\n");
+      }
+      if (tooShortServiceData != null) {
+        sb.append(tooShortServiceData).append("\n");
       }
       if (invalidFrameType != null) {
         sb.append(invalidFrameType).append("\n");
