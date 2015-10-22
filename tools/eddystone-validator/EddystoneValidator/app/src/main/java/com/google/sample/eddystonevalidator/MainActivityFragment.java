@@ -28,10 +28,12 @@ import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ParcelUuid;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -62,10 +64,6 @@ public class MainActivityFragment extends Fragment {
       new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).setReportDelay(0)
           .build();
 
-  // Remove devices from the list we haven't seen in a while.
-  // TODO: make this configurable.
-  private static final int LOST_TIMEOUT_MILLIS = 5000;
-
   private static final Handler handler = new Handler(Looper.getMainLooper());
 
   // The Eddystone Service UUID, 0xFEAA.
@@ -81,6 +79,9 @@ public class MainActivityFragment extends Fragment {
   private Map<String /* device address */, Beacon> deviceToBeaconMap = new HashMap<>();
 
   private EditText filter;
+
+  private SharedPreferences sharedPreferences;
+  private int onLostTimeoutMillis;
 
   @Override
   public void onCreate(final Bundle savedInstanceState) {
@@ -136,23 +137,9 @@ public class MainActivityFragment extends Fragment {
       }
     };
 
-    // Remove devices we haven't seen in a while.
-    Runnable removeLostDevices = new Runnable() {
-      @Override
-      public void run() {
-        long time = System.currentTimeMillis();
-        Iterator<Entry<String, Beacon>> itr = deviceToBeaconMap.entrySet().iterator();
-        while (itr.hasNext()) {
-          Beacon beacon = itr.next().getValue();
-          if ((time - beacon.lastSeenTimestamp) > LOST_TIMEOUT_MILLIS) {
-            itr.remove();
-            arrayAdapter.remove(beacon);
-          }
-        }
-        handler.postDelayed(this, LOST_TIMEOUT_MILLIS);
-      }
-    };
-    handler.postDelayed(removeLostDevices, LOST_TIMEOUT_MILLIS);
+    sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+    onLostTimeoutMillis =
+        sharedPreferences.getInt(SettingsActivity.ON_LOST_TIMEOUT_SECS_KEY, 5) * 1000;
   }
 
   @Override
@@ -194,9 +181,52 @@ public class MainActivityFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
+
+    handler.removeCallbacks(null);
+
+    int timeoutMillis =
+        sharedPreferences.getInt(SettingsActivity.ON_LOST_TIMEOUT_SECS_KEY, 5) * 1000;
+
+    if (timeoutMillis > 0) {  // 0 is special and means don't remove anything.
+      onLostTimeoutMillis = timeoutMillis;
+      setOnLostRunnable();
+    }
+
+    if (sharedPreferences.getBoolean(SettingsActivity.SHOW_DEBUG_INFO_KEY, false)) {
+      Runnable updateTitleWithNumberSightedBeacons = new Runnable() {
+        final String appName = getActivity().getString(R.string.app_name);
+
+        @Override
+        public void run() {
+          getActivity().setTitle(appName + " (" + deviceToBeaconMap.size() + ")");
+          handler.postDelayed(this, 1000);
+        }
+      };
+      handler.postDelayed(updateTitleWithNumberSightedBeacons, 1000);
+    }
+
     if (scanner != null) {
       scanner.startScan(scanFilters, SCAN_SETTINGS, scanCallback);
     }
+  }
+
+  private void setOnLostRunnable() {
+    Runnable removeLostDevices = new Runnable() {
+      @Override
+      public void run() {
+        long time = System.currentTimeMillis();
+        Iterator<Entry<String, Beacon>> itr = deviceToBeaconMap.entrySet().iterator();
+        while (itr.hasNext()) {
+          Beacon beacon = itr.next().getValue();
+          if ((time - beacon.lastSeenTimestamp) > onLostTimeoutMillis) {
+            itr.remove();
+            arrayAdapter.remove(beacon);
+          }
+        }
+        handler.postDelayed(this, onLostTimeoutMillis);
+      }
+    };
+    handler.postDelayed(removeLostDevices, onLostTimeoutMillis);
   }
 
   @Override
