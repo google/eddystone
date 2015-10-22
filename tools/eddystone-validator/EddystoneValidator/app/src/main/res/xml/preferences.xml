@@ -13,7 +13,7 @@
     <CheckBoxPreference
         android:key="showDebugInfo"
         android:title="Show debug info"
-        android:summary="Show some deubg info like the number of sighted beacons."
+        android:summary="Show some debug info like the number of sighted beacons."
         android:defaultValue="false" />
 
 </PreferenceScreen>

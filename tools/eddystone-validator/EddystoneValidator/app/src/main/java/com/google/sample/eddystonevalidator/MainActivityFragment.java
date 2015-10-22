@@ -68,7 +68,9 @@ public class MainActivityFragment extends Fragment {
 
   // The Eddystone Service UUID, 0xFEAA.
   private static final ParcelUuid EDDYSTONE_SERVICE_UUID =
-      ParcelUuid.fromString("0000FEAA-0000-1000-8000-00805F9B34FB");
+      ParcelUuid.fromString("0000DEAD-0000-1000-8000-00805F9B34FB");
+//      ParcelUuid.fromString("0000FEAA-0000-1000-8000-00805F9B34FB");
+
 
   private BluetoothLeScanner scanner;
   private BeaconArrayAdapter arrayAdapter;
