@@ -182,7 +182,7 @@ public class MainActivityFragment extends Fragment {
   public void onResume() {
     super.onResume();
 
-    handler.removeCallbacks(null);
+    handler.removeCallbacksAndMessages(null);
 
     int timeoutMillis =
         sharedPreferences.getInt(SettingsActivity.ON_LOST_TIMEOUT_SECS_KEY, 5) * 1000;
