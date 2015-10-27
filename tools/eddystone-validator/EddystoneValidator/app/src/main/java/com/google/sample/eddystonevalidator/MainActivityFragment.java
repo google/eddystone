@@ -203,6 +203,8 @@ public class MainActivityFragment extends Fragment {
         }
       };
       handler.postDelayed(updateTitleWithNumberSightedBeacons, 1000);
+    } else {
+      getActivity().setTitle(getActivity().getString(R.string.app_name));
     }
 
     if (scanner != null) {
