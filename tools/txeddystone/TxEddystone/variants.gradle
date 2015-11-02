@@ -1,0 +1,20 @@
+// Name and version the APK variants.
+
+android.applicationVariants.all { variant ->
+  def outName
+  if (project.hasProperty("applicationName")) {
+    outName = applicationName
+  } else {
+    outName = parent.name
+  }
+
+  variant.outputs.each { output ->
+    def apkName
+    if (output.zipAlign) {
+      apkName = "${outName}-${output.baseName}-${variant.versionName}.apk"
+    } else {
+      apkName = "${outName}-${output.baseName}-${variant.versionName}-unaligned.apk"
+    }
+    output.outputFile = new File(output.outputFile.parent, apkName)
+  }
+}
