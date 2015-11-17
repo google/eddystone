@@ -12,6 +12,7 @@ The app was developed on the Android Lollipop 5.0 (API 21) platform with
 Only some more recent devices are capable of using the [BluetoothLeAdvertiser](https://developer.android.com/reference/android/bluetooth/le/BluetoothLeAdvertiser.html)
 classes. The app will check if your device is compatible and show an error
 dialog if not. The Nexus 6 phone and Nexus 9 tablet are known to work well.
+We also have reports that the Android One device is capable.
 
 Note that the advertised device address will be a private resolvable addresses
 and is randomly generated. It rotates every time you start advertising, and
