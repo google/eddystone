@@ -78,6 +78,10 @@ typedef NS_ENUM(NSUInteger, ESSFrameType) {
  */
 @property(nonatomic, strong, readonly) NSNumber *txPower;
 
+/**
+ * URL broadcasted by beacon.
+ */
+@property(nonatomic, strong, readonly) NSURL *URL;
 
 /**
  * The scanner has seen a frame for an Eddystone. We'll need to know what type of Eddystone frame
@@ -92,11 +96,18 @@ typedef NS_ENUM(NSUInteger, ESSFrameType) {
 + (NSData *)telemetryDataForFrame:(NSDictionary *)advFrameList;
 
 /**
+ * Given some advertisement data that we have already verified is a URL frame (using
+ * frameTypeForFrame:), return the URL for that frame.
+ */
++ (NSURL *)URLForForFrame:(NSDictionary *)advFrameList;
+
+/**
  * Given the service data for a frame we know to be a UID frame, an RSSI sighting,
  * and -- optionally -- telemetry data (if we've seen it), create a new ESSBeaconInfo object to
  * represent this Eddystone
  */
 + (instancetype)beaconInfoForUIDFrameData:(NSData *)UIDFrameData
+                                      URL:(NSURL *)URL
                                 telemetry:(NSData *)telemetry
                                      RSSI:(NSNumber *)initialRSSI;
 

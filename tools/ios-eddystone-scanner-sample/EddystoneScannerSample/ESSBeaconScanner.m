@@ -39,7 +39,14 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
    * Then, the next time we see a UID frame for that Eddystone, we can add the most recently seen
    * telemetry frame to the sighting.
    */
-  NSMutableDictionary *_deviceIDCache;
+  NSMutableDictionary *_tlmCache;
+
+  /**
+   * This cache maps Core Bluetooth deviceIDs to NSData objects containing Eddystone url.
+   * Then, the next time we see a URL frame for that Eddystone, we can add the most recently seen
+   * url frame to the sighting.
+   */
+  NSMutableDictionary *_urlCache;
 
   /**
    * Beacons we've seen already. If we see an Eddystone and notice that we've seen it before, we
@@ -63,7 +70,8 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
 - (instancetype)init {
   if ((self = [super init]) != nil) {
     _onLostTimeout = 15.0;
-    _deviceIDCache = [NSMutableDictionary dictionary];
+    _tlmCache = [NSMutableDictionary dictionary];
+    _urlCache = [NSMutableDictionary dictionary];
     _seenEddystoneCache = [NSMutableDictionary dictionary];
     _beaconOperationsQueue = dispatch_queue_create(kBeaconsOperationQueueName, NULL);
     _centralManager = [[CBCentralManager alloc] initWithDelegate:self
@@ -117,16 +125,25 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
   // UID frame (i.e. an Eddystone "sighting"), we can include the telemetry with it.
   ESSFrameType frameType = [ESSBeaconInfo frameTypeForFrame:serviceData];
   if (frameType == kESSEddystoneTelemetryFrameType) {
-    _deviceIDCache[peripheral.identifier] = [ESSBeaconInfo telemetryDataForFrame:serviceData];
+    _tlmCache[peripheral.identifier] = [ESSBeaconInfo telemetryDataForFrame:serviceData];
+  } else if (frameType == kESSEddystoneURLFrameType) {
+    // If it's a URL frame, then save it into our cache so that the next time we get a
+    // UID frame (i.e. an Eddystone "sighting"), we can include the URL data with it.
+    _urlCache[peripheral.identifier] = [ESSBeaconInfo URLForForFrame:serviceData];
   } else if (frameType == kESSEddystoneUIDFrameType) {
     CBUUID *eddystoneServiceUUID = [ESSBeaconInfo eddystoneServiceID];
     NSData *eddystoneServiceData = serviceData[eddystoneServiceUUID];
 
     // If we have telemetry data for this Eddystone, include it in the construction of the
     // ESSBeaconInfo object. Otherwise, nil is fine.
-    NSData *telemetry = _deviceIDCache[peripheral.identifier];
+    NSData *telemetry = _tlmCache[peripheral.identifier];
+
+    // If we have URL data for this Eddystone, include it in the construction of the
+    // ESSBeaconInfo object. Otherwise, nil is fine.
+    NSURL *URL = _urlCache[peripheral.identifier];
 
     ESSBeaconInfo *beaconInfo = [ESSBeaconInfo beaconInfoForUIDFrameData:eddystoneServiceData
+                                                                     URL:URL
                                                                telemetry:telemetry
                                                                     RSSI:RSSI];
 
@@ -135,7 +152,7 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
       //       can either opt to include it with every single beacon sighting for this beacon, or
       //       delete it until we get a new / "fresh" TLM frame. We'll treat it as "report it only
       //       when you see it", so we'll delete it each time.
-      [_deviceIDCache removeObjectForKey:peripheral.identifier];
+      [_tlmCache removeObjectForKey:peripheral.identifier];
 
       // If we haven't seen this Eddystone before, fire a beaconScanner:didFindBeacon: and mark it
       // as seen.
@@ -172,8 +189,6 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
         }
       }
     }
-  } else if (frameType == kESSEddystoneURLFrameType) {
-    NSLog(@"URL frame type detected.");
   } else {
     NSLog(@"Unsupported frame type (%d) detected. Ignorning.", (int)frameType);
   }
