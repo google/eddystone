@@ -172,6 +172,8 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
         }
       }
     }
+  } else if (frameType == kESSEddystoneURLFrameType) {
+    NSLog(@"URL frame type detected.");
   } else {
     NSLog(@"Unsupported frame type (%d) detected. Ignorning.", (int)frameType);
   }
