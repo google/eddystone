@@ -129,7 +129,13 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
   } else if (frameType == kESSEddystoneURLFrameType) {
     // If it's a URL frame, then save it into our cache so that the next time we get a
     // UID frame (i.e. an Eddystone "sighting"), we can include the URL data with it.
-    _urlCache[peripheral.identifier] = [ESSBeaconInfo URLForForFrame:serviceData];
+    NSURL *url = [ESSBeaconInfo URLForForFrame:serviceData];
+    _urlCache[peripheral.identifier] = url;
+    
+    // Reporting for URL frames as well, even if the underlying hardware isn't broadcasting UID frames.
+    if ([_delegate respondsToSelector:@selector(beaconScanner:didFindURL:)]) {
+      [_delegate beaconScanner:self didFindURL:url];
+    }
   } else if (frameType == kESSEddystoneUIDFrameType) {
     CBUUID *eddystoneServiceUUID = [ESSBeaconInfo eddystoneServiceID];
     NSData *eddystoneServiceData = serviceData[eddystoneServiceUUID];
