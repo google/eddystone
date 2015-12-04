@@ -76,8 +76,7 @@ static inline BOOL IsEqualOrBothNil(id a, id b) {
   if (self.beaconType == kESSBeaconTypeEddystone) {
     return [NSString stringWithFormat:@"ESSBeaconID: beaconID=%@", self.beaconID];
   } else {
-    return [NSString stringWithFormat:@"ESSBeaconID with invalid type %lu",
-        (unsigned long)self.beaconType];
+    return [NSString stringWithFormat:@"ESSBeaconID with invalid type %lu", (unsigned long)self.beaconType];
   }
 }
 
@@ -146,27 +145,27 @@ static inline BOOL IsEqualOrBothNil(id a, id b) {
 }
 
 + (NSURL *)URLForForFrame:(NSDictionary *)advFrameList {
-    // NOTE: We assume that you've already called [ESSBeaconInfo frameTypeForFrame] to confirm that
-    //       this actually IS a URL frame.
-    NSAssert([ESSBeaconInfo frameTypeForFrame:advFrameList] == kESSEddystoneURLFrameType,
-             @"This should be a URL frame, but it's not. Whooops");
-    NSData *URLFrameData = advFrameList[[self eddystoneServiceID]];
-
-    if (!(URLFrameData.length > 0)) {
-        return nil;
-    }
-    
-    unsigned char urlFrame[20];
-    [URLFrameData getBytes:&urlFrame length:URLFrameData.length];
-    
-    NSString *urlScheme = [self getURLScheme:*(urlFrame+2)];
-    
-    NSString *urlString = urlScheme;
-    for (int i = 0; i < URLFrameData.length - 3; i++) {
-        urlString = [urlString stringByAppendingString:[self getEncodedString:*(urlFrame + i + 3)]];
-    }
-    
-    return [NSURL URLWithString:urlString];
+  // NOTE: We assume that you've already called [ESSBeaconInfo frameTypeForFrame] to confirm that
+  //       this actually IS a URL frame.
+  NSAssert([ESSBeaconInfo frameTypeForFrame:advFrameList] == kESSEddystoneURLFrameType,
+           @"This should be a URL frame, but it's not. Whooops");
+  NSData *URLFrameData = advFrameList[[self eddystoneServiceID]];
+  
+  if (!(URLFrameData.length > 0)) {
+    return nil;
+  }
+  
+  unsigned char urlFrame[20];
+  [URLFrameData getBytes:&urlFrame length:URLFrameData.length];
+  
+  NSString *urlScheme = [self getURLScheme:*(urlFrame+2)];
+  
+  NSString *urlString = urlScheme;
+  for (int i = 0; i < URLFrameData.length - 3; i++) {
+    urlString = [urlString stringByAppendingString:[self getEncodedString:*(urlFrame + i + 3)]];
+  }
+  
+  return [NSURL URLWithString:urlString];
 }
 
 - (instancetype)initWithBeaconID:(ESSBeaconID *)beaconID
@@ -201,8 +200,7 @@ static inline BOOL IsEqualOrBothNil(id a, id b) {
   if ([UIDFrameData length] == sizeof(ESSEddystoneUIDFrameFields)
       || [UIDFrameData length] == sizeof(ESSEddystoneUIDFrameFields) - sizeof(uidFrame.RFU)) {
  
-    [UIDFrameData getBytes:&uidFrame length:(sizeof(ESSEddystoneUIDFrameFields)
-        - sizeof(uidFrame.RFU))];
+    [UIDFrameData getBytes:&uidFrame length:(sizeof(ESSEddystoneUIDFrameFields) - sizeof(uidFrame.RFU))];
     
     NSData *beaconIDData = [NSData dataWithBytes:&uidFrame.beaconID
                                           length:sizeof(uidFrame.beaconID)];
@@ -224,8 +222,7 @@ static inline BOOL IsEqualOrBothNil(id a, id b) {
 }
 
 - (NSString *)description {
-  NSString *str = [NSString stringWithFormat:@"Eddystone, id: %@, RSSI: %@, txPower: %@",
-      _beaconID, _RSSI, _txPower];
+  NSString *str = [NSString stringWithFormat:@"Eddystone, id: %@, RSSI: %@, txPower: %@", _beaconID, _RSSI, _txPower];
   if (_URL) {
     str = [str stringByAppendingFormat:@", URL: %@", _URL];
   }
@@ -274,53 +271,53 @@ static inline BOOL IsEqualOrBothNil(id a, id b) {
 }
 
 + (NSString *)getURLScheme:(char)hexChar {
-    switch (hexChar) {
-        case 0x00:
-            return @"http://www.";
-        case 0x01:
-            return @"https://www.";
-        case 0x02:
-            return @"http://";
-        case 0x03:
-            return @"https://";
-        default:
-            return nil;
-    }
+  switch (hexChar) {
+    case 0x00:
+      return @"http://www.";
+    case 0x01:
+      return @"https://www.";
+    case 0x02:
+      return @"http://";
+    case 0x03:
+      return @"https://";
+    default:
+      return nil;
+  }
 }
 
 + (NSString *)getEncodedString:(char)hexChar {
-    switch (hexChar) {
-        case 0x00:
-            return @".com/";
-        case 0x01:
-            return @".org/";
-        case 0x02:
-            return @".edu/";
-        case 0x03:
-            return @".net/";
-        case 0x04:
-            return @".info/";
-        case 0x05:
-            return @".biz/";
-        case 0x06:
-            return @".gov/";
-        case 0x07:
-            return @".com";
-        case 0x08:
-            return @".org";
-        case 0x09:
-            return @".edu";
-        case 0x0a:
-            return @".net";
-        case 0x0b:
-            return @".info";
-        case 0x0c:
-            return @".biz";
-        case 0x0d:
-            return @".gov";
-        default:
-            return [NSString stringWithFormat:@"%c", hexChar];
-    }
+  switch (hexChar) {
+    case 0x00:
+      return @".com/";
+    case 0x01:
+      return @".org/";
+    case 0x02:
+      return @".edu/";
+    case 0x03:
+      return @".net/";
+    case 0x04:
+      return @".info/";
+    case 0x05:
+      return @".biz/";
+    case 0x06:
+      return @".gov/";
+    case 0x07:
+      return @".com";
+    case 0x08:
+      return @".org";
+    case 0x09:
+      return @".edu";
+    case 0x0a:
+      return @".net";
+    case 0x0b:
+      return @".info";
+    case 0x0c:
+      return @".biz";
+    case 0x0d:
+      return @".gov";
+    default:
+      return [NSString stringWithFormat:@"%c", hexChar];
+  }
 }
 
 @end
