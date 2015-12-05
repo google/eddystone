@@ -29,7 +29,9 @@ gulp.task('docs', () => {
 });
 
 gulp.task('test', [
-  'test:docs',
+// TODO(g-ortuno): Uncomment once jsdoc2md is fixed:
+// https://github.com/jsdoc2md/jsdoc-to-markdown/issues/29
+//  'test:docs',
   'test:dependencies',
   'test:browserify',
   'test:style',
