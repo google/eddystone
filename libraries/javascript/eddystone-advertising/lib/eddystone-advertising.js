@@ -1,5 +1,10 @@
 (() => {
   'use strict';
+
+  /**
+   * @module eddystone-advertising
+   */
+
   let platform = require('./platform.js');
   let EddystoneFrameType = require('./eddystone-advertisement.js').EddystoneFrameType;
 
@@ -15,19 +20,17 @@
   /**
      Exposes platform independent functions to register/unregister Eddystone
      Advertisements.
-     @class
+     @alias module:eddystone-advertising
    */
   class Eddystone {
-    /**
-       @constructs Eddystone
-     */
     constructor() {
       this._platform = platform();
       /**
-         @member Eddystone#advertisements {EddystoneAdvertisement[]} Contains
-         all previously registered advertisements.<br>
-         ***Note:** In a Chrome App, if the event page gets killed users won't
-         be able to unregister the advertisement.
+         Contains all previously registered advertisements.
+
+         ***Note:** In a Chrome App, if the event page gets killed users
+         won't be able to unregister the advertisement.
+         @type {EddystoneAdvertisement[]}
        */
       this.advertisements = [];
     }
@@ -89,5 +92,6 @@
       }
     }
   }
+
   module.exports = Eddystone;
 })();

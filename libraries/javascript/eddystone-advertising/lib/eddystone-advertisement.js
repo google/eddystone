@@ -2,12 +2,20 @@
   'use strict';
 
   /**
+   * @module eddystone-advertisement
+   * @typicalname eddystoneAd
+   * @example
+   * const eddystoneAd = require('eddystone-advertisement')
+   */
+
+  /**
      Possible Eddystone frame types.
      @see {@link https://github.com/google/eddystone/blob/master/protocol-specification.md|Protocol Specification}
      @see {@link https://github.com/google/eddystone/tree/master/eddystone-url|Eddystone-URL}
      @see {@link https://github.com/google/eddystone/tree/master/eddystone-uid|Eddystone-UID}
      @see {@link https://github.com/google/eddystone/tree/master/eddystone-tlm|Eddystone-TLM}
      @readonly
+     @alias module:eddystone-advertisement.EddystoneFrameType
      @enum {string}
    */
   const EddystoneFrameType = {
@@ -21,6 +29,7 @@
      @private
      @constant {string}
      @default
+     @alias module:eddystone-advertisement.EDDYSTONE_UUID
    */
   const EDDYSTONE_UUID = 'FEAA';
 
@@ -29,6 +38,7 @@
      @class
      @throws {TypeError} If no platform was passed.
      @throws {Error} If type is an unsupported Frame Type.
+     @alias module:eddystone-advertisement.EddystoneAdvertisement
    */
   class EddystoneAdvertisement {
     /**
@@ -87,7 +97,8 @@
       return this._platform.unregisterAdvertisement(this);
     }
   }
-  module.exports.EddystoneAdvertisement = EddystoneAdvertisement;
-  module.exports.EddystoneFrameType = EddystoneFrameType;
-  module.exports.EDDYSTONE_UUID = EDDYSTONE_UUID;
+
+  exports.EddystoneAdvertisement = EddystoneAdvertisement;
+  exports.EddystoneFrameType = EddystoneFrameType;
+  exports.EDDYSTONE_UUID = EDDYSTONE_UUID;
 })();

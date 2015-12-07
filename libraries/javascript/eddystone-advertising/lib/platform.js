@@ -1,12 +1,17 @@
 (() => {
   'use strict';
+
+  /**
+   * @module platform
+   */
+
   let EddystoneChromeOS = require('./eddystone-chrome-os.js');
   /**
      Detects what API is available in the platform.
-     @private
      @returns {Object} An object that wraps the underlying BLE
      Advertising API
      @throws {Error} If the platform is unsupported
+     @alias module:platform
    */
   function platform() {
     if (typeof chrome !== 'undefined') {

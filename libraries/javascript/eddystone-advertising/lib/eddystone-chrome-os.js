@@ -1,14 +1,18 @@
 (() => {
   'use strict';
+
+  /**
+   * @module eddystone-chrome-os
+   */
+
   let EddystoneURL = require('./eddystone-url.js');
   let EddystoneAdvertisement = require('./eddystone-advertisement.js').EddystoneAdvertisement;
   const EddystoneFrameType = require('./eddystone-advertisement.js').EddystoneFrameType;
   const EDDYSTONE_UUID = require('./eddystone-advertisement.js').EDDYSTONE_UUID;
   /**
      This class wraps the underlying ChromeOS BLE Advertising API.
-     TODO: Add link to API.
-     @private
-     @class EddystoneChromeOS
+     @todo Add link to API.
+     @alias module:eddystone-chrome-os
    */
   class EddystoneChromeOS {
     /**
