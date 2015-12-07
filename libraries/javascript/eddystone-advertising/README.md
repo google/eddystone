@@ -57,6 +57,12 @@ eddystone.advertisements.forEach(advertisement => {
 <dt><a href="#module_platform">platform</a></dt>
 <dd></dd>
 </dl>
+## Members
+<dl>
+<dt><a href="#eddystone">eddystone</a></dt>
+<dd><p>The global eddystone instance.</p>
+</dd>
+</dl>
 <a name="module_eddystone-advertisement"></a>
 ## eddystone-advertisement
 **Example**  
@@ -289,3 +295,8 @@ Detects what API is available in the platform.
 
 - <code>Error</code> If the platform is unsupported
 
+<a name="eddystone"></a>
+## eddystone
+The global eddystone instance.
+
+**Kind**: global variable  
