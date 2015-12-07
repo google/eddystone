@@ -9,6 +9,7 @@
    * The global eddystone instance.
    *
    * @global
+   * @type module:eddystone-advertising
    */
   global.eddystone = new Eddystone();
 })();
