@@ -27,6 +27,8 @@
   /**
      Represents the Advertisement being broadcasted.
      @class
+     @throws {TypeError} If no platform was passed.
+     @throws {Error} If type is an unsupported Frame Type.
    */
   class EddystoneAdvertisement {
     /**
@@ -37,8 +39,6 @@
        creating the advertisement.
        @param {Object} platform The underlying platform; used to unregister the
        advertisement.
-       @throws {TypeError} If no platform was passed.
-       @throws {Error} If type is an unsupported Frame Type.
      */
     constructor(id, options, platform) {
       if (typeof platform === 'undefined') {
