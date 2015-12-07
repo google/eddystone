@@ -46,21 +46,23 @@
       }
       this._platform = platform;
       /**
-         @member EddystoneAdvertisement#id {number} The ID of this advertisment.
+         The ID of this advertisment.
+         @type {number}
        */
       this.id = undefined;
       /**
-         @member EddystoneAdvertisement#type {string} The Eddystone Type
+         The Eddystone Type
+         @type {string}
        */
       this.type = undefined;
       /**
-         @member EddystoneAdvertisement#url {string|undefined} URL being advertised.
-         Only present if `type === 'url'`.
+         URL being advertised. Only present if `type === 'url'`.
+         @type {string|undefined}
        */
       this.url = undefined;
       /**
-         @member EddystoneAdvertisement#advertisedTxPower {number|undefined} Tx Power included in
-         the advertisement. Only present if `type === 'url'`.
+         Tx Power included in the advertisement. Only present if `type === 'url'`.
+         @type {number|undefined}
        */
       this.advertisedTxPower = undefined;
       if (options.type == EddystoneFrameType.URL) {
