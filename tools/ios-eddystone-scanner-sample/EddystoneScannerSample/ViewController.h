@@ -14,8 +14,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface BeaconScannerTableViewController : UITableViewController
 
 @end
-

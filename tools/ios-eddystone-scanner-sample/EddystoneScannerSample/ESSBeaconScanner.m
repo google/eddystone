@@ -33,21 +33,14 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
 @interface ESSBeaconScanner () <CBCentralManagerDelegate> {
   CBCentralManager *_centralManager;
   dispatch_queue_t _beaconOperationsQueue;
-
-  /**
-   * This cache maps Core Bluetooth deviceIDs to NSData objects containing Eddystone telemetry.
-   * Then, the next time we see a UID frame for that Eddystone, we can add the most recently seen
-   * telemetry frame to the sighting.
-   */
-  NSMutableDictionary *_deviceIDCache;
-
+  
   /**
    * Beacons we've seen already. If we see an Eddystone and notice that we've seen it before, we
    * won't fire a beaconScanner:didFindBeacon:, but instead will fire a
    * beaconScanner:didUpdateBeacon: for those listening (it's optional).
    */
   NSMutableDictionary *_seenEddystoneCache;
-
+  
   BOOL _shouldBeScanning;
 }
 
@@ -63,13 +56,12 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
 - (instancetype)init {
   if ((self = [super init]) != nil) {
     _onLostTimeout = 15.0;
-    _deviceIDCache = [NSMutableDictionary dictionary];
     _seenEddystoneCache = [NSMutableDictionary dictionary];
     _beaconOperationsQueue = dispatch_queue_create(kBeaconsOperationQueueName, NULL);
     _centralManager = [[CBCentralManager alloc] initWithDelegate:self
                                                            queue:_beaconOperationsQueue];
   }
-
+  
   return self;
 }
 
@@ -82,9 +74,9 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
     } else {
       NSLog(@"Starting to scan for Eddystones");
       NSArray *services = @[
-          [CBUUID UUIDWithString:kESSEddystoneServiceID]
-      ];
-
+                            [CBUUID UUIDWithString:kESSEddystoneServiceID]
+                            ];
+      
       // We do not want multiple discoveries of the same beacon to be coalesced into one.
       // (Unfortunately this is ignored when we are in the background.)
       NSDictionary *options = @{ CBCentralManagerScanOptionAllowDuplicatesKey : @YES };
@@ -110,78 +102,91 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
  didDiscoverPeripheral:(CBPeripheral *)peripheral
      advertisementData:(NSDictionary *)advertisementData
                   RSSI:(NSNumber *)RSSI {
-
+  
   NSDictionary *serviceData = advertisementData[CBAdvertisementDataServiceDataKey];
-
-  // If it's a telemetry (TLM) frame, then save it into our cache so that the next time we get a
-  // UID frame (i.e. an Eddystone "sighting"), we can include the telemetry with it.
+  
+  
+  // Build a list of Eddystone sightings. Note: as an Eddystone broadcasts up to 3 frame types
+  // (UID, URL & TLM), we incrementally update the list of sighted Eddystones as more frames are
+  // seen over time.
+  
+  ESSBeaconInfo *beaconInfo = _seenEddystoneCache[peripheral.identifier][kSeenCacheBeaconInfo];
+  
+  if(!beaconInfo) {
+    beaconInfo = [[ESSBeaconInfo alloc] init];
+  }
+  beaconInfo.identifier = peripheral.identifier;
+  beaconInfo.RSSI = RSSI;
+  
+  CBUUID *eddystoneServiceUUID = [ESSBeaconInfo eddystoneServiceID];
+  NSData *eddystoneServiceData = serviceData[eddystoneServiceUUID];
+  
   ESSFrameType frameType = [ESSBeaconInfo frameTypeForFrame:serviceData];
-  if (frameType == kESSEddystoneTelemetryFrameType) {
-    _deviceIDCache[peripheral.identifier] = [ESSBeaconInfo telemetryDataForFrame:serviceData];
-  } else if (frameType == kESSEddystoneUIDFrameType) {
-    CBUUID *eddystoneServiceUUID = [ESSBeaconInfo eddystoneServiceID];
-    NSData *eddystoneServiceData = serviceData[eddystoneServiceUUID];
-
-    // If we have telemetry data for this Eddystone, include it in the construction of the
-    // ESSBeaconInfo object. Otherwise, nil is fine.
-    NSData *telemetry = _deviceIDCache[peripheral.identifier];
-
-    ESSBeaconInfo *beaconInfo = [ESSBeaconInfo beaconInfoForUIDFrameData:eddystoneServiceData
-                                                               telemetry:telemetry
-                                                                    RSSI:RSSI];
-
-    if (beaconInfo != nil) {
-      // NOTE: At this point you can choose whether to keep or get rid of the telemetry data. You
-      //       can either opt to include it with every single beacon sighting for this beacon, or
-      //       delete it until we get a new / "fresh" TLM frame. We'll treat it as "report it only
-      //       when you see it", so we'll delete it each time.
-      [_deviceIDCache removeObjectForKey:peripheral.identifier];
-
-      // If we haven't seen this Eddystone before, fire a beaconScanner:didFindBeacon: and mark it
-      // as seen.
-      if (!_seenEddystoneCache[beaconInfo.beaconID]) {
-        if ([_delegate respondsToSelector:@selector(beaconScanner:didFindBeacon:)]) {
-          [_delegate beaconScanner:self didFindBeacon:beaconInfo];
-        }
-
-        ESSTimer *onLostTimer = [ESSTimer scheduledTimerWithDelay:_onLostTimeout
-                                                          onQueue:dispatch_get_main_queue()
-                                                            block:
-            ^(ESSTimer *timer) {
-              ESSBeaconInfo *lostBeaconInfo =
-                  _seenEddystoneCache[beaconInfo.beaconID][kSeenCacheBeaconInfo];
-              if (lostBeaconInfo) {
-                if ([_delegate respondsToSelector:@selector(beaconScanner:didLoseBeacon:)]) {
-                  [_delegate beaconScanner:self didLoseBeacon:lostBeaconInfo];
-                }
-                [_seenEddystoneCache removeObjectForKey:beaconInfo.beaconID];
-              }
-            }];
-
-        _seenEddystoneCache[beaconInfo.beaconID] = @{
-            kSeenCacheBeaconInfo: beaconInfo,
-            kSeenCacheOnLostTimer: onLostTimer,
-        };
-      } else {
-        // Reset the onLost timer.
-        [_seenEddystoneCache[beaconInfo.beaconID][kSeenCacheOnLostTimer] reschedule];
-
-        // Otherwise, we've seen it, so fire a beaconScanner:didUpdateBeacon: instead.
-        if ([_delegate respondsToSelector:@selector(beaconScanner:didUpdateBeacon:)]) {
-          [_delegate beaconScanner:self didUpdateBeacon:beaconInfo];
-        }
-      }
+  
+  switch (frameType) {
+    case kESSEddystoneUIDFrameType:
+      // Update the beacon's UID data.
+      beaconInfo.uidFrame = eddystoneServiceData;
+      break;
+      
+    case kESSEddystoneURLFrameType:
+      // Update the beacon's URL data.
+      beaconInfo.urlFrame = eddystoneServiceData;
+      break;
+      
+    case kESSEddystoneTLMFrameType:
+      // Update the beacon's TLM data.
+      beaconInfo.tlmFrame = eddystoneServiceData;
+      break;
+      
+    default:
+      // Unsupported frame type, stop processing the frame.
+      NSLog(@"Unsupported frame type (%d) detected. Ignorning.", (int)frameType);
+      return;
+  }
+  
+  // If we haven't seen this Eddystone before, fire a beaconScanner:didFindBeacon: and mark it
+  // as seen.
+  if (!_seenEddystoneCache[peripheral.identifier]) {
+    if ([_delegate respondsToSelector:@selector(beaconScanner:didFindBeacon:)]) {
+      [_delegate beaconScanner:self didFindBeacon:beaconInfo];
     }
+    
+    ESSTimer *onLostTimer = [ESSTimer scheduledTimerWithDelay:_onLostTimeout
+                                                      onQueue:dispatch_get_main_queue()
+                                                        block:
+                             ^(ESSTimer *timer) {
+                               ESSBeaconInfo *lostBeaconInfo =
+                               _seenEddystoneCache[peripheral.identifier][kSeenCacheBeaconInfo];
+                               if (lostBeaconInfo) {
+                                 if ([_delegate respondsToSelector:@selector(beaconScanner:didLoseBeacon:)]) {
+                                   [_delegate beaconScanner:self didLoseBeacon:lostBeaconInfo];
+                                 }
+                                 [_seenEddystoneCache removeObjectForKey:peripheral.identifier];
+                               }
+                             }];
+    
+    _seenEddystoneCache[peripheral.identifier] = @{
+                                                 kSeenCacheBeaconInfo: beaconInfo,
+                                                 kSeenCacheOnLostTimer: onLostTimer,
+                                                 };
   } else {
-    NSLog(@"Unsupported frame type (%d) detected. Ignorning.", (int)frameType);
+    // Reset the onLost timer.
+    [_seenEddystoneCache[peripheral.identifier][kSeenCacheOnLostTimer] reschedule];
+    
+    // Otherwise, we've seen it, so fire a beaconScanner:didUpdateBeacon: instead.
+    if ([_delegate respondsToSelector:@selector(beaconScanner:didUpdateBeacon: updatedFrame:)]) {
+      [_delegate beaconScanner:self didUpdateBeacon:beaconInfo updatedFrame:frameType];
+    }
   }
 }
 
 - (void)clearRemainingTimers {
-  for (ESSBeaconID *beaconID in _seenEddystoneCache) {
-    [_seenEddystoneCache[beaconID][kSeenCacheOnLostTimer] cancel];
+  for(id key in _seenEddystoneCache) {
+    id sighting = [_seenEddystoneCache objectForKey:key];
+    [sighting[kSeenCacheOnLostTimer] cancel];
   }
-
+  
   _seenEddystoneCache = nil;
 }
 

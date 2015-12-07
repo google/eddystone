@@ -22,86 +22,65 @@
 static NSString *const kEddystoneServiceID = @"FEAA";
 
 /**
+ * 41dBm is the signal loss that occurs over 1 meter.
+ */
+static int const txPowerAt1Meter = -41;
+
+/**
  * Eddystones can have different frame types. Within the frames, these are (some of) the possible
  * values. See the Eddystone spec for complete details.
  */
 static const uint8_t kEddystoneUIDFrameTypeID = 0x00;
+static const uint8_t kEddystoneURLFrameTypeID = 0x10;
 static const uint8_t kEddystoneTLMFrameTypeID = 0x20;
 
-// Note that for these Eddystone structures, the endianness of the individual fields is big-endian,
-// so you'll want to translate back to host format when necessary.
-// Note that in the Eddystone spec, the beaconID (UID) is divided into 2 fields, a 10 byte namespace
-// and a 6 byte instance id. However, since we ALWAYS use these in combination as a 16 byte
-// beaconID, we'll have our structure here reflect that.
-typedef struct __attribute__((packed)) {
-  uint8_t frameType;
-  int8_t  txPower;
-  uint8_t beaconID[16];
-  uint8_t RFU[2];
-} ESSEddystoneUIDFrameFields;
-
-// Test equality, ensuring that nil is equal to itself.
-static inline BOOL IsEqualOrBothNil(id a, id b) {
-  return ((a == b) || (a && b && [a isEqual:b]));
-}
-
 /**
  *=-----------------------------------------------------------------------------------------------=
- * ESSBeaconID
+ * ESSBeaconUID
  *=-----------------------------------------------------------------------------------------------=
  */
-@implementation ESSBeaconID
-
-/**
- * This property is orginally declared in a superclass (NSObject), so cannot be auto-synthesized.
- */
-@synthesize hash = _hash;
-
-- (instancetype)initWithType:(ESSBeaconType)beaconType
-                    beaconID:(NSData *)beaconID {
-  self = [super init];
-  if (self) {
-    _beaconType = beaconType;
-    _beaconID = [beaconID copy];
-    _hash = 31 * self.beaconType + [self.beaconID hash];
-  }
-  return self;
-}
+@implementation ESSBeaconUID : NSObject
 
 /**
  * So that whenever you convert this to a string, you get something useful.
  */
 - (NSString *)description {
-  if (self.beaconType == kESSBeaconTypeEddystone) {
-    return [NSString stringWithFormat:@"ESSBeaconID: beaconID=%@", self.beaconID];
-  } else {
-    return [NSString stringWithFormat:@"ESSBeaconID with invalid type %lu",
-        (unsigned long)self.beaconType];
-  }
-}
-
-- (BOOL)isEqual:(id)object {
-  if (object == self) {
-    return YES;
-  }
-  if (!self
-      || !object
-      || !([self isKindOfClass:[object class]] || [object isKindOfClass:[self class]])) {
-    return NO;
-  }
-
-  ESSBeaconID *other = (ESSBeaconID *)object;
-  return ((self.beaconType == other.beaconType) &&
-          IsEqualOrBothNil(self.beaconID, other.beaconID));
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  // Immutable object: 'copy' by reusing the same instance.
-  return self;
+  return [NSString stringWithFormat:@"ESSBeaconUID: txPower=%d idNamespace=%@ idInstance=%@", self.txPower, self.idNamespace, self.idInstance];
 }
 
 @end
 
+/**
+ *=-----------------------------------------------------------------------------------------------=
+ * ESSBeaconURL
+ *=-----------------------------------------------------------------------------------------------=
+ */
+@implementation ESSBeaconURL : NSObject
+
+/**
+ * So that whenever you convert this to a string, you get something useful.
+ */
+- (NSString *)description {
+  return [NSString stringWithFormat:@"ESSBeaconURL: txPower=%d urlString=%@", self.txPower, self.urlString];
+}
+
+@end
+
+/**
+ *=-----------------------------------------------------------------------------------------------=
+ * ESSBeaconTLM
+ *=-----------------------------------------------------------------------------------------------=
+ */
+@implementation ESSBeaconTLM : NSObject
+
+/**
+ * So that whenever you convert this to a string, you get something useful.
+ */
+- (NSString *)description {
+  return [NSString stringWithFormat:@"ESSBeaconTLM: version=%u voltage=%d temperature=%f advCount=%d uptime=%d", self.version, self.voltage, self.temperature, self.advCount, self.uptime];
+}
+
+@end
 
 /**
  *=-----------------------------------------------------------------------------------------------=
@@ -109,6 +88,23 @@ static inline BOOL IsEqualOrBothNil(id a, id b) {
  *=-----------------------------------------------------------------------------------------------=
  */
 @implementation ESSBeaconInfo
+
+/**
+ * Initialise the beacon info with predefined raw data.
+ */
+- (instancetype)initWithFrameData:(NSNumber *)RSSI
+                              uid:(NSData *)uid
+                              url:(NSData *)url
+                              tlm:(NSData *)tlm {
+  if ((self = [super init]) != nil) {
+    _RSSI = RSSI;
+    _uidFrame = [uid copy];
+    _urlFrame = [url copy];
+    _tlmFrame = [tlm copy];
+  }
+  
+  return self;
+}
 
 /**
  * Given the advertising frames from CoreBluetooth for a device with the Eddystone Service ID,
@@ -125,8 +121,10 @@ static inline BOOL IsEqualOrBothNil(id a, id b) {
 
       if (frameType == kEddystoneUIDFrameTypeID) {
         return kESSEddystoneUIDFrameType;
+      } else if (frameType == kEddystoneURLFrameTypeID) {
+        return kESSEddystoneURLFrameType;
       } else if (frameType == kEddystoneTLMFrameTypeID) {
-        return kESSEddystoneTelemetryFrameType;
+        return kESSEddystoneTLMFrameType;
       }
     }
   }
@@ -134,70 +132,20 @@ static inline BOOL IsEqualOrBothNil(id a, id b) {
   return kESSEddystoneUnknownFrameType;
 }
 
-+ (NSData *)telemetryDataForFrame:(NSDictionary *)advFrameList {
-  // NOTE: We assume that you've already called [ESSBeaconInfo frameTypeForFrame] to confirm that
-  //       this actually IS a telemetry frame.
-  NSAssert([ESSBeaconInfo frameTypeForFrame:advFrameList] == kESSEddystoneTelemetryFrameType,
-           @"This should be a TLM frame, but it's not. Whooops");
-  return advFrameList[[self eddystoneServiceID]];
-}
-
-- (instancetype)initWithBeaconID:(ESSBeaconID *)beaconID
-                         txPower:(NSNumber *)txPower
-                            RSSI:(NSNumber *)RSSI
-                       telemetry:(NSData *)telemetry {
-  if ((self = [super init]) != nil) {
-    _beaconID = beaconID;
-    _txPower = txPower;
-    _RSSI = RSSI;
-    _telemetry = [telemetry copy];
-  }
-
-  return self;
-}
-
-+ (instancetype)beaconInfoForUIDFrameData:(NSData *)UIDFrameData
-                                telemetry:(NSData *)telemetry
-                                     RSSI:(NSNumber *)RSSI {
-  // Make sure this frame has the correct frame type identifier
-  uint8_t frameType;
-  [UIDFrameData getBytes:&frameType length:1];
-  if (frameType != kEddystoneUIDFrameTypeID) {
-    return nil;
-  }
-
-  ESSEddystoneUIDFrameFields uidFrame;
-  
-  if ([UIDFrameData length] == sizeof(ESSEddystoneUIDFrameFields)
-      || [UIDFrameData length] == sizeof(ESSEddystoneUIDFrameFields) - sizeof(uidFrame.RFU)) {
- 
-    [UIDFrameData getBytes:&uidFrame length:(sizeof(ESSEddystoneUIDFrameFields)
-        - sizeof(uidFrame.RFU))];
-    
-    NSData *beaconIDData = [NSData dataWithBytes:&uidFrame.beaconID
-                                          length:sizeof(uidFrame.beaconID)];
-    
-    ESSBeaconID *beaconID = [[ESSBeaconID alloc] initWithType:kESSBeaconTypeEddystone
-                                                     beaconID:beaconIDData];
-    if (beaconID == nil) {
-      return nil;
-    }
-      
-    return [[ESSBeaconInfo alloc] initWithBeaconID:beaconID
-                                           txPower:@(uidFrame.txPower)
-                                              RSSI:RSSI
-                                         telemetry:telemetry];
-  } else {
-    return nil;
-  }
-}
-
+/**
+ * So that whenever you convert this to a string, you get something useful.
+ */
 - (NSString *)description {
-  return [NSString stringWithFormat:@"Eddystone, id: %@, RSSI: %@, txPower: %@",
-      _beaconID, _RSSI, _txPower];
+  return [NSString stringWithFormat:@"Eddystone, RSSI: %@, \nUID: %@, \nURL: %@, \nTLM: %@",
+          _RSSI,
+          [ESSBeaconInfo dataForUIDFrame:_uidFrame],
+          [ESSBeaconInfo dataForURLFrame:_urlFrame],
+          [ESSBeaconInfo dataForTLMFrame:_tlmFrame]];
 }
 
-
+/**
+ * Convenience method to save everybody from creating these things all the time.
+ */
 + (CBUUID *)eddystoneServiceID {
   static CBUUID *_singleton;
   static dispatch_once_t oncePredicate;
@@ -209,32 +157,227 @@ static inline BOOL IsEqualOrBothNil(id a, id b) {
   return _singleton;
 }
 
-+ (ESSBeaconInfo *)testBeaconFromBeaconIDString:(NSString *)beaconID {
+/**
+ * Calculate the friendly encoded data for the UID frame. May be null if the UID data is not available.
+ */
++ (ESSBeaconUID *)dataForUIDFrame:(NSData *)rawFrameData {
+  
+  // -------------------------------
+  // UID FRAME
+  // -------------------------------
+  // - txPower
+  // - 10-byte ID Namespace
+  // - 6-byte ID Instance
+  // -------------------------------
+  
+  if(!rawFrameData) {
+    return nil;
+  }
+  
+  ESSBeaconUID *uid = [[ESSBeaconUID alloc] init];
+  
+  // Get the beacon UID frame bytes.
+  const char *bytes = [rawFrameData bytes];
+  
+  // Create empty variables for the extracted frame data.
+  NSMutableString *idNamespace = [NSMutableString string];
+  NSMutableString *idInstance = [NSMutableString string];
+  
+  // Extract the UID frame details.
+  for(int i = 1; i < [rawFrameData length]; i++) {
+    
+    if(i == 1) { // Extract txPower from bytes[1]
+      
+      // Note to developers: the best way to determine the precise value to put into this field
+      // is to measure the actual output of your beacon from 1 meter away and then add 41dBm to
+      // that. 41dBm is the signal loss that occurs over 1 meter.
+      uid.txPower = (int)bytes[i] + txPowerAt1Meter;
+      
+    } else if(i >= 2 && i <= 11) { // Extract ID Namespace from bytes[2 - 11].
+      
+      [idNamespace appendString:[NSString stringWithFormat:@"%02hhX", bytes[i]]];
+      
+    } else if(i >= 12 && i <= 17) { // Extract ID Instance from bytes[12 - 17].
 
-  NSData *beaconIDData = [ESSBeaconInfo hexStringToNSData:beaconID];
-
-  ESSBeaconID *beaconIDObj = [[ESSBeaconID alloc] initWithType:kESSBeaconTypeEddystone
-                                                      beaconID:beaconIDData];
-  return [[ESSBeaconInfo alloc] initWithBeaconID:beaconIDObj
-                                         txPower:@(-20)
-                                            RSSI:@(-100)
-                                       telemetry:nil];
+      [idInstance appendString:[NSString stringWithFormat:@"%02hhX", bytes[i]]];
+    }
+  }
+  
+  uid.idNamespace = [NSString stringWithFormat:@"%@", idNamespace];
+  uid.idInstance = [NSString stringWithFormat:@"%@", idInstance];
+  
+  return uid;
 }
 
-+ (NSData *)hexStringToNSData:(NSString *)hexString {
-  NSMutableData *data = [[NSMutableData alloc] init];
-  unsigned char whole_byte;
-  char byte_chars[3] = {'\0','\0','\0'};
-
-  int i;
-  for (i = 0; i < [hexString length]/2; i++) {
-    byte_chars[0] = [hexString characterAtIndex:i * 2];
-    byte_chars[1] = [hexString characterAtIndex:i * 2 + 1];
-    whole_byte = strtol(byte_chars, NULL, 16);
-    [data appendBytes:&whole_byte length:1];
+/**
+ * Calculate the friendly encoded data for the URL frame. May be null if the UID data is not available.
+ */
++ (ESSBeaconURL *)dataForURLFrame:(NSData *)rawFrameData {
+  
+  if(!rawFrameData) {
+    return nil;
   }
+  
+  // -------------------------------
+  // URL FRAME
+  // -------------------------------
+  // - txPower
+  // - URL Scheme
+  // - Encoded URL
+  // -------------------------------
+  
+  ESSBeaconURL *url = [[ESSBeaconURL alloc] init];
+  
+  
+  
+  // Get the beacon URL frame bytes.
+  const char *bytes = [rawFrameData bytes];
+  
+  // Create empty variables for the extracted frame data.
+  NSMutableString *urlString = [NSMutableString string];
+  
+  // Extract the UID frame details.
+  for(int i = 1; i < [rawFrameData length]; i++) {
+    
+    if(i == 1) { // Extract txPower from bytes[1]
+      
+      // Note to developers: the best way to determine the precise value to put into this field
+      // is to measure the actual output of your beacon from 1 meter away and then add 41dBm to
+      // that. 41dBm is the signal loss that occurs over 1 meter.
+      url.txPower = (int)bytes[i] + txPowerAt1Meter;
+      
+    } else if(i == 2) { // Extract the URL Scheme from bytes[2].
+      
+      switch (bytes[i]) {
+        case 0x00:    [urlString appendString:@"http://www."];  break;
+        case 0x01:    [urlString appendString:@"https://www."]; break;
+        case 0x02:    [urlString appendString:@"http://"];      break;
+        case 0x03:    [urlString appendString:@"https://"];     break;
+      }
+      
+    } else if(i >= 3) { // Extract ID Instance from bytes[3 - 20].
+      
+      switch (bytes[i]) {
+        case 0x00:    [urlString appendString:@".com/"];    break;
+        case 0x01:    [urlString appendString:@".org/"];    break;
+        case 0x02:    [urlString appendString:@".edu/"];    break;
+        case 0x03:    [urlString appendString:@".net/"];    break;
+        case 0x04:    [urlString appendString:@".info/"];   break;
+        case 0x05:    [urlString appendString:@".biz/"];    break;
+        case 0x06:    [urlString appendString:@".gov/"];    break;
+        case 0x07:    [urlString appendString:@".com"];     break;
+        case 0x08:    [urlString appendString:@".org"];     break;
+        case 0x09:    [urlString appendString:@".edu"];     break;
+        case 0x0a:    [urlString appendString:@".net"];     break;
+        case 0x0b:    [urlString appendString:@".info"];    break;
+        case 0x0c:    [urlString appendString:@".biz"];     break;
+        case 0x0d:    [urlString appendString:@".gov"];     break;
+        default:      [urlString appendString:[NSString stringWithFormat:@"%c", bytes[i]]];     break;
+      }
+    }
+  }
+  
+  url.urlString = [NSString stringWithFormat:@"%@", urlString];
+  
+  return url;
+}
 
-  return data;
+/**
+ * Calculate the friendly encoded data for the TLM frame. May be null if the UID data is not available.
+ */
++ (ESSBeaconTLM *)dataForTLMFrame:(NSData *)rawFrameData {
+  
+  if(!rawFrameData) {
+    return nil;
+  }
+  
+  // -------------------------------
+  // TLM FRAME
+  // -------------------------------
+  // - TLM version
+  // - Battery voltage 1 mV/bit
+  // - Beacon temperature
+  // - Advertising PDU count
+  // - Time since power-on or reboot
+  // -------------------------------
+  
+  ESSBeaconTLM *tlm = [[ESSBeaconTLM alloc] init];
+  
+  
+  /*
+   1	Version	TLM version, value = 0x00
+   2	VBATT[0]	Battery voltage, 1 mV/bit
+   3	VBATT[1]
+   4	TEMP[0]	Beacon temperature
+   5	TEMP[1]
+   6	ADV_CNT[0]	Advertising PDU count
+   7	ADV_CNT[1]
+   8	ADV_CNT[2]
+   9	ADV_CNT[3]
+   10	SEC_CNT[0]	Time since power-on or reboot
+   11	SEC_CNT[1]
+   12	SEC_CNT[2]
+   13	SEC_CNT[3]
+   */
+  
+  // Get the beacon TLM frame bytes.
+  const char *bytes = [rawFrameData bytes];
+  
+  // Create empty variables for the extracted frame data.
+  NSMutableString *version = [NSMutableString new];
+  NSMutableString *voltage = [NSMutableString new];
+  NSMutableString *temperature = [NSMutableString new];
+  NSMutableString *advCount = [NSMutableString new];
+  NSMutableString *uptime = [NSMutableString new];
+  
+  for(int i = 1; i < [rawFrameData length]; i++) {
+    
+    NSString *hexString = [NSString stringWithFormat:@"%02hhX", bytes[i]];
+    
+    if(i == 1) { // Extract version from bytes[1].
+      [version appendString:hexString];
+    } else if(i >= 2 && i <= 3) { // Extract voltage from bytes[2 - 3].
+      [voltage appendString:hexString];
+    } else if(i >= 4 && i <= 5) { // Extract temperature from bytes[4 - 5].
+      [temperature appendString:hexString];
+    } else if(i >= 6 && i <= 9) { // Extract adv count from bytes[6 - 9].
+      [advCount appendString:hexString];
+    } else if(i >= 10 && i <= 13) { // Extract uptime from bytes[10 - 13].
+      [uptime appendString:hexString];
+    }
+  }
+  
+  // Calculate the beacon voltage value.
+  unsigned int versionOutVal;
+  [[NSScanner scannerWithString:version] scanHexInt:&versionOutVal];
+  tlm.version = versionOutVal;
+  
+  // Calculate the beacon voltage value.
+  unsigned int voltageOutVal;
+  [[NSScanner scannerWithString:voltage] scanHexInt:&voltageOutVal];
+  tlm.voltage = voltageOutVal;
+  
+  // Calculate the beacon temperature value from the 8.8 fix point notation.
+  unsigned int temperatureOutVal;
+  [[NSScanner scannerWithString:temperature] scanHexInt:&temperatureOutVal];
+  tlm.temperature = (double)temperatureOutVal / (double)256;
+  
+  // Calculate the beacon advertising PDU count.
+  unsigned int advOutVal;
+  [[NSScanner scannerWithString:advCount] scanHexInt:&advOutVal];
+  tlm.advCount = advOutVal;
+  
+  // Caculate the beacon up time.
+  unsigned int uptimeOutVal;
+  [[NSScanner scannerWithString:uptime] scanHexInt:&uptimeOutVal];
+  tlm.uptime = uptimeOutVal;
+  
+  return tlm;
+}
+
+- (double)int88toDouble:(unsigned int)val {
+  /* no error-checking on range of 'val' */
+  return (val>>8) + (val & 0xFF)/100.;
 }
 
 @end
