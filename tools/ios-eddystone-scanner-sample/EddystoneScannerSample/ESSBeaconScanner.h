@@ -29,6 +29,9 @@
 - (void)beaconScanner:(ESSBeaconScanner *)scanner
       didUpdateBeacon:(id)beaconInfo;
 
+- (void)beaconScanner:(ESSBeaconScanner *)scanner
+           didFindURL:(NSURL *)url;
+
 @end
 
 @interface ESSBeaconScanner : NSObject
