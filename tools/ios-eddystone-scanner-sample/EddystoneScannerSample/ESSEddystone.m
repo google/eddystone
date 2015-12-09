@@ -76,7 +76,8 @@ static inline BOOL IsEqualOrBothNil(id a, id b) {
   if (self.beaconType == kESSBeaconTypeEddystone) {
     return [NSString stringWithFormat:@"ESSBeaconID: beaconID=%@", self.beaconID];
   } else {
-    return [NSString stringWithFormat:@"ESSBeaconID with invalid type %lu", (unsigned long)self.beaconType];
+    return [NSString stringWithFormat:@"ESSBeaconID with invalid type %lu",
+            (unsigned long)self.beaconType];
   }
 }
 
@@ -200,7 +201,8 @@ static inline BOOL IsEqualOrBothNil(id a, id b) {
   if ([UIDFrameData length] == sizeof(ESSEddystoneUIDFrameFields)
       || [UIDFrameData length] == sizeof(ESSEddystoneUIDFrameFields) - sizeof(uidFrame.RFU)) {
  
-    [UIDFrameData getBytes:&uidFrame length:(sizeof(ESSEddystoneUIDFrameFields) - sizeof(uidFrame.RFU))];
+    [UIDFrameData getBytes:&uidFrame length:(sizeof(ESSEddystoneUIDFrameFields)
+                                             - sizeof(uidFrame.RFU))];
     
     NSData *beaconIDData = [NSData dataWithBytes:&uidFrame.beaconID
                                           length:sizeof(uidFrame.beaconID)];
@@ -222,7 +224,8 @@ static inline BOOL IsEqualOrBothNil(id a, id b) {
 }
 
 - (NSString *)description {
-  NSString *str = [NSString stringWithFormat:@"Eddystone, id: %@, RSSI: %@, txPower: %@", _beaconID, _RSSI, _txPower];
+  NSString *str = [NSString stringWithFormat:@"Eddystone, id: %@, RSSI: %@, txPower: %@",
+                   _beaconID, _RSSI, _txPower];
   if (_URL) {
     str = [str stringByAppendingFormat:@", URL: %@", _URL];
   }

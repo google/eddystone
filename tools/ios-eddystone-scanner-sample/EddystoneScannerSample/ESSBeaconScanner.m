@@ -132,7 +132,8 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
     NSURL *url = [ESSBeaconInfo URLForForFrame:serviceData];
     _urlCache[peripheral.identifier] = url;
     
-    // Reporting for URL frames as well, even if the underlying hardware isn't broadcasting UID frames.
+    // Reporting for URL frames as well, even if the underlying hardware isn't broadcasting UID
+    // frames.
     if ([_delegate respondsToSelector:@selector(beaconScanner:didFindURL:)]) {
       [_delegate beaconScanner:self didFindURL:url];
     }
