@@ -33,12 +33,12 @@ Byte offset | Value | Description | Data Type
  2 | `0x06` | Flags data
  3 | `0x03` | Length | Complete list of 16-bit Service UUIDs. _Ibid._ § 1.1
  4 | `0x03` | Complete list of 16-bit Service UUIDs data type value
- 5 | `0xAA` | 16-bit Eddystone UUID
- 6 | `0xFE` | ...
+ 5 | `0xAA` | Lower byte of 16-bit Eddystone UUID
+ 6 | `0xFE` | Higher byte of 16-bit Eddystone UUID
  7 | `0x??` | Length | Service Data. _Ibid._ § 1.11
  8 | `0x16` | Service Data data type value
- 9 | `0xAA` | 16-bit Eddystone UUID
-10 | `0xFE` | ...
+ 9 | `0xAA` | Lower byte of 16-bit Eddystone UUID
+10 | `0xFE` | Higher byte of 16-bit Eddystone UUID
 
 With subsequent bytes comprising the frame-specific Service Data.
 
