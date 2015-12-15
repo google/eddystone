@@ -3,6 +3,7 @@
 
   /**
    * @module eddystone-chrome-os
+   * @typicalname chromeOS
    */
 
   let EddystoneURL = require('./eddystone-url.js');

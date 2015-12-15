@@ -3,6 +3,7 @@
 
   /**
    * @module eddystone-url
+   * @typicalname url
    */
 
   const EDDYSTONE_UUID = require('./eddystone-advertisement.js').EDDYSTONE_UUID;

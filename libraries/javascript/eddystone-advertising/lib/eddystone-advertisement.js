@@ -3,9 +3,9 @@
 
   /**
    * @module eddystone-advertisement
-   * @typicalname eddystoneAd
+   * @typicalname advertisement
    * @example
-   * const eddystoneAd = require('eddystone-advertisement')
+   * const advertisement = require('eddystone-advertisement')
    */
 
   /**

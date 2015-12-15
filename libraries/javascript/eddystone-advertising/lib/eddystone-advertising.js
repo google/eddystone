@@ -3,6 +3,7 @@
 
   /**
    * @module eddystone-advertising
+   * @typicalname advertising
    */
 
   let platform = require('./platform.js');

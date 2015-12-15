@@ -71,7 +71,7 @@ eddystone.advertisements.forEach(advertisement => {
 ## eddystone-advertisement
 **Example**  
 ```js
-const eddystoneAd = require('eddystone-advertisement')
+const advertisement = require('eddystone-advertisement')
 ```
 
 * [eddystone-advertisement](#module_eddystone-advertisement)
@@ -85,7 +85,7 @@ const eddystoneAd = require('eddystone-advertisement')
     * [.EddystoneFrameType](#module_eddystone-advertisement.EddystoneFrameType) : <code>enum</code>
 
 <a name="module_eddystone-advertisement.EddystoneAdvertisement"></a>
-### eddystoneAd.EddystoneAdvertisement
+### advertisement.EddystoneAdvertisement
 Represents the Advertisement being broadcasted.
 
 **Kind**: static class of <code>[eddystone-advertisement](#module_eddystone-advertisement)</code>  
@@ -142,7 +142,7 @@ Unregisters the current advertisement.
        the promise rejects the advertisment may still be broadcasting. The only
        way to recover may be to reboot your machine.  
 <a name="module_eddystone-advertisement.EddystoneFrameType"></a>
-### eddystoneAd.EddystoneFrameType : <code>enum</code>
+### advertisement.EddystoneFrameType : <code>enum</code>
 Possible Eddystone frame types.
 
 **Kind**: static constant of <code>[eddystone-advertisement](#module_eddystone-advertisement)</code>  
