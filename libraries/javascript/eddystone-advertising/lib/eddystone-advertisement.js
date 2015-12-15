@@ -35,14 +35,12 @@
 
   /**
      Represents the Advertisement being broadcasted.
-     @class
      @throws {TypeError} If no platform was passed.
      @throws {Error} If type is an unsupported Frame Type.
      @alias module:eddystone-advertisement.EddystoneAdvertisement
    */
   class EddystoneAdvertisement {
     /**
-       @constructs EddystoneAdvertisement
        @param {number} id Unique between browser restarts meaning the id will
        no longer be valid upon browser restart.
        @param {EddystoneAdvertisementOptions} options The options used when

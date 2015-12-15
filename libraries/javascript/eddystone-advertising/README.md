@@ -45,6 +45,7 @@ eddystone.advertisements.forEach(advertisement => {
 ```
 ## API
 ## Modules
+
 <dl>
 <dt><a href="#module_eddystone-advertisement">eddystone-advertisement</a></dt>
 <dd></dd>
@@ -57,12 +58,15 @@ eddystone.advertisements.forEach(advertisement => {
 <dt><a href="#module_platform">platform</a></dt>
 <dd></dd>
 </dl>
+
 ## Members
+
 <dl>
 <dt><a href="#eddystone">eddystone</a> : <code><a href="#exp_module_eddystone-advertising--Eddystone">Eddystone</a></code></dt>
 <dd><p>The global eddystone instance.</p>
 </dd>
 </dl>
+
 <a name="module_eddystone-advertisement"></a>
 ## eddystone-advertisement
 **Example**  
@@ -71,28 +75,36 @@ const eddystoneAd = require('eddystone-advertisement')
 ```
 
 * [eddystone-advertisement](#module_eddystone-advertisement)
-  * [.EddystoneAdvertisement](#module_eddystone-advertisement.EddystoneAdvertisement)
-    * [new EddystoneAdvertisement(id, options, platform)](#new_module_eddystone-advertisement.EddystoneAdvertisement_new)
-    * [.unregisterAdvertisement()](#module_eddystone-advertisement.EddystoneAdvertisement+unregisterAdvertisement) ⇒ <code>Promise.&lt;void&gt;</code>
-  * [.EddystoneFrameType](#module_eddystone-advertisement.EddystoneFrameType) : <code>enum</code>
+    * [.EddystoneAdvertisement](#module_eddystone-advertisement.EddystoneAdvertisement)
+        * [new EddystoneAdvertisement(id, options, platform)](#new_module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement)
+        * [.id](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+id) : <code>number</code>
+        * [.type](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+type) : <code>string</code>
+        * [.url](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+url) : <code>string</code> &#124; <code>undefined</code>
+        * [.advertisedTxPower](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+advertisedTxPower) : <code>number</code> &#124; <code>undefined</code>
+        * [.unregisterAdvertisement()](#module_eddystone-advertisement.EddystoneAdvertisement+unregisterAdvertisement) ⇒ <code>Promise.&lt;void&gt;</code>
+    * [.EddystoneFrameType](#module_eddystone-advertisement.EddystoneFrameType) : <code>enum</code>
 
 <a name="module_eddystone-advertisement.EddystoneAdvertisement"></a>
 ### eddystoneAd.EddystoneAdvertisement
 Represents the Advertisement being broadcasted.
 
 **Kind**: static class of <code>[eddystone-advertisement](#module_eddystone-advertisement)</code>  
-
-* [.EddystoneAdvertisement](#module_eddystone-advertisement.EddystoneAdvertisement)
-  * [new EddystoneAdvertisement(id, options, platform)](#new_module_eddystone-advertisement.EddystoneAdvertisement_new)
-  * [.unregisterAdvertisement()](#module_eddystone-advertisement.EddystoneAdvertisement+unregisterAdvertisement) ⇒ <code>Promise.&lt;void&gt;</code>
-
-<a name="new_module_eddystone-advertisement.EddystoneAdvertisement_new"></a>
-#### new EddystoneAdvertisement(id, options, platform)
 **Throws**:
 
 - <code>TypeError</code> If no platform was passed.
 - <code>Error</code> If type is an unsupported Frame Type.
 
+
+* [.EddystoneAdvertisement](#module_eddystone-advertisement.EddystoneAdvertisement)
+    * [new EddystoneAdvertisement(id, options, platform)](#new_module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement)
+    * [.id](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+id) : <code>number</code>
+    * [.type](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+type) : <code>string</code>
+    * [.url](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+url) : <code>string</code> &#124; <code>undefined</code>
+    * [.advertisedTxPower](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+advertisedTxPower) : <code>number</code> &#124; <code>undefined</code>
+    * [.unregisterAdvertisement()](#module_eddystone-advertisement.EddystoneAdvertisement+unregisterAdvertisement) ⇒ <code>Promise.&lt;void&gt;</code>
+
+<a name="new_module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement"></a>
+#### new EddystoneAdvertisement(id, options, platform)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -100,6 +112,26 @@ Represents the Advertisement being broadcasted.
 | options | <code>EddystoneAdvertisementOptions</code> | The options used when        creating the advertisement. |
 | platform | <code>Object</code> | The underlying platform; used to unregister the        advertisement. |
 
+<a name="module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+id"></a>
+#### eddystoneAdvertisement.id : <code>number</code>
+The ID of this advertisment.
+
+**Kind**: instance property of <code>[EddystoneAdvertisement](#module_eddystone-advertisement.EddystoneAdvertisement)</code>  
+<a name="module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+type"></a>
+#### eddystoneAdvertisement.type : <code>string</code>
+The Eddystone Type
+
+**Kind**: instance property of <code>[EddystoneAdvertisement](#module_eddystone-advertisement.EddystoneAdvertisement)</code>  
+<a name="module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+url"></a>
+#### eddystoneAdvertisement.url : <code>string</code> &#124; <code>undefined</code>
+URL being advertised. Only present if `type === 'url'`.
+
+**Kind**: instance property of <code>[EddystoneAdvertisement](#module_eddystone-advertisement.EddystoneAdvertisement)</code>  
+<a name="module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+advertisedTxPower"></a>
+#### eddystoneAdvertisement.advertisedTxPower : <code>number</code> &#124; <code>undefined</code>
+Tx Power included in the advertisement. Only present if `type === 'url'`.
+
+**Kind**: instance property of <code>[EddystoneAdvertisement](#module_eddystone-advertisement.EddystoneAdvertisement)</code>  
 <a name="module_eddystone-advertisement.EddystoneAdvertisement+unregisterAdvertisement"></a>
 #### eddystoneAdvertisement.unregisterAdvertisement() ⇒ <code>Promise.&lt;void&gt;</code>
 Unregisters the current advertisement.
@@ -134,11 +166,12 @@ Possible Eddystone frame types.
 ## eddystone-advertising
 
 * [eddystone-advertising](#module_eddystone-advertising)
-  * [Eddystone](#exp_module_eddystone-advertising--Eddystone) ⏏
-    * _instance_
-      * [.registerAdvertisement()](#module_eddystone-advertising--Eddystone+registerAdvertisement) ⇒ <code>Promise.&lt;EddystoneAdvertisement&gt;</code>
-    * _inner_
-      * [~EddystoneAdvertisementOptions](#module_eddystone-advertising--Eddystone..EddystoneAdvertisementOptions) : <code>Object</code>
+    * [Eddystone](#exp_module_eddystone-advertising--Eddystone) ⏏
+        * _instance_
+            * [.advertisements](#module_eddystone-advertising--Eddystone.Eddystone+advertisements) : <code>Array.&lt;EddystoneAdvertisement&gt;</code>
+            * [.registerAdvertisement()](#module_eddystone-advertising--Eddystone+registerAdvertisement) ⇒ <code>Promise.&lt;EddystoneAdvertisement&gt;</code>
+        * _inner_
+            * [~EddystoneAdvertisementOptions](#module_eddystone-advertising--Eddystone..EddystoneAdvertisementOptions) : <code>Object</code>
 
 <a name="exp_module_eddystone-advertising--Eddystone"></a>
 ### Eddystone ⏏
@@ -146,6 +179,13 @@ Exposes platform independent functions to register/unregister Eddystone
      Advertisements.
 
 **Kind**: Exported class  
+<a name="module_eddystone-advertising--Eddystone.Eddystone+advertisements"></a>
+#### eddystone.advertisements : <code>Array.&lt;EddystoneAdvertisement&gt;</code>
+Contains all previously registered advertisements.
+**Note:** In a Chrome App, if the event page gets killed users
+         won't be able to unregister the advertisement.
+
+**Kind**: instance property of <code>[Eddystone](#exp_module_eddystone-advertising--Eddystone)</code>  
 <a name="module_eddystone-advertising--Eddystone+registerAdvertisement"></a>
 #### eddystone.registerAdvertisement() ⇒ <code>Promise.&lt;EddystoneAdvertisement&gt;</code>
 Function to register an Eddystone BLE advertisement.
@@ -173,15 +213,13 @@ Object that contains the characteristics of the package to advertise.
 ## eddystone-chrome-os
 
 * [eddystone-chrome-os](#module_eddystone-chrome-os)
-  * [EddystoneChromeOS](#exp_module_eddystone-chrome-os--EddystoneChromeOS) ⏏
-    * [.registerAdvertisement(options)](#module_eddystone-chrome-os--EddystoneChromeOS.registerAdvertisement) ⇒ <code>Promise.&lt;EddystoneAdvertisement&gt;</code>
-    * [.unregisterAdvertisement(advertisement)](#module_eddystone-chrome-os--EddystoneChromeOS.unregisterAdvertisement) ⇒ <code>Promise.&lt;void&gt;</code>
-    * [._constructAdvertisement()](#module_eddystone-chrome-os--EddystoneChromeOS._constructAdvertisement) ⇒ <code>ChromeOSAdvertisement</code>
+    * [EddystoneChromeOS](#exp_module_eddystone-chrome-os--EddystoneChromeOS) ⏏
+        * [.registerAdvertisement(options)](#module_eddystone-chrome-os--EddystoneChromeOS.registerAdvertisement) ⇒ <code>Promise.&lt;EddystoneAdvertisement&gt;</code>
+        * [.unregisterAdvertisement(advertisement)](#module_eddystone-chrome-os--EddystoneChromeOS.unregisterAdvertisement) ⇒ <code>Promise.&lt;void&gt;</code>
+        * [._constructAdvertisement()](#module_eddystone-chrome-os--EddystoneChromeOS._constructAdvertisement) ⇒ <code>ChromeOSAdvertisement</code>
 
 <a name="exp_module_eddystone-chrome-os--EddystoneChromeOS"></a>
 ### EddystoneChromeOS ⏏
-This class wraps the underlying ChromeOS BLE Advertising API.
-
 **Kind**: Exported class  
 **Todo**
 
@@ -236,15 +274,24 @@ Construct the ChromeOS specific advertisement to register.
 ## eddystone-url
 
 * [eddystone-url](#module_eddystone-url)
-  * [EddystoneURL](#exp_module_eddystone-url--EddystoneURL) ⏏
-    * [.constructServiceData(url, advertisedTxPower)](#module_eddystone-url--EddystoneURL.constructServiceData) ⇒ <code>Array.&lt;number&gt;</code>
-    * [.encodeURL(url)](#module_eddystone-url--EddystoneURL.encodeURL) ⇒ <code>Array.&lt;number&gt;</code>
+    * [EddystoneURL](#exp_module_eddystone-url--EddystoneURL) ⏏
+        * [.constructServiceData(url, advertisedTxPower)](#module_eddystone-url--EddystoneURL.constructServiceData) ⇒ <code>Array.&lt;number&gt;</code>
+        * [.encodeURL(url)](#module_eddystone-url--EddystoneURL.encodeURL) ⇒ <code>Array.&lt;number&gt;</code>
 
 <a name="exp_module_eddystone-url--EddystoneURL"></a>
 ### EddystoneURL ⏏
-This class provides helper functions that relate to Eddystone-URL.
-
 **Kind**: Exported class  
+**Throws**:
+
+- <code>Error</code> If the Tx Power value is not in the allowed range. See
+     [Tx Power Level](https://github.com/google/eddystone/tree/master/eddystone-url#tx-power-level).
+- <code>Error</code> If the URL Scheme prefix is unsupported. For a list of
+     supported Scheme prefixes see
+     [URL Scheme Prefix](https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix)
+- <code>Error</code> If the URL contains an invalid character. For a list of
+     invalid characters see the Note in
+     [HTTP URL Encoding](https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding)
+
 **See**: [Eddystone-URL](https://github.com/google/eddystone/tree/master/eddystone-url)  
 <a name="module_eddystone-url--EddystoneURL.constructServiceData"></a>
 #### EddystoneURL.constructServiceData(url, advertisedTxPower) ⇒ <code>Array.&lt;number&gt;</code>
