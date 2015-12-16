@@ -4,9 +4,9 @@
 
   /**
    * @module eddystone-advertisement
-   * @typicalname eddystoneAd
+   * @typicalname advertisement
    * @example
-   * const eddystoneAd = require('eddystone-advertisement')
+   * const advertisement = require('eddystone-advertisement')
    */
 
   /**
@@ -36,14 +36,12 @@
 
   /**
      Represents the Advertisement being broadcasted.
-     @class
      @throws {TypeError} If no platform was passed.
      @throws {Error} If type is an unsupported Frame Type.
      @alias module:eddystone-advertisement.EddystoneAdvertisement
    */
   class EddystoneAdvertisement {
     /**
-       @constructs EddystoneAdvertisement
        @param {number} id Unique between browser restarts meaning the id will
        no longer be valid upon browser restart.
        @param {EddystoneAdvertisementOptions} options The options used when
@@ -110,6 +108,7 @@
 
   /**
    * @module eddystone-advertising
+   * @typicalname advertising
    */
 
   let platform = require('./platform.js');
@@ -209,6 +208,7 @@
 
   /**
    * @module eddystone-chrome-os
+   * @typicalname chromeOS
    */
 
   let EddystoneURL = require('./eddystone-url.js');
@@ -313,6 +313,7 @@
 
   /**
    * @module eddystone-url
+   * @typicalname url
    */
 
   const EDDYSTONE_UUID = require('./eddystone-advertisement.js').EDDYSTONE_UUID;
