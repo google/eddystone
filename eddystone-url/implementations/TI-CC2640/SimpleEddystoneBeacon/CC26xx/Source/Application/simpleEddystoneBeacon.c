@@ -376,13 +376,13 @@ static char* eddystoneURLEncoding[EDDYSTONE_URL_ENCODING_MAX] =
   ".info/",
   ".biz/",
   ".gov/",
-  ".com/",
-  ".org/",
-  ".edu/",
-  ".net/",
-  ".info/",
-  ".biz/",
-  ".gov/"
+  ".com",
+  ".org",
+  ".edu",
+  ".net",
+  ".info",
+  ".biz",
+  ".gov"
 };
 
 static uint32 advCount = 0;
