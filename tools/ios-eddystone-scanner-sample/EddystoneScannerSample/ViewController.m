@@ -51,5 +51,8 @@
   NSLog(@"I Updated an Eddystone!: %@", beaconInfo);
 }
 
+- (void)beaconScanner:(ESSBeaconScanner *)scanner didFindURL:(NSURL *)url {
+  NSLog(@"I Saw an URL!: %@", url);
+}
 
 @end
