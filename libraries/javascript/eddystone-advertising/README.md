@@ -76,7 +76,7 @@ const advertisement = require('eddystone-advertisement')
 
 * [eddystone-advertisement](#module_eddystone-advertisement)
     * [.EddystoneAdvertisement](#module_eddystone-advertisement.EddystoneAdvertisement)
-        * [new EddystoneAdvertisement(id, options, platform)](#new_module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement)
+        * [new EddystoneAdvertisement(id, options, platform)](#new_module_eddystone-advertisement.EddystoneAdvertisement_new)
         * [.id](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+id) : <code>number</code>
         * [.type](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+type) : <code>string</code>
         * [.url](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+url) : <code>string</code> &#124; <code>undefined</code>
@@ -89,22 +89,22 @@ const advertisement = require('eddystone-advertisement')
 Represents the Advertisement being broadcasted.
 
 **Kind**: static class of <code>[eddystone-advertisement](#module_eddystone-advertisement)</code>  
-**Throws**:
-
-- <code>TypeError</code> If no platform was passed.
-- <code>Error</code> If type is an unsupported Frame Type.
-
 
 * [.EddystoneAdvertisement](#module_eddystone-advertisement.EddystoneAdvertisement)
-    * [new EddystoneAdvertisement(id, options, platform)](#new_module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement)
+    * [new EddystoneAdvertisement(id, options, platform)](#new_module_eddystone-advertisement.EddystoneAdvertisement_new)
     * [.id](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+id) : <code>number</code>
     * [.type](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+type) : <code>string</code>
     * [.url](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+url) : <code>string</code> &#124; <code>undefined</code>
     * [.advertisedTxPower](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+advertisedTxPower) : <code>number</code> &#124; <code>undefined</code>
     * [.unregisterAdvertisement()](#module_eddystone-advertisement.EddystoneAdvertisement+unregisterAdvertisement) ⇒ <code>Promise.&lt;void&gt;</code>
 
-<a name="new_module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement"></a>
+<a name="new_module_eddystone-advertisement.EddystoneAdvertisement_new"></a>
 #### new EddystoneAdvertisement(id, options, platform)
+**Throws**:
+
+- <code>TypeError</code> If no platform was passed.
+- <code>Error</code> If type is an unsupported Frame Type.
+
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -220,6 +220,8 @@ Object that contains the characteristics of the package to advertise.
 
 <a name="exp_module_eddystone-chrome-os--EddystoneChromeOS"></a>
 ### EddystoneChromeOS ⏏
+This class wraps the underlying ChromeOS BLE Advertising API.
+
 **Kind**: Exported class  
 **Todo**
 
@@ -280,18 +282,9 @@ Construct the ChromeOS specific advertisement to register.
 
 <a name="exp_module_eddystone-url--EddystoneURL"></a>
 ### EddystoneURL ⏏
+This class provides helper functions that relate to Eddystone-URL.
+
 **Kind**: Exported class  
-**Throws**:
-
-- <code>Error</code> If the Tx Power value is not in the allowed range. See
-     [Tx Power Level](https://github.com/google/eddystone/tree/master/eddystone-url#tx-power-level).
-- <code>Error</code> If the URL Scheme prefix is unsupported. For a list of
-     supported Scheme prefixes see
-     [URL Scheme Prefix](https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix)
-- <code>Error</code> If the URL contains an invalid character. For a list of
-     invalid characters see the Note in
-     [HTTP URL Encoding](https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding)
-
 **See**: [Eddystone-URL](https://github.com/google/eddystone/tree/master/eddystone-url)  
 <a name="module_eddystone-url--EddystoneURL.constructServiceData"></a>
 #### EddystoneURL.constructServiceData(url, advertisedTxPower) ⇒ <code>Array.&lt;number&gt;</code>
