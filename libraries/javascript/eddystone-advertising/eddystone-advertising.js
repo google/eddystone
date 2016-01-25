@@ -3,12 +3,20 @@
   'use strict';
 
   /**
+   * @module eddystone-advertisement
+   * @typicalname advertisement
+   * @example
+   * const advertisement = require('eddystone-advertisement')
+   */
+
+  /**
      Possible Eddystone frame types.
      @see {@link https://github.com/google/eddystone/blob/master/protocol-specification.md|Protocol Specification}
      @see {@link https://github.com/google/eddystone/tree/master/eddystone-url|Eddystone-URL}
      @see {@link https://github.com/google/eddystone/tree/master/eddystone-uid|Eddystone-UID}
      @see {@link https://github.com/google/eddystone/tree/master/eddystone-tlm|Eddystone-TLM}
      @readonly
+     @alias module:eddystone-advertisement.EddystoneFrameType
      @enum {string}
    */
   const EddystoneFrameType = {
@@ -22,24 +30,24 @@
      @private
      @constant {string}
      @default
+     @alias module:eddystone-advertisement.EDDYSTONE_UUID
    */
   const EDDYSTONE_UUID = 'FEAA';
 
   /**
      Represents the Advertisement being broadcasted.
-     @class
+     @throws {TypeError} If no platform was passed.
+     @throws {Error} If type is an unsupported Frame Type.
+     @alias module:eddystone-advertisement.EddystoneAdvertisement
    */
   class EddystoneAdvertisement {
     /**
-       @constructs EddystoneAdvertisement
        @param {number} id Unique between browser restarts meaning the id will
        no longer be valid upon browser restart.
        @param {EddystoneAdvertisementOptions} options The options used when
        creating the advertisement.
        @param {Object} platform The underlying platform; used to unregister the
        advertisement.
-       @throws {TypeError} If no platform was passed.
-       @throws {Error} If type is an unsupported Frame Type.
      */
     constructor(id, options, platform) {
       if (typeof platform === 'undefined') {
@@ -47,21 +55,23 @@
       }
       this._platform = platform;
       /**
-         @member EddystoneAdvertisement#id {number} The ID of this advertisment.
+         The ID of this advertisment.
+         @type {number}
        */
       this.id = undefined;
       /**
-         @member EddystoneAdvertisement#type {string} The Eddystone Type
+         The Eddystone Type
+         @type {string}
        */
       this.type = undefined;
       /**
-         @member EddystoneAdvertisement#url {string|undefined} URL being advertised.
-         Only present if `type === 'url'`.
+         URL being advertised. Only present if `type === 'url'`.
+         @type {string|undefined}
        */
       this.url = undefined;
       /**
-         @member EddystoneAdvertisement#advertisedTxPower {number|undefined} Tx Power included in
-         the advertisement. Only present if `type === 'url'`.
+         Tx Power included in the advertisement. Only present if `type === 'url'`.
+         @type {number|undefined}
        */
       this.advertisedTxPower = undefined;
       if (options.type == EddystoneFrameType.URL) {
@@ -86,14 +96,21 @@
       return this._platform.unregisterAdvertisement(this);
     }
   }
-  module.exports.EddystoneAdvertisement = EddystoneAdvertisement;
-  module.exports.EddystoneFrameType = EddystoneFrameType;
-  module.exports.EDDYSTONE_UUID = EDDYSTONE_UUID;
+
+  exports.EddystoneAdvertisement = EddystoneAdvertisement;
+  exports.EddystoneFrameType = EddystoneFrameType;
+  exports.EDDYSTONE_UUID = EDDYSTONE_UUID;
 })();
 
 },{}],2:[function(require,module,exports){
 (() => {
   'use strict';
+
+  /**
+   * @module eddystone-advertising
+   * @typicalname advertising
+   */
+
   let platform = require('./platform.js');
   let EddystoneFrameType = require('./eddystone-advertisement.js').EddystoneFrameType;
 
@@ -109,19 +126,17 @@
   /**
      Exposes platform independent functions to register/unregister Eddystone
      Advertisements.
-     @class
+     @alias module:eddystone-advertising
    */
   class Eddystone {
-    /**
-       @constructs Eddystone
-     */
     constructor() {
       this._platform = platform();
       /**
-         @member Eddystone#advertisements {EddystoneAdvertisement[]} Contains
-         all previously registered advertisements.<br>
-         ***Note:** In a Chrome App, if the event page gets killed users won't
-         be able to unregister the advertisement.
+         Contains all previously registered advertisements.
+
+         ***Note:** In a Chrome App, if the event page gets killed users
+         won't be able to unregister the advertisement.
+         @type {EddystoneAdvertisement[]}
        */
       this.advertisements = [];
     }
@@ -183,21 +198,27 @@
       }
     }
   }
+
   module.exports = Eddystone;
 })();
 
 },{"./eddystone-advertisement.js":1,"./platform.js":6}],3:[function(require,module,exports){
 (() => {
   'use strict';
+
+  /**
+   * @module eddystone-chrome-os
+   * @typicalname chromeOS
+   */
+
   let EddystoneURL = require('./eddystone-url.js');
   let EddystoneAdvertisement = require('./eddystone-advertisement.js').EddystoneAdvertisement;
   const EddystoneFrameType = require('./eddystone-advertisement.js').EddystoneFrameType;
   const EDDYSTONE_UUID = require('./eddystone-advertisement.js').EDDYSTONE_UUID;
   /**
      This class wraps the underlying ChromeOS BLE Advertising API.
-     TODO: Add link to API.
-     @private
-     @class EddystoneChromeOS
+     @todo Add link to API.
+     @alias module:eddystone-chrome-os
    */
   class EddystoneChromeOS {
     /**
@@ -290,6 +311,11 @@
 (() => {
   'use strict';
 
+  /**
+   * @module eddystone-url
+   * @typicalname url
+   */
+
   const EDDYSTONE_UUID = require('./eddystone-advertisement.js').EDDYSTONE_UUID;
 
   // If we are in a browser TextEncoder should be available already.
@@ -299,7 +325,7 @@
 
   /**
      Eddystone-URL Frame type.
-     @see {@link https://github.com/google/eddystone/tree/master/eddystone-url#frame-specification|Eddystone-URL} 
+     @see {@link https://github.com/google/eddystone/tree/master/eddystone-url#frame-specification|Eddystone-URL}
      @private
      @constant {number}
      @default
@@ -354,7 +380,15 @@
   /**
      This class provides helper functions that relate to Eddystone-URL.
      @see {@link https://github.com/google/eddystone/tree/master/eddystone-url|Eddystone-URL}
-     @class
+     @alias module:eddystone-url
+     @throws {Error} If the Tx Power value is not in the allowed range. See
+     {@link https://github.com/google/eddystone/tree/master/eddystone-url#tx-power-level|Tx Power Level}.
+     @throws {Error} If the URL Scheme prefix is unsupported. For a list of
+     supported Scheme prefixes see
+     {@link https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix|URL Scheme Prefix}
+     @throws {Error} If the URL contains an invalid character. For a list of
+     invalid characters see the Note in
+     {@link https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding|HTTP URL Encoding}
    */
   class EddystoneURL {
     /**
@@ -364,14 +398,6 @@
        @param {string} url The URL to use in the service data.
        @param {number} advertisedTxPower The Tx Power to use in the service data.
        @returns {number[]} The service data.
-       @throws {Error} If the Tx Power value is not in the allowed range. See
-       {@link https://github.com/google/eddystone/tree/master/eddystone-url#tx-power-level|Tx Power Level}.
-       @throws {Error} If the URL Scheme prefix is unsupported. For a list of
-       supported Scheme prefixes see
-       {@link https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix|URL Scheme Prefix}
-       @throws {Error} If the URL contains an invalid character. For a list of
-       invalid characters see the Note in
-       {@link https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding|HTTP URL Encoding}
      */
     static constructServiceData(url, advertisedTxPower) {
       // Check that it's a valid Tx Power
@@ -480,7 +506,12 @@
   // the dependency graph and load all needed modules.
   let Eddystone = require('./eddystone-advertising.js');
 
-  // browserify will replace global with window.
+  /**
+   * The global eddystone instance.
+   *
+   * @global
+   * @type module:eddystone-advertising
+   */
   global.eddystone = new Eddystone();
 })();
 
@@ -488,13 +519,18 @@
 },{"./eddystone-advertising.js":2}],6:[function(require,module,exports){
 (() => {
   'use strict';
+
+  /**
+   * @module platform
+   */
+
   let EddystoneChromeOS = require('./eddystone-chrome-os.js');
   /**
      Detects what API is available in the platform.
-     @private
      @returns {Object} An object that wraps the underlying BLE
      Advertising API
      @throws {Error} If the platform is unsupported
+     @alias module:platform
    */
   function platform() {
     if (typeof chrome !== 'undefined') {
