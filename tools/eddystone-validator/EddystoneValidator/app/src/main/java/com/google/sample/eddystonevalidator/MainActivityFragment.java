@@ -14,6 +14,7 @@
 
 package com.google.sample.eddystonevalidator;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -29,6 +30,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -58,6 +61,7 @@ public class MainActivityFragment extends Fragment {
 
   private static final String TAG = "EddystoneValidator";
   private static final int REQUEST_ENABLE_BLUETOOTH = 1;
+  private static final int PERMISSION_REQUEST_COARSE_LOCATION = 2;
 
   // An aggressive scan for nearby devices that reports immediately.
   private static final ScanSettings SCAN_SETTINGS =
@@ -243,8 +247,41 @@ public class MainActivityFragment extends Fragment {
     }
   }
 
+  @Override
+  public void onRequestPermissionsResult(
+      int requestCode, String[] permissions, int[] grantResults) {
+    switch (requestCode) {
+      case PERMISSION_REQUEST_COARSE_LOCATION: {
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+          Log.d(TAG, "PERMISSION_REQUEST_COARSE_LOCATION granted");
+        } else {
+          showFinishingAlertDialog("Coarse location access is required",
+              "App will close since the permission was denied");
+        }
+      }
+    }
+  }
+
   // Attempts to create the scanner.
   private void init() {
+    // New Android M+ permission check requirement.
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      if (getContext().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+          != PackageManager.PERMISSION_GRANTED) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("This app needs coarse location access");
+        builder.setMessage("Please grant coarse location access so this app can scan for beacons");
+        builder.setPositiveButton(android.R.string.ok, null);
+        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+          @Override
+          public void onDismiss(DialogInterface dialog) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                PERMISSION_REQUEST_COARSE_LOCATION);
+          }
+        });
+        builder.show();
+      }
+    }
     BluetoothManager manager = (BluetoothManager) getActivity().getApplicationContext()
         .getSystemService(Context.BLUETOOTH_SERVICE);
     BluetoothAdapter btAdapter = manager.getAdapter();
