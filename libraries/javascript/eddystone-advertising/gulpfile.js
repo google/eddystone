@@ -58,8 +58,7 @@ gulp.task('test:docs', () => {
 
 gulp.task('test:dependencies', () => {
   return gulp.src('package.json')
-             .pipe(david({error404: true}))
-             .pipe(david.reporter);
+             .pipe(david({error404: true}));
 });
 
 gulp.task('test:style', () => {
