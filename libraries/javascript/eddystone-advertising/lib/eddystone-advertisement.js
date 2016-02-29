@@ -64,23 +64,41 @@
        */
       this.type = undefined;
       /**
+         Tx Power included in the advertisement. Only present if `type === 'url'`
+         or `type === 'uid'`.
+         @type {number|undefined}
+       */
+      this.advertisedTxPower = undefined;
+      /**
          URL being advertised. Only present if `type === 'url'`.
          @type {string|undefined}
        */
       this.url = undefined;
       /**
-         Tx Power included in the advertisement. Only present if `type === 'url'`.
-         @type {number|undefined}
+         Hex string of the namespace being advertised. Only present if `type === 'uid'`.
+         @type {string|undefined}
        */
-      this.advertisedTxPower = undefined;
+      this.namespace = undefined;
+      /**
+         Hex string of the instance being advertised. Only present if `type === 'uid'`.
+         @type {string|undefined}
+      */
+      this.instance = undefined;
+
       if (options.type == EddystoneFrameType.URL) {
         this.id = id;
         this.type = options.type;
         this.url = options.url;
         this.advertisedTxPower = options.advertisedTxPower;
+      } else if (options.type == EddystoneFrameType.UID) {
+        this.id = id;
+        this.type = options.type;
+        this.advertisedTxPower = options.advertisedTxPower;
+        this.namespace = options.namespace;
+        this.instance = options.instance;
       } else {
         throw new Error('Unsupported Frame Type');
-      }
+      } 
     }
 
     /**

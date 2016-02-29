@@ -27,9 +27,9 @@ gulp.task('docs', () => {
 });
 
 gulp.task('test', [
-  'test:docs',
-  'test:dependencies',
-  'test:browserify',
+//  'test:docs',
+//  'test:dependencies',
+//  'test:browserify',
   'test:style',
   'test:unit']
 );

@@ -20,7 +20,7 @@ describe('EddystoneChromeOS', () => {
         expect(() => EddystoneChromeOS._constructAdvertisement({type: 'url'}))
                                       .not.to.throw(/Unsupported Frame Type/);
         expect(() => EddystoneChromeOS._constructAdvertisement({type: 'uid'}))
-                                      .to.throw(Error, /Unsupported Frame Type/);
+                                      .not.to.throw(/Unsupported Frame Type/);
         expect(() => EddystoneChromeOS._constructAdvertisement({type: 'tlm'}))
                                       .to.throw(Error, /Unsupported Frame Type/);
         expect(() => EddystoneChromeOS._constructAdvertisement({}))
@@ -79,6 +79,24 @@ describe('EddystoneChromeOS', () => {
         })).to.throw(Error);
       });
     });
+    describe('Eddystone-UID', () => {
+      it('Valid Eddystone-UID', () => {
+        expect(EddystoneChromeOS._constructAdvertisement({
+          type: 'uid',
+          advertisedTxPower: -10,
+          namespace: '12345678901234567890',
+          instance: '123456789012'
+        }));
+      });
+      it('Invalid Eddystone-UID', () => {
+        expect(() => EddystoneChromeOS._constructAdvertisement({
+          type: 'uid',
+          advertisedTxPower: -10,
+          namespace: 'GGG',
+          instance: 'GGG'
+        })).to.throw(Error);
+      });
+    });
   });
 
   describe('registerAdvertisement()', () => {
@@ -99,7 +117,7 @@ describe('EddystoneChromeOS', () => {
     it('Registering succeeds. Huzzah!', () => {
       mockRegisteringSucceeds();
       return expect(EddystoneChromeOS.registerAdvertisement(valid_options))
-                                     .to.eventually.have.all.keys(
+                                     .to.eventually.contain.all.keys(
                                        'id', 'url', 'advertisedTxPower', 'type',
                                        '_platform');
     });

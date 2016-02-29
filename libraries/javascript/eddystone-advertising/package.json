@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "gulp test",
+    "unit-tests": "gulp test:unit",
     "generate-docs": "gulp docs",
     "browserify": "gulp browserify"
   },

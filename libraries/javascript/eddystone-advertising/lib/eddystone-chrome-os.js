@@ -7,6 +7,7 @@
    */
 
   let EddystoneURL = require('./eddystone-url.js');
+  let EddystoneUID = require('./eddystone-uid.js');
   let EddystoneAdvertisement = require('./eddystone-advertisement.js').EddystoneAdvertisement;
   const EddystoneFrameType = require('./eddystone-advertisement.js').EddystoneFrameType;
   const EDDYSTONE_UUID = require('./eddystone-advertisement.js').EDDYSTONE_UUID;
@@ -84,18 +85,23 @@
        https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding
      */
     static _constructAdvertisement(options) {
+      let data;
       if (options.type === EddystoneFrameType.URL) {
-        return {
-          type: 'broadcast',
-          serviceUuids: [EDDYSTONE_UUID],
-          serviceData: [{
-            uuid: EDDYSTONE_UUID,
-            data: EddystoneURL.constructServiceData(options.url, options.advertisedTxPower)
-          }]
-        };
+        data = EddystoneURL.constructServiceData(options.url, options.advertisedTxPower);
+      } else if (options.type === EddystoneFrameType.UID) {
+        data = EddystoneUID.constructServiceData(
+          options.advertisedTxPower, options.namespace, options.instance);
       } else {
         throw new Error('Unsupported Frame Type: ' + options.type);
       }
+      return {
+        type: 'broadcast',
+        serviceUuids: [EDDYSTONE_UUID],
+        serviceData: [{
+          uuid: EDDYSTONE_UUID,
+          data: data
+        }]
+      };
     }
   }
   module.exports = EddystoneChromeOS;
