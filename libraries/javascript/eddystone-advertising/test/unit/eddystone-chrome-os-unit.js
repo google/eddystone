@@ -1,22 +1,18 @@
 // jshint node: true
 // We need this so chai `expect` statements don't throw an error.
 // jshint expr: true
+'use strict';
 
-// Ignore vars in require statements
-// jshint ignore:start
-var chai = require('chai');
-var sinon = require('sinon');
-var expect = chai.expect;
-var chaiAsPromised = require('chai-as-promised');
+import chai, {expect} from 'chai';
+import sinon from 'sinon';
+import chaiAsPromised from 'chai-as-promised';
 chai.use(chaiAsPromised);
 
-var EddystoneAdvertisement = require('../../lib/eddystone-advertisement.js').EddystoneAdvertisement;;
-var EddystoneURL = require('../../lib/eddystone-url.js');
-var EddystoneChromeOS = require('../../lib/eddystone-chrome-os.js');
-// jshint ignore:end
+import {EddystoneAdvertisement} from '../../lib/eddystone-advertisement.js';
+import EddystoneURL from '../../lib/eddystone-url.js';
+import EddystoneChromeOS from '../../lib/eddystone-chrome-os.js';
 
 describe('EddystoneChromeOS', () => {
-  'use strict';
   after(() => global.chrome = undefined);
 
   describe('constructAdvertisement()', () => {
@@ -149,53 +145,48 @@ function cleanChromeMock() {
 
 // This method sets up `chrome` mock so registering a BLE advertisment fails.
 function mockRegisteringFailsWithMessage() {
-  'use strict';
   _checkAndSetChromeMock();
 
   let fail_to_register = sinon.stub();
   fail_to_register.onFirstCall().callsArgAsync(1);
   fail_to_register.throws(new Error('This stub should only be used once.'));
-  chrome.bluetoothLowEnergy.registerAdvertisement = fail_to_register;
+  global.chrome.bluetoothLowEnergy.registerAdvertisement = fail_to_register;
 
-  chrome.runtime.lastError = {message: 'Failed to register advertisement.'};
+  global.chrome.runtime.lastError = {message: 'Failed to register advertisement.'};
 }
 
 // This method sets up `chrome` mock so that registering a BLE advertisement
 // succeeds.
 function mockRegisteringSucceeds() {
-  'use strict';
   _checkAndSetChromeMock();
 
   let register = sinon.stub();
   register.onFirstCall().callsArgWithAsync(1);
-  chrome.bluetoothLowEnergy.registerAdvertisement = register;
+  global.chrome.bluetoothLowEnergy.registerAdvertisement = register;
 }
   // This method sets up `chrome` mock so that unregistering a BLE advertisement
   // fails.
 function mockUnregisteringFails() {
-  'use strict';
   _checkAndSetChromeMock();
 
   let unregister = sinon.stub();
   unregister.onFirstCall().callsArgAsync(1);
-  chrome.bluetoothLowEnergy.unregisterAdvertisement = unregister;
+  global.chrome.bluetoothLowEnergy.unregisterAdvertisement = unregister;
 
-  chrome.runtime.lastError = {message: 'Failed to unregister.'};
+  global.chrome.runtime.lastError = {message: 'Failed to unregister.'};
 }
 
 // This method sets up `chrome` mock so that unregistering a BLE advertisement
 // succeeds.
 function mockUnregisteringSucceeds() {
-  'use strict';
   _checkAndSetChromeMock();
 
   let unregister = sinon.stub();
   unregister.onFirstCall().callsArgAsync(1);
-  chrome.bluetoothLowEnergy.unregisterAdvertisement = unregister;
+  global.chrome.bluetoothLowEnergy.unregisterAdvertisement = unregister;
 }
 
 function _checkAndSetChromeMock() {
-  'use strict' ;
   if (typeof global.chrome !== 'undefined') {
     throw new Error('Need to clean chrome before starting another test.');
   }

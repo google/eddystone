@@ -1,19 +1,13 @@
 // jshint node: true
 // We need this so chai `expect` statements don't throw an error.
 // jshint expr: true
+'use strict';
 
-// Ignore vars in require statements
-// jshint ignore:start
-var chai = require('chai');
-var expect = chai.expect;
-
-var platform = require('../../lib/platform.js');
-var EddystoneChromeOS = require('../../lib/eddystone-chrome-os.js');
-// jshint ignore:end
+import chai, {expect} from 'chai';
+import platform from '../../lib/platform.js';
+import EddystoneChromeOS from '../../lib/eddystone-chrome-os.js';
 
 describe('Platform', () => {
-  'use strict';
-
   describe('platform()', () => {
     // Hooks
     afterEach(() => {

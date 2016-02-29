@@ -1,21 +1,17 @@
 // jshint node: true
 // We need this so chai `expect` statements don't throw an error.
 // jshint expr: true
+'use strict';
 
-// Ignore vars in require statements
-// jshint ignore:start
-var chai = require('chai');
-var sinon = require('sinon');
-var expect = chai.expect;
-var chaiAsPromised = require('chai-as-promised');
+import chai, {expect} from 'chai';
+import sinon from 'sinon';
+import chaiAsPromised from 'chai-as-promised';
 chai.use(chaiAsPromised);
 
-var EddystoneAdvertisement = require('../../lib/eddystone-advertisement.js').EddystoneAdvertisement;
+import {EddystoneAdvertisement} from '../../lib/eddystone-advertisement.js';
 // jshint ignore:end
 
 describe('EddystoneAdvertisement', () => {
-  'use strict';
-
   // Tell platform.js we are running tests.
   before(() => global._eddystone_test = true);
   // Remove global.
