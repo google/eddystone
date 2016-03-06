@@ -2,7 +2,7 @@
   'use strict';
 
   /**
-   * @modules eddystone-url
+   * @module eddystone-uid
    * @typicalname uid
    */
 
@@ -23,7 +23,7 @@
   const HEX_REGEX = /[0-9a-f]/i;
 
   /**
-     This class provides helper functions tthat relate to Eddystone-UID.
+     This class provides helper functions that relate to Eddystone-UID.
      @see {@link https://github.com/google/eddystone/tree/master/eddystone-uid|Eddystone-UID}
      @alias module:eddystone-uid
    */
@@ -53,7 +53,7 @@
        @param {number[]|string} value The value to encode.
        @throws {TypeError} If |value| is not an array or a string.
        @throws {Error} If |value| contains out-of-range numbers or characters.
-       @returns 
+       @returns {number[]} Array of bytes.
     */
     static getByteArray(value, expected_length) {
       if (typeof value === 'string') {

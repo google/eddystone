@@ -71,14 +71,6 @@
      This class provides helper functions that relate to Eddystone-URL.
      @see {@link https://github.com/google/eddystone/tree/master/eddystone-url|Eddystone-URL}
      @alias module:eddystone-url
-     @throws {Error} If the Tx Power value is not in the allowed range. See
-     {@link https://github.com/google/eddystone/tree/master/eddystone-url#tx-power-level|Tx Power Level}.
-     @throws {Error} If the URL Scheme prefix is unsupported. For a list of
-     supported Scheme prefixes see
-     {@link https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix|URL Scheme Prefix}
-     @throws {Error} If the URL contains an invalid character. For a list of
-     invalid characters see the Note in
-     {@link https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding|HTTP URL Encoding}
    */
   class EddystoneURL {
     /**

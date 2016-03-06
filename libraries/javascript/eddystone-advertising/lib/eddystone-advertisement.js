@@ -98,7 +98,7 @@
         this.instance = options.instance;
       } else {
         throw new Error('Unsupported Frame Type');
-      } 
+      }
     }
 
     /**
