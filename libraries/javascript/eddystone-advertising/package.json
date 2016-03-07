@@ -1,6 +1,6 @@
 {
   "name": "eddystone-advertising-library",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "A library to easily broadcast valid Eddystone advertisements.",
   "main": "eddystone-advertising.js",
   "directories": {
