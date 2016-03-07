@@ -1,0 +1,63 @@
+body {
+  margin: 0 5%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#frame-type-fields {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#url-fields {
+  display: flex;
+  flex-direction: row;
+}
+
+paper-input {
+  margin: 10px 5px;
+}
+
+#uid-fields {
+  display: flex;
+  flex-direction: row;
+}
+
+#url-prefix-dropdown {
+  flex: 1;
+}
+#url {
+  flex: 4;
+}
+#adv-tx-power-url, #adv-tx-power-uid {
+  flex: 1;
+}
+
+#namespace {
+  flex: 2;
+}
+#instance {
+  flex: 1.2;
+}
+
+#buttons {
+  display: flex;
+  flex-direction: row-reverse;
+}
+paper-button {
+  color: #fff;
+}
+#update-button {
+  background-color: #4285f4;
+}
+#stop-button {
+  background-color: #db4437;
+}
+
+#close-toast {
+  color: #db4437;
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Eddystone Chrome App</title>
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+  <link rel="import" href="bower_components/paper-input/paper-input.html">
+  <link rel="import" href="bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+  <link rel="import" href="bower_components/paper-menu/paper-menu.html">
+  <link rel="import" href="bower_components/paper-item/paper-item.html">
+  <link rel="import" href="bower_components/paper-button/paper-button.html">
+  <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
+  <link rel="import" href="bower_components/paper-toast/paper-toast.html">
+  <link rel="stylesheet" is="custom-style" href="styles.css">
+</head>
+
+<body unresolved>
+  <div id="frame-type-fields">
+    <paper-dropdown-menu label="Eddystone Frame Type" id="frame-type-dropdown">
+      <paper-menu class="dropdown-content" id="frame-type">
+        <paper-item>URL</paper-item>
+        <paper-item>UID</paper-item>
+      </paper-menu>
+    </paper-dropdown-menu>
+  </div>
+
+  <div id="url-fields">
+    <paper-dropdown-menu label="URL Prefix" id="url-prefix-dropdown" hidden>
+      <paper-menu class="dropdown-content" id="url-prefix" selected="0">
+        <paper-item>https://</paper-item>
+        <paper-item>http://</paper-item>
+      </paper-menu>
+    </paper-dropdown-menu>
+    <paper-input label="URL" id="url" placeholder="www.example.com" auto-validate
+                 error-message="Required" required hidden>
+    </paper-input>
+    <paper-input label="Advertised Tx Power" id="adv-tx-power-url" auto-validate maxLength="4"
+                 placeholder="-20"
+                 allowed-pattern="[-0-9]" pattern="(-100)|(-[1-9]?[0-9])|(1?[0-9])|(20)"
+                 required hidden>
+      <div suffix>dBm</div>
+    </paper-input>
+  </div>
+
+  <div id="uid-fields">
+    <paper-input label="Namespace" id="namespace" auto-validate allowed-pattern="[0-9a-f]"
+                 placeholder="123456789012deadbeef"
+                 required char-counter minLength="20" maxLength="20" hidden>
+    </paper-input>
+    <paper-input label="Instance" id="instance" auto-validate allowed-pattern="[0-9a-f]"
+                 placeholder="1234deadbeef"
+                 required char-counter minLength="12" maxLength="12" hidden>
+    </paper-input>
+    <paper-input label="Advertised Tx Power" id="adv-tx-power-uid" auto-validate maxLength="4"
+                 placeholder="-20"
+                 allowed-pattern="[-0-9]" pattern="(-100)|(-[1-9]?[0-9])|(1?[0-9])|(20)"
+                 required hidden>
+      <div suffix>dBm</div>
+    </paper-input>
+  </div>
+
+  <div id="buttons">
+    <paper-button id="update-button" raised hidden>Update Advertisement</paper-button>
+    <paper-button id="stop-button" raised hidden>Stop Advertising</paper-button>
+  </div>
+  
+  <paper-toast id="result-toast" duration="0">
+    <paper-button id="close-toast">Close</paper-button>
+  </paper-toast>
+
+  <script src="eddystone-advertising.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
