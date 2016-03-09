@@ -8,7 +8,6 @@ worry about these low level details. The library exposes simple functions that
 developers can use to advertise a Valid Eddystone packet from their device.
 
 **NOTE** Currently only ChromeOS is supported.  
-**NOTE** Currently only Eddystone-URL is supported.
 
 ## Usage
 The Eddystone Advertising Library creates `window.eddystone` of type
@@ -53,6 +52,8 @@ eddystone.advertisements.forEach(advertisement => {
 <dd></dd>
 <dt><a href="#module_eddystone-chrome-os">eddystone-chrome-os</a></dt>
 <dd></dd>
+<dt><a href="#module_eddystone-uid">eddystone-uid</a></dt>
+<dd></dd>
 <dt><a href="#module_eddystone-url">eddystone-url</a></dt>
 <dd></dd>
 <dt><a href="#module_platform">platform</a></dt>
@@ -79,8 +80,10 @@ const advertisement = require('eddystone-advertisement')
         * [new EddystoneAdvertisement(id, options, platform)](#new_module_eddystone-advertisement.EddystoneAdvertisement_new)
         * [.id](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+id) : <code>number</code>
         * [.type](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+type) : <code>string</code>
-        * [.url](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+url) : <code>string</code> &#124; <code>undefined</code>
         * [.advertisedTxPower](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+advertisedTxPower) : <code>number</code> &#124; <code>undefined</code>
+        * [.url](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+url) : <code>string</code> &#124; <code>undefined</code>
+        * [.namespace](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+namespace) : <code>string</code> &#124; <code>undefined</code>
+        * [.instance](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+instance) : <code>string</code> &#124; <code>undefined</code>
         * [.unregisterAdvertisement()](#module_eddystone-advertisement.EddystoneAdvertisement+unregisterAdvertisement) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.EddystoneFrameType](#module_eddystone-advertisement.EddystoneFrameType) : <code>enum</code>
 
@@ -94,8 +97,10 @@ Represents the Advertisement being broadcasted.
     * [new EddystoneAdvertisement(id, options, platform)](#new_module_eddystone-advertisement.EddystoneAdvertisement_new)
     * [.id](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+id) : <code>number</code>
     * [.type](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+type) : <code>string</code>
-    * [.url](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+url) : <code>string</code> &#124; <code>undefined</code>
     * [.advertisedTxPower](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+advertisedTxPower) : <code>number</code> &#124; <code>undefined</code>
+    * [.url](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+url) : <code>string</code> &#124; <code>undefined</code>
+    * [.namespace](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+namespace) : <code>string</code> &#124; <code>undefined</code>
+    * [.instance](#module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+instance) : <code>string</code> &#124; <code>undefined</code>
     * [.unregisterAdvertisement()](#module_eddystone-advertisement.EddystoneAdvertisement+unregisterAdvertisement) ⇒ <code>Promise.&lt;void&gt;</code>
 
 <a name="new_module_eddystone-advertisement.EddystoneAdvertisement_new"></a>
@@ -122,14 +127,25 @@ The ID of this advertisment.
 The Eddystone Type
 
 **Kind**: instance property of <code>[EddystoneAdvertisement](#module_eddystone-advertisement.EddystoneAdvertisement)</code>  
+<a name="module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+advertisedTxPower"></a>
+#### eddystoneAdvertisement.advertisedTxPower : <code>number</code> &#124; <code>undefined</code>
+Tx Power included in the advertisement. Only present if `type === 'url'`
+         or `type === 'uid'`.
+
+**Kind**: instance property of <code>[EddystoneAdvertisement](#module_eddystone-advertisement.EddystoneAdvertisement)</code>  
 <a name="module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+url"></a>
 #### eddystoneAdvertisement.url : <code>string</code> &#124; <code>undefined</code>
 URL being advertised. Only present if `type === 'url'`.
 
 **Kind**: instance property of <code>[EddystoneAdvertisement](#module_eddystone-advertisement.EddystoneAdvertisement)</code>  
-<a name="module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+advertisedTxPower"></a>
-#### eddystoneAdvertisement.advertisedTxPower : <code>number</code> &#124; <code>undefined</code>
-Tx Power included in the advertisement. Only present if `type === 'url'`.
+<a name="module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+namespace"></a>
+#### eddystoneAdvertisement.namespace : <code>string</code> &#124; <code>undefined</code>
+Hex string of the namespace being advertised. Only present if `type === 'uid'`.
+
+**Kind**: instance property of <code>[EddystoneAdvertisement](#module_eddystone-advertisement.EddystoneAdvertisement)</code>  
+<a name="module_eddystone-advertisement.EddystoneAdvertisement.EddystoneAdvertisement+instance"></a>
+#### eddystoneAdvertisement.instance : <code>string</code> &#124; <code>undefined</code>
+Hex string of the instance being advertised. Only present if `type === 'uid'`.
 
 **Kind**: instance property of <code>[EddystoneAdvertisement](#module_eddystone-advertisement.EddystoneAdvertisement)</code>  
 <a name="module_eddystone-advertisement.EddystoneAdvertisement+unregisterAdvertisement"></a>
@@ -272,6 +288,51 @@ Construct the ChromeOS specific advertisement to register.
 
 **Params**: <code>EddystoneAdvertisementOptions</code> options The characteristics of the
        advertisement.  
+<a name="module_eddystone-uid"></a>
+## eddystone-uid
+
+* [eddystone-uid](#module_eddystone-uid)
+    * [EddystoneUID](#exp_module_eddystone-uid--EddystoneUID) ⏏
+        * [.constructServiceData(advertisedTxPower, namespace, instance)](#module_eddystone-uid--EddystoneUID.constructServiceData) ⇒ <code>Array.&lt;number&gt;</code>
+        * [.getByteArray(value)](#module_eddystone-uid--EddystoneUID.getByteArray) ⇒ <code>Array.&lt;number&gt;</code>
+
+<a name="exp_module_eddystone-uid--EddystoneUID"></a>
+### EddystoneUID ⏏
+This class provides helper functions that relate to Eddystone-UID.
+
+**Kind**: Exported class  
+**See**: [Eddystone-UID](https://github.com/google/eddystone/tree/master/eddystone-uid)  
+<a name="module_eddystone-uid--EddystoneUID.constructServiceData"></a>
+#### EddystoneUID.constructServiceData(advertisedTxPower, namespace, instance) ⇒ <code>Array.&lt;number&gt;</code>
+Constructs a valid Eddystone-UID service data from a Tx Power value, namespace
+       and instance.
+
+**Kind**: static method of <code>[EddystoneUID](#exp_module_eddystone-uid--EddystoneUID)</code>  
+**Returns**: <code>Array.&lt;number&gt;</code> - The service data.  
+**See**: [UID Frame Specification](https://github.com/google/eddystone/tree/master/eddystone-uid#frame-specification)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| advertisedTxPower | <code>number</code> | The Tx Power included in the service data. |
+| namespace | <code>Array.&lt;number&gt;</code> &#124; <code>string</code> | The namespace to advertise. |
+| instance | <code>Array.&lt;number&gt;</code> &#124; <code>string</code> | The instance to advertise. |
+
+<a name="module_eddystone-uid--EddystoneUID.getByteArray"></a>
+#### EddystoneUID.getByteArray(value) ⇒ <code>Array.&lt;number&gt;</code>
+Validates the give array of bytes or converts the hex string into an array of bytes.
+
+**Kind**: static method of <code>[EddystoneUID](#exp_module_eddystone-uid--EddystoneUID)</code>  
+**Returns**: <code>Array.&lt;number&gt;</code> - Array of bytes.  
+**Throws**:
+
+- <code>TypeError</code> If |value| is not an array or a string.
+- <code>Error</code> If |value| contains out-of-range numbers or characters.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| value | <code>Array.&lt;number&gt;</code> &#124; <code>string</code> | The value to encode. |
+
 <a name="module_eddystone-url"></a>
 ## eddystone-url
 

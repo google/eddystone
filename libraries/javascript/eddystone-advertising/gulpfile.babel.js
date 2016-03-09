@@ -1,24 +1,22 @@
 // jshint node: true
+'use strict';
 
-// Ignore vars in require statements
-// jshint ignore:start
-var gulp = require('gulp');
-var concat = require('gulp-concat');
-var mocha = require('gulp-mocha');
-var jshint = require('gulp-jshint');
-var david = require('gulp-david');
-var gulpJsdoc2md = require('gulp-jsdoc-to-markdown');
-var fs = require('fs');
-var rename = require('gulp-rename');
-var diff = require('gulp-diff');
+import gulp from 'gulp';
+import concat from 'gulp-concat';
+import mocha from 'gulp-mocha';
+import jshint from 'gulp-jshint';
+import david from 'gulp-david';
+import gulpJsdoc2md from 'gulp-jsdoc-to-markdown';
+import fs from 'fs';
+import rename from 'gulp-rename';
+import diff from 'gulp-diff';
 
-var browserify = require('browserify');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
-var uglify = require('gulp-uglify');
+import browserify from 'browserify';
+import source from 'vinyl-source-stream';
+import buffer from 'vinyl-buffer';
+import uglify from 'gulp-uglify';
 
-var del = require('del');
-// jshint ignore:end
+import del from 'del';
 
 gulp.task('default', () => {
 });
@@ -43,8 +41,6 @@ gulp.task('browserify', () => {
 });
 
 gulp.task('test:browserify', () => {
-  'use strict';
-
   return getBrowserifyPipe()
     .pipe(diff())
     .pipe(diff.reporter({fail: true}));
@@ -58,12 +54,11 @@ gulp.task('test:docs', () => {
 
 gulp.task('test:dependencies', () => {
   return gulp.src('package.json')
-             .pipe(david({error404: true}))
-             .pipe(david.reporter);
+             .pipe(david({error404: true}));
 });
 
 gulp.task('test:style', () => {
-  return gulp.src(['gulpfile.js',
+  return gulp.src(['gulpfile.babel.js',
                    'lib/*.js',
                    'test/unit/*.js'])
              .pipe(jshint())
@@ -89,8 +84,6 @@ function getJsDocPipe() {
 }
 
 function getBrowserifyPipe() {
-  'use strict';
-
   return browserify('./lib/exports.js', {
     // Ignore external modules, in this case TextEncoder.
     bundleExternal: false
