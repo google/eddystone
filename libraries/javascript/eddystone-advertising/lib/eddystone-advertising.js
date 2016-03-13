@@ -1,5 +1,11 @@
 (() => {
   'use strict';
+
+  /**
+   * @module eddystone-advertising
+   * @typicalname advertising
+   */
+
   let platform = require('./platform.js');
   let EddystoneFrameType = require('./eddystone-advertisement.js').EddystoneFrameType;
 
@@ -15,19 +21,17 @@
   /**
      Exposes platform independent functions to register/unregister Eddystone
      Advertisements.
-     @class
+     @alias module:eddystone-advertising
    */
   class Eddystone {
-    /**
-       @constructs Eddystone
-     */
     constructor() {
       this._platform = platform();
       /**
-         @member Eddystone#advertisements {EddystoneAdvertisement[]} Contains
-         all previously registered advertisements.<br>
-         ***Note:** In a Chrome App, if the event page gets killed users won't
-         be able to unregister the advertisement.
+         Contains all previously registered advertisements.
+
+         ***Note:** In a Chrome App, if the event page gets killed users
+         won't be able to unregister the advertisement.
+         @type {EddystoneAdvertisement[]}
        */
       this.advertisements = [];
     }
@@ -68,6 +72,8 @@
       }
       if (options.type === EddystoneFrameType.URL) {
         Eddystone._checkURLOptions(options);
+      } else if (options.type === EddystoneFrameType.UID) {
+        Eddystone._checkUIDOptions(options);
       } else {
         throw new TypeError('Unsupported Frame Type: ' + options.type);
       }
@@ -88,6 +94,18 @@
         throw new TypeError('Required member advertisedTxPower is undefined.');
       }
     }
+    static _checkUIDOptions(options) {
+      if (!('advertisedTxPower' in options)) {
+        throw new TypeError('Required member advertisedTxPower is undefined.');
+      }
+      if (!('namespace' in options)) {
+        throw new TypeError('Required member namespace is undefined.');
+      }
+      if (!('instance' in options)) {
+        throw new TypeError('Required member instance is undefined.');
+      }
+    }
   }
+
   module.exports = Eddystone;
 })();

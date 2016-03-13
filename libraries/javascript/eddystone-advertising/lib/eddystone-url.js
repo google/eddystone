@@ -1,6 +1,11 @@
 (() => {
   'use strict';
 
+  /**
+   * @module eddystone-url
+   * @typicalname url
+   */
+
   const EDDYSTONE_UUID = require('./eddystone-advertisement.js').EDDYSTONE_UUID;
 
   // If we are in a browser TextEncoder should be available already.
@@ -10,7 +15,7 @@
 
   /**
      Eddystone-URL Frame type.
-     @see {@link https://github.com/google/eddystone/tree/master/eddystone-url#frame-specification|Eddystone-URL} 
+     @see {@link https://github.com/google/eddystone/tree/master/eddystone-url#frame-specification|Eddystone-URL}
      @private
      @constant {number}
      @default
@@ -65,7 +70,7 @@
   /**
      This class provides helper functions that relate to Eddystone-URL.
      @see {@link https://github.com/google/eddystone/tree/master/eddystone-url|Eddystone-URL}
-     @class
+     @alias module:eddystone-url
    */
   class EddystoneURL {
     /**
@@ -75,14 +80,6 @@
        @param {string} url The URL to use in the service data.
        @param {number} advertisedTxPower The Tx Power to use in the service data.
        @returns {number[]} The service data.
-       @throws {Error} If the Tx Power value is not in the allowed range. See
-       {@link https://github.com/google/eddystone/tree/master/eddystone-url#tx-power-level|Tx Power Level}.
-       @throws {Error} If the URL Scheme prefix is unsupported. For a list of
-       supported Scheme prefixes see
-       {@link https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix|URL Scheme Prefix}
-       @throws {Error} If the URL contains an invalid character. For a list of
-       invalid characters see the Note in
-       {@link https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding|HTTP URL Encoding}
      */
     static constructServiceData(url, advertisedTxPower) {
       // Check that it's a valid Tx Power

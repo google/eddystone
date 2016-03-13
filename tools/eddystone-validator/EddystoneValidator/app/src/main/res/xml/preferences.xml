@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.sample.eddystonevalidator.NumberPickerPreference
+        android:key="onLostTimeoutSecs"
+        android:title="On lost timeout"
+        android:summary=""
+        android:defaultValue="5"
+        app:min="0"
+        app:max="10" />
+
+    <CheckBoxPreference
+        android:key="showDebugInfo"
+        android:title="Show debug info"
+        android:summary="Show some debug info like the number of sighted beacons."
+        android:defaultValue="false" />
+
+</PreferenceScreen>

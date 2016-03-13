@@ -1,14 +1,20 @@
 (() => {
   'use strict';
+
+  /**
+   * @module eddystone-chrome-os
+   * @typicalname chromeOS
+   */
+
   let EddystoneURL = require('./eddystone-url.js');
+  let EddystoneUID = require('./eddystone-uid.js');
   let EddystoneAdvertisement = require('./eddystone-advertisement.js').EddystoneAdvertisement;
   const EddystoneFrameType = require('./eddystone-advertisement.js').EddystoneFrameType;
   const EDDYSTONE_UUID = require('./eddystone-advertisement.js').EDDYSTONE_UUID;
   /**
      This class wraps the underlying ChromeOS BLE Advertising API.
-     TODO: Add link to API.
-     @private
-     @class EddystoneChromeOS
+     @todo Add link to API.
+     @alias module:eddystone-chrome-os
    */
   class EddystoneChromeOS {
     /**
@@ -79,18 +85,23 @@
        https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding
      */
     static _constructAdvertisement(options) {
+      let data;
       if (options.type === EddystoneFrameType.URL) {
-        return {
-          type: 'broadcast',
-          serviceUuids: [EDDYSTONE_UUID],
-          serviceData: [{
-            uuid: EDDYSTONE_UUID,
-            data: EddystoneURL.constructServiceData(options.url, options.advertisedTxPower)
-          }]
-        };
+        data = EddystoneURL.constructServiceData(options.url, options.advertisedTxPower);
+      } else if (options.type === EddystoneFrameType.UID) {
+        data = EddystoneUID.constructServiceData(
+          options.advertisedTxPower, options.namespace, options.instance);
       } else {
         throw new Error('Unsupported Frame Type: ' + options.type);
       }
+      return {
+        type: 'broadcast',
+        serviceUuids: [EDDYSTONE_UUID],
+        serviceData: [{
+          uuid: EDDYSTONE_UUID,
+          data: data
+        }]
+      };
     }
   }
   module.exports = EddystoneChromeOS;

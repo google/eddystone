@@ -2,12 +2,20 @@
   'use strict';
 
   /**
+   * @module eddystone-advertisement
+   * @typicalname advertisement
+   * @example
+   * const advertisement = require('eddystone-advertisement')
+   */
+
+  /**
      Possible Eddystone frame types.
      @see {@link https://github.com/google/eddystone/blob/master/protocol-specification.md|Protocol Specification}
      @see {@link https://github.com/google/eddystone/tree/master/eddystone-url|Eddystone-URL}
      @see {@link https://github.com/google/eddystone/tree/master/eddystone-uid|Eddystone-UID}
      @see {@link https://github.com/google/eddystone/tree/master/eddystone-tlm|Eddystone-TLM}
      @readonly
+     @alias module:eddystone-advertisement.EddystoneFrameType
      @enum {string}
    */
   const EddystoneFrameType = {
@@ -21,24 +29,24 @@
      @private
      @constant {string}
      @default
+     @alias module:eddystone-advertisement.EDDYSTONE_UUID
    */
   const EDDYSTONE_UUID = 'FEAA';
 
   /**
      Represents the Advertisement being broadcasted.
-     @class
+     @throws {TypeError} If no platform was passed.
+     @throws {Error} If type is an unsupported Frame Type.
+     @alias module:eddystone-advertisement.EddystoneAdvertisement
    */
   class EddystoneAdvertisement {
     /**
-       @constructs EddystoneAdvertisement
        @param {number} id Unique between browser restarts meaning the id will
        no longer be valid upon browser restart.
        @param {EddystoneAdvertisementOptions} options The options used when
        creating the advertisement.
        @param {Object} platform The underlying platform; used to unregister the
        advertisement.
-       @throws {TypeError} If no platform was passed.
-       @throws {Error} If type is an unsupported Frame Type.
      */
     constructor(id, options, platform) {
       if (typeof platform === 'undefined') {
@@ -46,28 +54,48 @@
       }
       this._platform = platform;
       /**
-         @member EddystoneAdvertisement#id {number} The ID of this advertisment.
+         The ID of this advertisment.
+         @type {number}
        */
       this.id = undefined;
       /**
-         @member EddystoneAdvertisement#type {string} The Eddystone Type
+         The Eddystone Type
+         @type {string}
        */
       this.type = undefined;
       /**
-         @member EddystoneAdvertisement#url {string|undefined} URL being advertised.
-         Only present if `type === 'url'`.
+         Tx Power included in the advertisement. Only present if `type === 'url'`
+         or `type === 'uid'`.
+         @type {number|undefined}
+       */
+      this.advertisedTxPower = undefined;
+      /**
+         URL being advertised. Only present if `type === 'url'`.
+         @type {string|undefined}
        */
       this.url = undefined;
       /**
-         @member EddystoneAdvertisement#advertisedTxPower {number|undefined} Tx Power included in
-         the advertisement. Only present if `type === 'url'`.
+         Hex string of the namespace being advertised. Only present if `type === 'uid'`.
+         @type {string|undefined}
        */
-      this.advertisedTxPower = undefined;
+      this.namespace = undefined;
+      /**
+         Hex string of the instance being advertised. Only present if `type === 'uid'`.
+         @type {string|undefined}
+      */
+      this.instance = undefined;
+
       if (options.type == EddystoneFrameType.URL) {
         this.id = id;
         this.type = options.type;
         this.url = options.url;
         this.advertisedTxPower = options.advertisedTxPower;
+      } else if (options.type == EddystoneFrameType.UID) {
+        this.id = id;
+        this.type = options.type;
+        this.advertisedTxPower = options.advertisedTxPower;
+        this.namespace = options.namespace;
+        this.instance = options.instance;
       } else {
         throw new Error('Unsupported Frame Type');
       }
@@ -85,7 +113,8 @@
       return this._platform.unregisterAdvertisement(this);
     }
   }
-  module.exports.EddystoneAdvertisement = EddystoneAdvertisement;
-  module.exports.EddystoneFrameType = EddystoneFrameType;
-  module.exports.EDDYSTONE_UUID = EDDYSTONE_UUID;
+
+  exports.EddystoneAdvertisement = EddystoneAdvertisement;
+  exports.EddystoneFrameType = EddystoneFrameType;
+  exports.EDDYSTONE_UUID = EDDYSTONE_UUID;
 })();

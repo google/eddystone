@@ -14,6 +14,7 @@
 
 package com.google.sample.eddystonevalidator;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -28,8 +29,14 @@ import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.ParcelUuid;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -42,8 +49,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Main UI and logic for scanning and validation of results.
@@ -52,11 +61,14 @@ public class MainActivityFragment extends Fragment {
 
   private static final String TAG = "EddystoneValidator";
   private static final int REQUEST_ENABLE_BLUETOOTH = 1;
+  private static final int PERMISSION_REQUEST_COARSE_LOCATION = 2;
 
   // An aggressive scan for nearby devices that reports immediately.
   private static final ScanSettings SCAN_SETTINGS =
       new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).setReportDelay(0)
           .build();
+
+  private static final Handler handler = new Handler(Looper.getMainLooper());
 
   // The Eddystone Service UUID, 0xFEAA.
   private static final ParcelUuid EDDYSTONE_SERVICE_UUID =
@@ -71,6 +83,9 @@ public class MainActivityFragment extends Fragment {
   private Map<String /* device address */, Beacon> deviceToBeaconMap = new HashMap<>();
 
   private EditText filter;
+
+  private SharedPreferences sharedPreferences;
+  private int onLostTimeoutMillis;
 
   @Override
   public void onCreate(final Bundle savedInstanceState) {
@@ -95,11 +110,12 @@ public class MainActivityFragment extends Fragment {
           deviceToBeaconMap.put(deviceAddress, beacon);
           arrayAdapter.add(beacon);
         } else {
+          deviceToBeaconMap.get(deviceAddress).lastSeenTimestamp = System.currentTimeMillis();
           deviceToBeaconMap.get(deviceAddress).rssi = result.getRssi();
+
         }
 
         byte[] serviceData = scanRecord.getServiceData(EDDYSTONE_SERVICE_UUID);
-        Log.v(TAG, deviceAddress + " " + Utils.toHexString(serviceData));
         validateServiceData(deviceAddress, serviceData);
       }
 
@@ -124,6 +140,10 @@ public class MainActivityFragment extends Fragment {
         }
       }
     };
+
+    sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+    onLostTimeoutMillis =
+        sharedPreferences.getInt(SettingsActivity.ON_LOST_TIMEOUT_SECS_KEY, 5) * 1000;
   }
 
   @Override
@@ -165,9 +185,54 @@ public class MainActivityFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
+
+    handler.removeCallbacksAndMessages(null);
+
+    int timeoutMillis =
+        sharedPreferences.getInt(SettingsActivity.ON_LOST_TIMEOUT_SECS_KEY, 5) * 1000;
+
+    if (timeoutMillis > 0) {  // 0 is special and means don't remove anything.
+      onLostTimeoutMillis = timeoutMillis;
+      setOnLostRunnable();
+    }
+
+    if (sharedPreferences.getBoolean(SettingsActivity.SHOW_DEBUG_INFO_KEY, false)) {
+      Runnable updateTitleWithNumberSightedBeacons = new Runnable() {
+        final String appName = getActivity().getString(R.string.app_name);
+
+        @Override
+        public void run() {
+          getActivity().setTitle(appName + " (" + deviceToBeaconMap.size() + ")");
+          handler.postDelayed(this, 1000);
+        }
+      };
+      handler.postDelayed(updateTitleWithNumberSightedBeacons, 1000);
+    } else {
+      getActivity().setTitle(getActivity().getString(R.string.app_name));
+    }
+
     if (scanner != null) {
       scanner.startScan(scanFilters, SCAN_SETTINGS, scanCallback);
     }
+  }
+
+  private void setOnLostRunnable() {
+    Runnable removeLostDevices = new Runnable() {
+      @Override
+      public void run() {
+        long time = System.currentTimeMillis();
+        Iterator<Entry<String, Beacon>> itr = deviceToBeaconMap.entrySet().iterator();
+        while (itr.hasNext()) {
+          Beacon beacon = itr.next().getValue();
+          if ((time - beacon.lastSeenTimestamp) > onLostTimeoutMillis) {
+            itr.remove();
+            arrayAdapter.remove(beacon);
+          }
+        }
+        handler.postDelayed(this, onLostTimeoutMillis);
+      }
+    };
+    handler.postDelayed(removeLostDevices, onLostTimeoutMillis);
   }
 
   @Override
@@ -182,8 +247,41 @@ public class MainActivityFragment extends Fragment {
     }
   }
 
+  @Override
+  public void onRequestPermissionsResult(
+      int requestCode, String[] permissions, int[] grantResults) {
+    switch (requestCode) {
+      case PERMISSION_REQUEST_COARSE_LOCATION: {
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+          Log.d(TAG, "PERMISSION_REQUEST_COARSE_LOCATION granted");
+        } else {
+          showFinishingAlertDialog("Coarse location access is required",
+              "App will close since the permission was denied");
+        }
+      }
+    }
+  }
+
   // Attempts to create the scanner.
   private void init() {
+    // New Android M+ permission check requirement.
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      if (getContext().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+          != PackageManager.PERMISSION_GRANTED) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("This app needs coarse location access");
+        builder.setMessage("Please grant coarse location access so this app can scan for beacons");
+        builder.setPositiveButton(android.R.string.ok, null);
+        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+          @Override
+          public void onDismiss(DialogInterface dialog) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                PERMISSION_REQUEST_COARSE_LOCATION);
+          }
+        });
+        builder.show();
+      }
+    }
     BluetoothManager manager = (BluetoothManager) getActivity().getApplicationContext()
         .getSystemService(Context.BLUETOOTH_SERVICE);
     BluetoothAdapter btAdapter = manager.getAdapter();
@@ -217,6 +315,7 @@ public class MainActivityFragment extends Fragment {
       logDeviceError(deviceAddress, err);
       return;
     }
+    Log.v(TAG, deviceAddress + " " + Utils.toHexString(serviceData));
     switch (serviceData[0]) {
       case Constants.UID_FRAME_TYPE:
         UidValidator.validate(deviceAddress, serviceData, beacon);

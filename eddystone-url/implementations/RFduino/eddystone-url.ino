@@ -21,6 +21,7 @@ void setup() {
   RFduinoBLE_advdata = advdata;
   RFduinoBLE_advdata_len = sizeof(advdata);
   RFduinoBLE.advertisementInterval = 700; // Advertise every 700ms
+  RFduinoBLE.connectable = false;
   RFduinoBLE.begin();
 }
 
