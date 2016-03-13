@@ -9,11 +9,11 @@ under the licenses described in each subdirectory. These projects serve as a gui
 write you own Eddystone-URL beacon code. We encourage you to add additional examples.
 To date, in this directory you will find the following implementations:
 
+* [Arduino (BLEPeripheral)](https://github.com/sandeepmistry/arduino-BLEPeripheral/blob/master/examples/Eddystone/EddystoneURL/EddystoneURL.ino), a list of compatible hardware can be found [here](https://github.com/sandeepmistry/arduino-BLEPeripheral#compatible-hardware).
 * [BlueGiga BLED112](BlueGiga-BLED112)
 * [Cambridge Silicon Radio CSR1010 (Beacon Development Board)](CSR-1010)
 * [RFduino](RFduino)
+* [TI-CC2640](TI-CC2640)
 * [Linux (bluez)](linux-url-advertiser)
 * [ARM mbed (Nordic nRF51-dongle, nRF51-DK))](mbed_EddystoneURL_Beacon)
-* [TI-CC2640](TI-CC2640)
 * [Node.js (node-eddystone-beacon)](https://github.com/don/node-eddystone-beacon)
-* [Arduino (BLEPeripheral)](https://github.com/sandeepmistry/arduino-BLEPeripheral/blob/master/examples/Eddystone/EddystoneURL/EddystoneURL.ino), a list of compatible hardware can be found [here](https://github.com/sandeepmistry/arduino-BLEPeripheral#compatible-hardware).
