@@ -98,7 +98,7 @@ Returns a byte array that encodes:<br>
 <td>Return Codes</td>
 <td>Write Not Permitted: for any attempt to write.
 <br><br>
-Insufficient Authorization: for an attempt to read while the beacon is locked.</td>
+Read Not Permitted: for an attempt to read while the beacon is locked.</td>
 </tr>
 </table>
 
@@ -136,7 +136,7 @@ Subsequent writes to other characteristics will act on this slot number, configu
 <td>Return Codes</td>
 <td>Invalid Attribute Length: for an attempt to write illegal values. The beacon will list the total number of available slots in the max_supported_total_slots field in the Capabilities characteristic.
 <br><br>
-Insufficient Authorization: for any attempt to read or write while the beacon is locked.</td>
+Read Not Permitted: for any attempt to read or write while the beacon is locked.</td>
 </tr>
 </table>
 
@@ -175,7 +175,7 @@ Additionally, if the user is placing unrealistic demands on the hardware, e.g. r
 </tr>
 <tr>
 <td>Return Codes</td>
-<td>Insufficient Authorization: for any attempt to read or write while the beacon is locked.</td>
+<td>Read Not Permitted: for any attempt to read or write while the beacon is locked.</td>
 </tr>
 </table>
 
@@ -212,7 +212,7 @@ Note: if a power is selected that is not supported by the radio, the beacon shou
 </tr>
 <tr>
 <td>Return Codes</td>
-<td>Insufficient Authorization: for any attempt to read or write while the beacon is locked.</td>
+<td>Read Not Permitted: for any attempt to read or write while the beacon is locked.</td>
 </tr>
 </table>
 
@@ -249,7 +249,7 @@ Once this value has been set, the user is then responsible for maintaining the s
 </tr>
 <tr>
 <td>Return Codes</td>
-<td>Insufficient Authorization: for any attempt to read or write while the beacon is locked.</td>
+<td>Read Not Permitted: for any attempt to read or write while the beacon is locked.</td>
 </tr>
 </table>
 
@@ -303,7 +303,7 @@ Writeable only in unlocked state.</td>
 </tr>
 <tr>
 <td>Return Codes</td>
-<td>Insufficient Authorization: on a write attempt to unlock with the incorrect key</td>
+<td>Read Not Permitted: on a write attempt to unlock with the incorrect key</td>
 </tr>
 </table>
 
@@ -362,7 +362,7 @@ Writeable only in locked state.</td>
 </tr>
 <tr>
 <td>Return Codes</td>
-<td>Insufficient Authorization: on a failed unlock attempt.</td>
+<td>Read Not Permitted: on a failed unlock attempt.</td>
 </tr>
 </table>
 
@@ -400,7 +400,7 @@ Reads the beacon's 256-bit public ECDH key.
 <td>Return Codes</td>
 <td>Write Not Permitted: on any write attempt.
 <br><br>
-Insufficient Authorization: for any attempt to read while the beacon is locked.</td>
+Read Not Permitted: for any attempt to read while the beacon is locked.</td>
 </tr>
 </table>
 
@@ -440,7 +440,7 @@ To prevent this data being broadcast in the clear, it shall be AES-128 encrypted
 <td>Return Codes</td>
 <td>Write Not Permitted: on any write attempt.
 <br><br>
-Insufficient Authorization: for any attempt to read or write while the beacon is locked.</td>
+Read Not Permitted: for any attempt to read or write while the beacon is locked.</td>
 </tr>
 </table>
 
@@ -496,7 +496,7 @@ Writing an empty array, or a single <code>0x00</code> byte clears the slot and s
 </tr>
 <tr>
 <td>Return Codes</td>
-<td>XInsufficient Authorization: for any attempt to read or write while the beacon is locked.
+<td>XRead Not Permitted: for any attempt to read or write while the beacon is locked.
 <br><br>
 Invalid Attribute Length: on any attempt to write with an illegal number of bytes.</td>
 </tr>
@@ -534,7 +534,7 @@ In addition, any write shall be ignored if the lock state is not <code>0x01</cod
 </tr>
 <tr>
 <td>Return Codes</td>
-<td>Insufficient Authorization: for any attempt to write while the beacon is locked, or to write while the beacon's lock state is not 0x01.</td>
+<td>Read Not Permitted: for any attempt to write while the beacon is locked, or to write while the beacon's lock state is not 0x01.</td>
 </tr>
 </table>
 
@@ -571,7 +571,7 @@ If a zero value is written, the beacon shall resume its normal operation of beco
 </tr>
 <tr>
 <td>Return Codes</td>
-<td>Insufficient Authorization: for any attempt to write while the beacon is locked.</td>
+<td>Read Not Permitted: for any attempt to write while the beacon is locked.</td>
 </tr>
 </table>
 
@@ -580,14 +580,14 @@ If a zero value is written, the beacon shall resume its normal operation of beco
 <table>
 <tr><td>Code</td><td>Description</td><td>Notes</td></tr>
 <tr>
+<td><code>0x02</code></td>
+<td>Read Not Permitted</td>
+<td>Returned when accessing an authenticated characteristic while the beacon is locked</td>
+</tr>
+<tr>
 <td><code>0x03</code></td>
 <td>Write Not Permitted</td>
 <td>Returned for read only characteristics</td>
-</tr>
-<tr>
-<td><code>0x08</code></td>
-<td>Insufficient Authorization</td>
-<td>Returned when accessing a characteristic that is currently locked</td>
 </tr>
 <tr>
 <td><code>0x0d</code></td>
