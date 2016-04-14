@@ -2,7 +2,7 @@
 
 <img align="left" src="res/logo/eddystone_logo.png" hspace="15" style="float: left">Eddystone is a protocol specification that defines a Bluetooth low energy (BLE) message format for proximity beacon messages. It describes several different frame types that may be used individually or in combinations to create beacons that can be used for a variety of applications.
 
-Announced in April 2016, [Eddystone-EID](eddystone-eid) (Ephemeral ID) is a new frame type that defines a cryptographically secure method of configuring a beacon to broadcast information that only authorized people may decrypt. It includes support for a [secure transmission](eddystone-tlm/tlm-encrypted) of the TLM (Telemetry) information.
+Announced in April 2016, [Eddystone-EID](eddystone-eid) (Ephemeral ID) is a new frame type that defines a cryptographically secure method of configuring a beacon to broadcast information that only authorized people may decrypt. It includes support for a [secure transmission](eddystone-tlm/tlm-encrypted.md) of the TLM (Telemetry) information.
 
 ## Design Goals
 
