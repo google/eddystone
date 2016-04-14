@@ -85,9 +85,9 @@ The resolver then follows the same procedure to compute the identity key from it
 
 The resolver saves the identity key, rotation period, and time counter offset from real-time in its non-volatile storage.
 
-### Shared identity key EID configuration
+See the [Eddystone Configuration Service](../configuration-service) for the beacon's interface definition. 
 
-`TODO: link with GATT configuration service docs here`
+### Shared identity key EID configuration
 
 In order to support registering an Eddystone-EID beacon with more than one resolver, the beacon must support disclosing its identity key to an authorised client, and must support EID configuration directly with an identity key from an authorised client.
 
