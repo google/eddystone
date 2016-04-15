@@ -1,5 +1,7 @@
 # Eddystone Configuration GATT Service
 
+** Note: https://github.com/google/eddystone/issues/132 needs resolution before this specification can be considered final. **
+
 This document defines the specification for the Eddystone Configuration Service and offers some implementation guidance.
 
 The Eddystone Configuration Service runs as a GATT service on the beacon while it is connectable and allows configuration of the advertised data, the broadcast power levels, and the advertising intervals. It also forms part of the definition of how Eddystone-EID beacons are configured and registered with a trusted resolver.
