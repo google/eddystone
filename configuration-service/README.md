@@ -1,6 +1,6 @@
 # Eddystone Configuration GATT Service
 
-** Note: https://github.com/google/eddystone/issues/132 needs resolution before this specification can be considered final. **
+**Note: https://github.com/google/eddystone/issues/132 needs resolution before this specification can be considered final.**
 
 This document defines the specification for the Eddystone Configuration Service and offers some implementation guidance.
 
