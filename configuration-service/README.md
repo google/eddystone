@@ -39,7 +39,7 @@ If variable advertising intervals are supported (see `IS_VARIABLE_ADV_SUPPORTED`
 </tr>
 <tr>
 <td>Service UUID</td>
-<td>a3c8<strong>7500</strong>8ed3-4bdf-8a39-a01bebede295</td>
+<td>a3c8<strong>7500</strong>-8ed3-4bdf-8a39-a01bebede295</td>
 </tr>
 <tr>
 <td>Notes</td>
@@ -49,7 +49,7 @@ If variable advertising intervals are supported (see `IS_VARIABLE_ADV_SUPPORTED`
 
 <table>
 <tr><td><strong>Characteristic 1</strong></td><td/></tr>
-<tr><td>Characteristic&nbsp;UUID</td><td>a3c8<strong>7501</strong>8ed3-4bdf-8a39-a01bebede295</td></tr>
+<tr><td>Characteristic&nbsp;UUID</td><td>a3c8<strong>7501</strong>-8ed3-4bdf-8a39-a01bebede295</td></tr>
 <tr>
 <tr><td>Name</td><td>Capabilities</td></tr>
 <td>Properties</td>
@@ -108,7 +108,7 @@ Read Not Permitted: for an attempt to read while the beacon is locked.</td>
 <tr><td><strong>Characteristic 2</strong></td><td/></tr>
 <tr>
 <td>Characteristic&nbsp;UUID</td>
-<td>a3c8<strong>7502</strong>8ed3-4bdf-8a39-a01bebede295</td>
+<td>a3c8<strong>7502</strong>-8ed3-4bdf-8a39-a01bebede295</td>
 </tr>
 <tr>
 <tr>
@@ -152,7 +152,7 @@ Write Not Permitted: for any attempt to write while the beacon is locked.
 </tr>
 <tr>
 <td>Characteristic&nbsp;UUID</td>
-<td>a3c8<strong>7503</strong>8ed3-4bdf-8a39-a01bebede295</td>
+<td>a3c8<strong>7503</strong>-8ed3-4bdf-8a39-a01bebede295</td>
 </tr>
 <tr>
 <td>Properties</td>
@@ -195,7 +195,7 @@ Write Not Permitted: for any attempt to write while the beacon is locked.
 </tr>
 <tr>
 <td>Characteristic&nbsp;UUID</td>
-<td>a3c8<strong>7504</strong>8ed3-4bdf-8a39-a01bebede295</td>
+<td>a3c8<strong>7504</strong>-8ed3-4bdf-8a39-a01bebede295</td>
 </tr>
 <tr>
 <td>Properties</td>
@@ -235,7 +235,7 @@ Write Not Permitted: for any attempt to write while the beacon is locked.
 </tr>
 <tr>
 <td>Characteristic&nbsp;UUID</td>
-<td>a3c8<strong>7505</strong>8ed3-4bdf-8a39-a01bebede295</td>
+<td>a3c8<strong>7505</strong>-8ed3-4bdf-8a39-a01bebede295</td>
 </tr>
 <tr>
 <td>Properties</td>
@@ -275,7 +275,7 @@ Write Not Permitted: for any attempt to write while the beacon is locked.
 </tr>
 <tr>
 <td>Characteristic&nbsp;UUID</td>
-<td>a3c8<strong>7506</strong>8ed3-4bdf-8a39-a01bebede295</td>
+<td>a3c8<strong>7506</strong>-8ed3-4bdf-8a39-a01bebede295</td>
 </tr>
 <tr>
 <td>Properties</td>
@@ -329,7 +329,7 @@ Writeable only in unlocked state.</td>
 </tr>
 <tr>
 <td>Characteristic&nbsp;UUID</td>
-<td>a3c8<strong>7507</strong>8ed3-4bdf-8a39-a01bebede295</td>
+<td>a3c8<strong>7507</strong>-8ed3-4bdf-8a39-a01bebede295</td>
 </tr>
 <tr>
 <td>Properties</td>
@@ -389,7 +389,7 @@ Write Not Permitted: for any attempt to write while the beacon is locked.
 </tr>
 <tr>
 <td>Characteristic&nbsp;UUID</td>
-<td>a3c8<strong>7508</strong>8ed3-4bdf-8a39-a01bebede295</td>
+<td>a3c8<strong>7508</strong>-8ed3-4bdf-8a39-a01bebede295</td>
 </tr>
 <tr>
 <td>Properties</td>
@@ -427,7 +427,7 @@ Read Not Permitted: for any attempt to read while the beacon is locked.</td>
 </tr>
 <tr>
 <td>Characteristic&nbsp;UUID</td>
-<td>a3c8<strong>7509</strong>8ed3-4bdf-8a39-a01bebede295</td>
+<td>a3c8<strong>7509</strong>-8ed3-4bdf-8a39-a01bebede295</td>
 </tr>
 <tr>
 <td>Properties</td>
@@ -467,7 +467,7 @@ Read Not Permitted: for any attempt to read while the beacon is locked.</td>
 </tr>
 <tr>
 <td>Characteristic&nbsp;UUID</td>
-<td>a3c8<strong>750A</strong>8ed3-4bdf-8a39-a01bebede295</td>
+<td>a3c8<strong>750A</strong>-8ed3-4bdf-8a39-a01bebede295</td>
 </tr>
 <tr>
 <td>Properties</td>
@@ -527,7 +527,7 @@ Invalid Attribute Length: on any attempt to write with an illegal number of byte
 </tr>
 <tr>
 <td>Characteristic&nbsp;UUID</td>
-<td>a3c8<strong>750B</strong>8ed3-4bdf-8a39-a01bebede295</td>
+<td>a3c8<strong>750B</strong>-8ed3-4bdf-8a39-a01bebede295</td>
 </tr>
 <tr>
 <td>Properties</td>
@@ -563,7 +563,7 @@ In addition, any write shall be ignored if the lock state is not <code>0x01</cod
 </tr>
 <tr>
 <td>Characteristic&nbsp;UUID</td>
-<td>a3c8<strong>750C</strong>8ed3-4bdf-8a39-a01bebede295</td>
+<td>a3c8<strong>750C</strong>-8ed3-4bdf-8a39-a01bebede295</td>
 </tr>
 <tr>
 <td>Properties</td>
