@@ -376,8 +376,10 @@ Writeable only in locked state.</td>
 </tr>
 <tr>
 <td>Return Codes</td>
+<td>
 Read Not Permitted: for any attempt to read or write while the beacon is locked.<br>
 Write Not Permitted: for any attempt to write while the beacon is locked.
+</td>
 </tr>
 </table>
 
