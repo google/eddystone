@@ -113,7 +113,6 @@ The advertisement protocol does not rely on the security of Bluetooth pairing. I
 
 Beacons and trusted resolvers establish the keys through a separate secure registration step. The keys are generated using a Diffie-Hellman key-exchange procedure, and are never transmitted over the air.
 
-The registration step is not authenticated: a man-in-the-middle attack on this step could have an attacker sharing one identity key with the beacon and another with the trusted resolver. This attacker could then eavesdrop on the specific beacon, but the beacon itself will not be directly resolvable by the trusted resolver. This attack may be mitigated by the implementer (e.g. by adding authentication at another layer); even if not, it is considered a low-priority threat, since the attacker would need to be continuously present for the attack to proceed.
+The beacon configuration step is not authenticated: a man-in-the-middle attack on this step could have an attacker sharing one identity key with the beacon and another with the trusted resolver. This attacker could then eavesdrop on the specific beacon, but the beacon itself will not be directly resolvable by the trusted resolver. This attack may be mitigated by the implementer, for example by adding authentication at another layer. Even if not, it is considered a low-priority threat, since the attacker would need to be continuously present for the attack to proceed.
 
 Beacons and trusted resolvers must save their ID keys in a secure non-volatile memory element.
-
