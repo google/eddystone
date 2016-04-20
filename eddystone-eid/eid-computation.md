@@ -107,6 +107,12 @@ We recommend that beacons initialize their time counter at registration to a val
 
 The [eidtools.py](tools/eidtools.py) utility may also be of use in testing implementations of EID beacons.
 
+## Recovering from power loss
+
+Since the beacon registered its clock value with the resolver during the configuration step, it is critical that the beacon is able to recover its clock value in the event of power loss; if it can't and the battery is replaced, the trusted resolver will fail to resolve the ID that is broadcast.
+
+We recommend that the beacon writes its current clock value to non-volatile memory once per day, and that at boot time it checks the NVM to see if there's a value present from which to initialise. The trusted resolver should implement resolution over a time window sufficient to allow for both reasonable clock drift and this type of power loss recovery. 
+
 ## Security considerations
 
 The advertisement protocol does not rely on the security of Bluetooth pairing. Instead, each beacon identifies itself by proving it possesses a specific key that is known only to this beacon and to trusted parties.
