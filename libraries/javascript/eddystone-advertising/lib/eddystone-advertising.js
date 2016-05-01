@@ -72,6 +72,8 @@
       }
       if (options.type === EddystoneFrameType.URL) {
         Eddystone._checkURLOptions(options);
+      } else if (options.type === EddystoneFrameType.UID) {
+        Eddystone._checkUIDOptions(options);
       } else {
         throw new TypeError('Unsupported Frame Type: ' + options.type);
       }
@@ -90,6 +92,17 @@
       }
       if (!('advertisedTxPower' in options)) {
         throw new TypeError('Required member advertisedTxPower is undefined.');
+      }
+    }
+    static _checkUIDOptions(options) {
+      if (!('advertisedTxPower' in options)) {
+        throw new TypeError('Required member advertisedTxPower is undefined.');
+      }
+      if (!('namespace' in options)) {
+        throw new TypeError('Required member namespace is undefined.');
+      }
+      if (!('instance' in options)) {
+        throw new TypeError('Required member instance is undefined.');
       }
     }
   }

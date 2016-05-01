@@ -1,19 +1,13 @@
 // jshint node: true
 // We need this so chai `expect` statements don't throw an error.
 // jshint expr: true
+'use strict';
 
-// Ignore vars in require statements
-// jshint ignore:start
-var chai = require('chai');
-var expect = chai.expect;
-
-var TextEncoder = require('text-encoding').TextEncoder;
-
-var EddystoneURL = require('../../lib/eddystone-url.js');
-// jshint ignore:end
+import chai, {expect} from 'chai';
+import {TextEncoder} from 'text-encoding';
+import EddystoneURL from '../../lib/eddystone-url.js';
 
 describe('Eddystone-URL', () => {
-  'use strict';
 
   describe('encodeURLScheme', () => {
     it('http://www.', () => {

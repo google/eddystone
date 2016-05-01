@@ -65,20 +65,38 @@
        */
       this.type = undefined;
       /**
+         Tx Power included in the advertisement. Only present if `type === 'url'`
+         or `type === 'uid'`.
+         @type {number|undefined}
+       */
+      this.advertisedTxPower = undefined;
+      /**
          URL being advertised. Only present if `type === 'url'`.
          @type {string|undefined}
        */
       this.url = undefined;
       /**
-         Tx Power included in the advertisement. Only present if `type === 'url'`.
-         @type {number|undefined}
+         Hex string of the namespace being advertised. Only present if `type === 'uid'`.
+         @type {string|undefined}
        */
-      this.advertisedTxPower = undefined;
+      this.namespace = undefined;
+      /**
+         Hex string of the instance being advertised. Only present if `type === 'uid'`.
+         @type {string|undefined}
+      */
+      this.instance = undefined;
+
       if (options.type == EddystoneFrameType.URL) {
         this.id = id;
         this.type = options.type;
         this.url = options.url;
         this.advertisedTxPower = options.advertisedTxPower;
+      } else if (options.type == EddystoneFrameType.UID) {
+        this.id = id;
+        this.type = options.type;
+        this.advertisedTxPower = options.advertisedTxPower;
+        this.namespace = options.namespace;
+        this.instance = options.instance;
       } else {
         throw new Error('Unsupported Frame Type');
       }
@@ -177,6 +195,8 @@
       }
       if (options.type === EddystoneFrameType.URL) {
         Eddystone._checkURLOptions(options);
+      } else if (options.type === EddystoneFrameType.UID) {
+        Eddystone._checkUIDOptions(options);
       } else {
         throw new TypeError('Unsupported Frame Type: ' + options.type);
       }
@@ -197,12 +217,23 @@
         throw new TypeError('Required member advertisedTxPower is undefined.');
       }
     }
+    static _checkUIDOptions(options) {
+      if (!('advertisedTxPower' in options)) {
+        throw new TypeError('Required member advertisedTxPower is undefined.');
+      }
+      if (!('namespace' in options)) {
+        throw new TypeError('Required member namespace is undefined.');
+      }
+      if (!('instance' in options)) {
+        throw new TypeError('Required member instance is undefined.');
+      }
+    }
   }
 
   module.exports = Eddystone;
 })();
 
-},{"./eddystone-advertisement.js":1,"./platform.js":6}],3:[function(require,module,exports){
+},{"./eddystone-advertisement.js":1,"./platform.js":7}],3:[function(require,module,exports){
 (() => {
   'use strict';
 
@@ -212,6 +243,7 @@
    */
 
   let EddystoneURL = require('./eddystone-url.js');
+  let EddystoneUID = require('./eddystone-uid.js');
   let EddystoneAdvertisement = require('./eddystone-advertisement.js').EddystoneAdvertisement;
   const EddystoneFrameType = require('./eddystone-advertisement.js').EddystoneFrameType;
   const EDDYSTONE_UUID = require('./eddystone-advertisement.js').EDDYSTONE_UUID;
@@ -289,24 +321,160 @@
        https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding
      */
     static _constructAdvertisement(options) {
+      let data;
       if (options.type === EddystoneFrameType.URL) {
-        return {
-          type: 'broadcast',
-          serviceUuids: [EDDYSTONE_UUID],
-          serviceData: [{
-            uuid: EDDYSTONE_UUID,
-            data: EddystoneURL.constructServiceData(options.url, options.advertisedTxPower)
-          }]
-        };
+        data = EddystoneURL.constructServiceData(options.url, options.advertisedTxPower);
+      } else if (options.type === EddystoneFrameType.UID) {
+        data = EddystoneUID.constructServiceData(
+          options.advertisedTxPower, options.namespace, options.instance);
       } else {
         throw new Error('Unsupported Frame Type: ' + options.type);
       }
+      return {
+        type: 'broadcast',
+        serviceUuids: [EDDYSTONE_UUID],
+        serviceData: [{
+          uuid: EDDYSTONE_UUID,
+          data: data
+        }]
+      };
     }
   }
   module.exports = EddystoneChromeOS;
 })();
 
-},{"./eddystone-advertisement.js":1,"./eddystone-url.js":4}],4:[function(require,module,exports){
+},{"./eddystone-advertisement.js":1,"./eddystone-uid.js":4,"./eddystone-url.js":5}],4:[function(require,module,exports){
+(() => {
+  'use strict';
+
+  /**
+   * @module eddystone-uid
+   * @typicalname uid
+   */
+
+  const EDDYSTONE_UUID = require('./eddystone-advertisement.js').EDDYSTONE_UUID;
+
+  /**
+     Eddystone-UID Frame type.
+     @see {@link https://github.com/google/eddystone/tree/master/eddystone-uid#frame-specification|Eddystone-UID}
+     @private
+     @constant {number}
+     @default
+   */
+  const EDDYSTONE_UID_FRAME_TYPE = 0x00;
+
+  const NAMESPACE_LENGTH = 10;
+  const INSTANCE_LENGTH = 6;
+
+  const HEX_REGEX = /[0-9a-f]/i;
+
+  /**
+     This class provides helper functions that relate to Eddystone-UID.
+     @see {@link https://github.com/google/eddystone/tree/master/eddystone-uid|Eddystone-UID}
+     @alias module:eddystone-uid
+   */
+  class EddystoneUID {
+    /**
+       Constructs a valid Eddystone-UID service data from a Tx Power value, namespace
+       and instance.
+       @see {@link https://github.com/google/eddystone/tree/master/eddystone-uid#frame-specification|UID Frame Specification}
+       @param {number} advertisedTxPower The Tx Power included in the service data.
+       @param {number[]|string} namespace The namespace to advertise.
+       @param {number[]|string} instance The instance to advertise.
+       @returns {number[]} The service data.
+     */
+    static constructServiceData(advertisedTxPower, namespace, instance) {
+      // Check that it's a valid Tx Power.
+      if (advertisedTxPower < -100 || advertisedTxPower > 20) {
+        throw new Error('Invalid Tx Power value: ' + advertisedTxPower + '.');
+      }
+      let base_frame = [EDDYSTONE_UID_FRAME_TYPE, advertisedTxPower];
+      Array.prototype.push.apply(base_frame, EddystoneUID._getNamespaceByteArray(namespace));
+      Array.prototype.push.apply(base_frame, EddystoneUID._getInstanceByteArray(instance));
+      return base_frame;
+    }
+
+    /**
+       Validates the give array of bytes or converts the hex string into an array of bytes.
+       @param {number[]|string} value The value to encode.
+       @throws {TypeError} If |value| is not an array or a string.
+       @throws {Error} If |value| contains out-of-range numbers or characters.
+       @returns {number[]} Array of bytes.
+    */
+    static getByteArray(value, expected_length) {
+      if (typeof value === 'string') {
+        // A hex string is twice as long as the byte array it represents.
+        let str_expected_length = expected_length * 2;
+        return EddystoneUID._encodeString(value, str_expected_length);
+      }
+      if (Array.isArray(value)) {
+        return EddystoneUID._validateByteArray(value, expected_length);
+      }
+      throw new TypeError('Only string or array are supported');
+    }
+
+    static getHexString(bytes) {
+      let hex_string = '';
+      for (let i = 0; i < bytes.length; i++) {
+        if (bytes[i] > 0xFF) {
+          throw new Error('Invalid value \'' + bytes[i] + '\' at index ' + i + '.');
+        }
+        hex_string = hex_string.concat((bytes[i] >>> 4).toString(16));
+        hex_string = hex_string.concat((bytes[i] & 0xF).toString(16));
+      }
+      return hex_string;
+    }
+
+    static _getNamespaceByteArray(namespace) {
+      return EddystoneUID.getByteArray(namespace, NAMESPACE_LENGTH);
+    }
+
+    static _getInstanceByteArray(instance) {
+      return EddystoneUID.getByteArray(instance, INSTANCE_LENGTH);
+    }
+
+    static _encodeString(str, expected_length) {
+      if (expected_length % 2 !== 0) {
+        throw new Error('expected_length should be an even number.');
+      }
+      if (str.length !== expected_length) {
+        throw new Error('Expected length to be: ' + expected_length + '. ' +
+                        'But was: ' + str.length  + '. Remember a hex string is twice ' +
+                        'as long as the number of bytes desired.');
+      }
+      let bytes = [];
+      for (let i = 0; i < str.length; i += 2) {
+        if (!HEX_REGEX.test(str[i])) {
+          throw new Error('Invalid character \'' + str[i] + '\' at index ' + i);
+        }
+        if (!HEX_REGEX.test(str[i + 1])) {
+          throw new Error('Invalid character \'' + str[i + 1] + '\' at index ' + (i + 1));
+        }
+        bytes.push(parseInt(str.substr(i, 2), 16));
+      }
+      return bytes;
+    }
+
+    static _validateByteArray(arr, expected_length) {
+      if (arr.length !== expected_length) {
+        throw new Error('Expected length to be: ' + expected_length + '. ' +
+                        'But was: ' + arr.length + '.');
+      }
+      for (let i = 0; i < arr.length; i++) {
+        if (typeof arr[i] !== 'number') {
+          throw new Error('Unexpected value \'' + arr[i] + '\' at index ' + i + '.');
+        }
+        if (!(arr[i] >= 0x00 && arr[i] <= 0xFF)) {
+          throw new Error('Unexpected value \'' + arr[i] + '\' at index ' + i + '.');
+        }
+      }
+      return arr;
+    }
+  }
+  module.exports = EddystoneUID;
+})();
+
+},{"./eddystone-advertisement.js":1}],5:[function(require,module,exports){
 (function (global){
 (() => {
   'use strict';
@@ -381,14 +549,6 @@
      This class provides helper functions that relate to Eddystone-URL.
      @see {@link https://github.com/google/eddystone/tree/master/eddystone-url|Eddystone-URL}
      @alias module:eddystone-url
-     @throws {Error} If the Tx Power value is not in the allowed range. See
-     {@link https://github.com/google/eddystone/tree/master/eddystone-url#tx-power-level|Tx Power Level}.
-     @throws {Error} If the URL Scheme prefix is unsupported. For a list of
-     supported Scheme prefixes see
-     {@link https://github.com/google/eddystone/tree/master/eddystone-url#url-scheme-prefix|URL Scheme Prefix}
-     @throws {Error} If the URL contains an invalid character. For a list of
-     invalid characters see the Note in
-     {@link https://github.com/google/eddystone/tree/master/eddystone-url#eddystone-url-http-url-encoding|HTTP URL Encoding}
    */
   class EddystoneURL {
     /**
@@ -497,7 +657,7 @@
 })();
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./eddystone-advertisement.js":1,"text-encoding":undefined}],5:[function(require,module,exports){
+},{"./eddystone-advertisement.js":1,"text-encoding":undefined}],6:[function(require,module,exports){
 (function (global){
 (() => {
   'use strict';
@@ -516,7 +676,7 @@
 })();
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./eddystone-advertising.js":2}],6:[function(require,module,exports){
+},{"./eddystone-advertising.js":2}],7:[function(require,module,exports){
 (() => {
   'use strict';
 
@@ -545,4 +705,4 @@
   module.exports = platform;
 })();
 
-},{"./eddystone-chrome-os.js":3}]},{},[5]);
+},{"./eddystone-chrome-os.js":3}]},{},[6]);

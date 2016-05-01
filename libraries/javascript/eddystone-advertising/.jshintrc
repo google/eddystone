@@ -4,7 +4,7 @@
   // for linting errors.
   "quotmark": "single",  // Require single quotes.
   "varstmt" : true,      // Disallow any var statements. Only 'let' and 'const' are allowed
-  "esnext"  : true,      // Allow ES6 syntax
+  "esversion"  : 6,      // Allow ES6 syntax
   "browser" : true,      // Web Browser (window, document, etc)
   "devel"   : false,     // Development/debugging (alert, confirm, etc)
   "mocha"   : true       // Mocha
