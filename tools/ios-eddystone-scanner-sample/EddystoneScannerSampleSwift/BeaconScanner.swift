@@ -76,7 +76,7 @@ class BeaconScanner: NSObject, CBCentralManagerDelegate {
   /// MARK - private methods and delegate callbacks
   ///
 
-  func centralManagerDidUpdateState(central: CBCentralManager!)  {
+  func centralManagerDidUpdateState(central: CBCentralManager)  {
     if central.state == CBCentralManagerState.PoweredOn && self.shouldBeScanning {
       self.startScanningSynchronized();
     }
@@ -86,11 +86,8 @@ class BeaconScanner: NSObject, CBCentralManagerDelegate {
   /// Core Bluetooth CBCentralManager callback when we discover a beacon. We're not super 
   /// interested in any error situations at this point in time.
   ///
-  func centralManager(central: CBCentralManager!,
-    didDiscoverPeripheral peripheral: CBPeripheral!,
-    advertisementData: [NSObject : AnyObject]!,
-    RSSI: NSNumber!) {
-
+  func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber)
+	{
       if let serviceData = advertisementData[CBAdvertisementDataServiceDataKey]
         as? [NSObject : AnyObject] {
           var eft: BeaconInfo.EddystoneFrameType
@@ -116,7 +113,7 @@ class BeaconScanner: NSObject, CBCentralManagerDelegate {
                   //       each time.
                   self.deviceIDCache.removeValueForKey(peripheral.identifier)
 
-                  if let cachedData = self.seenEddystoneCache[beaconInfo.beaconID.description] {
+                  if let _ = self.seenEddystoneCache[beaconInfo.beaconID.description] {
                     // Reset the onLost timer and fire the didUpdate.
                     if let timer =
                       self.seenEddystoneCache[beaconInfo.beaconID.description]?["onLostTimer"]

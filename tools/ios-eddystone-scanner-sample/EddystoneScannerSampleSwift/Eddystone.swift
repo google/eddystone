@@ -20,7 +20,7 @@ import CoreBluetooth
 ///
 /// Uniquely identifies an Eddystone compliant beacon.
 ///
-class BeaconID : NSObject, Equatable {
+class BeaconID : NSObject {
 
   enum BeaconType {
     case Eddystone
@@ -55,7 +55,7 @@ class BeaconID : NSObject, Equatable {
     var retval = ""
     for byte in beaconID {
       var s = String(byte, radix:16, uppercase: false)
-      if count(s) == 1 {
+      if s.characters.count == 1 {
         s = "0" + s
       }
       retval += s
@@ -118,8 +118,8 @@ class BeaconInfo : NSObject {
 
   class func frameTypeForFrame(advertisementFrameList: [NSObject : AnyObject])
     -> EddystoneFrameType {
+	let uuid = CBUUID(string: "FEAA")
     if let
-      uuid = CBUUID(string: "FEAA"),
       frameData = advertisementFrameList[uuid] as? NSData {
       if frameData.length > 1 {
         let count = frameData.length
