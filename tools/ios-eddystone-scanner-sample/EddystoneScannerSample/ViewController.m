@@ -52,7 +52,7 @@
 }
 
 - (void)beaconScanner:(ESSBeaconScanner *)scanner didFindURL:(NSURL *)url {
-  NSLog(@"I Saw an URL!: %@", url);
+  NSLog(@"I Saw a URL!: %@", url);
 }
 
 @end
