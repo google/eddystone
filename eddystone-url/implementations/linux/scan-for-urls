@@ -131,7 +131,8 @@ def scan(duration = None):
     """
 
     subprocess.call(["sudo", "-v"])
-
+    subprocess.call("sudo hciconfig hci0 reset", shell = True, stdout = subprocess.DEVNULL)
+    
     lescan = subprocess.Popen(
             ["sudo", "-n", "hcitool", "lescan", "--duplicates"],
             stdout = subprocess.DEVNULL)
