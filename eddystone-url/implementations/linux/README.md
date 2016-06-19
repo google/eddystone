@@ -2,6 +2,12 @@
 
 A set of python scripts for scanning and advertising urls over Eddystone-URL.
 
+## Requirements
+
+    Linux
+    Python 3
+    bluez
+
 ## Installation
 
     sudo apt-get install bluez
@@ -9,7 +15,7 @@ A set of python scripts for scanning and advertising urls over Eddystone-URL.
 ## Usage
 
     # Advertising a url
-    ./advertise-url http://your/url
+    ./advertise-url -u http://your/url
 
     # Stopping the advertisement
     ./advertise-url -s
@@ -21,4 +27,4 @@ A set of python scripts for scanning and advertising urls over Eddystone-URL.
     ./scan-for-urls
 
     # A continuous scan and resolving short urls to long urls
-    ./scan-for-urls | ./resolve-urls
+    ./scan-for-urls | ./resolve-urls -u [URLs]
