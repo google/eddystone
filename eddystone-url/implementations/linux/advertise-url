@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 #
 # Copyright 2015 Opera Software ASA. All rights reserved.
 #
@@ -16,11 +16,15 @@
 """
 Advertises a url as an Eddystone beacon.
 """
-
+import os
 import sys
 import subprocess
 import argparse
 
+if (sys.version_info > (3, 0)): 
+    DEVNULL = subprocess.DEVNULL
+else:
+    DEVNULL = open(os.devnull, 'wb')
 # The default url
 url = "https://goo.gl/SkcDTN"
 
@@ -138,22 +142,22 @@ def advertise(url):
     message = " ".join(message)
     verboseOutput("Message: " + message)
 
-    subprocess.call("sudo hciconfig hci0 up", shell = True, stdout = subprocess.DEVNULL)
+    subprocess.call("sudo hciconfig hci0 up", shell = True, stdout = DEVNULL)
 
     # Stop advertising
-    subprocess.call("sudo hcitool -i hci0 cmd 0x08 0x000a 00", shell = True, stdout = subprocess.DEVNULL)
+    subprocess.call("sudo hcitool -i hci0 cmd 0x08 0x000a 00", shell = True, stdout = DEVNULL)
 
     # Set message
-    subprocess.call("sudo hcitool -i hci0 cmd 0x08 0x0008 " + message, shell = True, stdout = subprocess.DEVNULL)
+    subprocess.call("sudo hcitool -i hci0 cmd 0x08 0x0008 " + message, shell = True, stdout = DEVNULL)
 
     # Resume advertising
-    subprocess.call("sudo hcitool -i hci0 cmd 0x08 0x000a 01", shell = True, stdout = subprocess.DEVNULL)
+    subprocess.call("sudo hcitool -i hci0 cmd 0x08 0x000a 01", shell = True, stdout = DEVNULL)
 
 
 def stopAdvertising():
     print("Stopping advertising")
     verboseOutput("Stopping advertising")
-    subprocess.call("sudo hcitool -i hci0 cmd 0x08 0x000a 00", shell = True, stdout = subprocess.DEVNULL)
+    subprocess.call("sudo hcitool -i hci0 cmd 0x08 0x000a 00", shell = True, stdout = DEVNULL)
 
 
 try:
