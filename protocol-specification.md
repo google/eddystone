@@ -14,7 +14,7 @@ Frame Type | High-Order 4 bits | Byte Value
 UID | `0000` | `0x00`
 URL | `0001` | `0x10`
 TLM | `0010` | `0x20`
-RESERVED | `0011` | `0x30`
+EID | `0011` | `0x30`
 RESERVED | `0100` | `0x40`
 
 
@@ -59,3 +59,7 @@ The Eddystone-URL frame forms the backbone of the [Physical Web](http://physical
 ## [Eddystone-TLM](eddystone-tlm)
 
 The Eddystone-TLM frame broadcasts telemetry information about the beacon itself such as battery voltage, device temperature, and counts of broadcast packets.
+
+## [Eddystone-EID](eddystone-eid)
+
+The Eddystone-EID frame broadcasts an encrypted ephemeral identifier that changes periodically at a rate determined during the initial registration with a web service. The broadcast ephemeral ID can be resolved remotely by the service with which it was registered, but to other observers appears to be changing randomly. This frame type is intended for use in security and privacy-enhanced devices.

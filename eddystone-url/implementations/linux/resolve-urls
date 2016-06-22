@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+#
+# Copyright 2015 Opera Software ASA. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""
+Resolve url redirects and output the final urls. Input can be given either on
+the command line, or through standard input. Try: "./scan-for-urls |
+./resolve-urls"
+"""
+
+import http.client
+import sys
+import urllib.parse
+import argparse
+
+parser = argparse.ArgumentParser(prog='advertise-url', description= __doc__)
+parser.add_argument("-u", "--urls", nargs='+', type=str, required=True,
+    help='URLs to resolve.')
+
+args = parser.parse_args()
+
+
+def resolveUrl(url):
+    """
+    Follows redirects until the final url is found.
+    """
+
+    try:
+        parsed = urllib.parse.urlsplit(url)
+
+        conn = None
+        if parsed.scheme == "https":
+            conn = http.client.HTTPSConnection(parsed.netloc)
+        elif parsed.scheme == "http":
+            conn = http.client.HTTPConnection(parsed.netloc)
+
+        path = parsed.path
+        if parsed.query:
+            path += "&" + parsed.query
+
+        conn.request("HEAD", path)
+
+        response = conn.getresponse()
+
+        if response.status >= 300 and response.status < 400:
+            return resolveUrl(response.getheader("Location"))
+        else:
+            return url
+
+    except:
+        return url
+
+
+resolvedUrls = dict()
+
+for url in args.urls or sys.stdin:
+    url = url.strip()
+
+    if not url in resolvedUrls:
+        resolvedUrls[url] = resolveUrl(url)
+
+    print(resolvedUrls[url])

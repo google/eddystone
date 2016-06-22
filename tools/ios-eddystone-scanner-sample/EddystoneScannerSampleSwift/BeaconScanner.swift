@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All rights reserved.
+// Copyright 2015-2016 Google Inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ protocol BeaconScannerDelegate {
   func didFindBeacon(beaconScanner: BeaconScanner, beaconInfo: BeaconInfo)
   func didLoseBeacon(beaconScanner: BeaconScanner, beaconInfo: BeaconInfo)
   func didUpdateBeacon(beaconScanner: BeaconScanner, beaconInfo: BeaconInfo)
+  func didObserveURLBeacon(beaconScanner: BeaconScanner, URL: NSURL, RSSI: Int)
 }
 
 ///
@@ -75,8 +76,7 @@ class BeaconScanner: NSObject, CBCentralManagerDelegate {
   ///
   /// MARK - private methods and delegate callbacks
   ///
-
-  func centralManagerDidUpdateState(central: CBCentralManager!)  {
+  func centralManagerDidUpdateState(central: CBCentralManager) {
     if central.state == CBCentralManagerState.PoweredOn && self.shouldBeScanning {
       self.startScanningSynchronized();
     }
@@ -86,72 +86,87 @@ class BeaconScanner: NSObject, CBCentralManagerDelegate {
   /// Core Bluetooth CBCentralManager callback when we discover a beacon. We're not super 
   /// interested in any error situations at this point in time.
   ///
-  func centralManager(central: CBCentralManager!,
-    didDiscoverPeripheral peripheral: CBPeripheral!,
-    advertisementData: [NSObject : AnyObject]!,
-    RSSI: NSNumber!) {
+  func centralManager(central: CBCentralManager,
+                      didDiscoverPeripheral peripheral: CBPeripheral,
+                                            advertisementData: [String : AnyObject],
+                                            RSSI: NSNumber) {
+    if let serviceData = advertisementData[CBAdvertisementDataServiceDataKey]
+      as? [NSObject : AnyObject] {
+      var eft: BeaconInfo.EddystoneFrameType
+      eft = BeaconInfo.frameTypeForFrame(serviceData)
 
-      if let serviceData = advertisementData[CBAdvertisementDataServiceDataKey]
-        as? [NSObject : AnyObject] {
-          var eft: BeaconInfo.EddystoneFrameType
-          eft = BeaconInfo.frameTypeForFrame(serviceData)
+      // If it's a telemetry frame, stash it away and we'll send it along with the next regular
+      // frame we see. Otherwise, process the UID frame.
+      if eft == BeaconInfo.EddystoneFrameType.TelemetryFrameType {
+        deviceIDCache[peripheral.identifier] = BeaconInfo.telemetryDataForFrame(serviceData)
+      } else if eft == BeaconInfo.EddystoneFrameType.UIDFrameType
+                || eft == BeaconInfo.EddystoneFrameType.EIDFrameType {
+        let telemetry = self.deviceIDCache[peripheral.identifier]
+        let serviceUUID = CBUUID(string: "FEAA")
+        let _RSSI: Int = RSSI.integerValue
 
-          // If it's a telemetry frame, stash it away and we'll send it along with the next regular
-          // frame we see. Otherwise, process the UID frame.
-          if eft == BeaconInfo.EddystoneFrameType.TelemetryFrameType {
-            deviceIDCache[peripheral.identifier] = BeaconInfo.telemetryDataForFrame(serviceData)
-          } else if eft == BeaconInfo.EddystoneFrameType.UIDFrameType {
-            let telemetry = self.deviceIDCache[peripheral.identifier]
-            let serviceUUID = CBUUID(string: "FEAA")
-            let _RSSI: Int = RSSI.integerValue
+        if let
+          beaconServiceData = serviceData[serviceUUID] as? NSData,
+          beaconInfo =
+            (eft == BeaconInfo.EddystoneFrameType.UIDFrameType
+              ? BeaconInfo.beaconInfoForUIDFrameData(beaconServiceData, telemetry: telemetry,
+                                                     RSSI: _RSSI)
+              : BeaconInfo.beaconInfoForEIDFrameData(beaconServiceData, telemetry: telemetry,
+                                                     RSSI: _RSSI)) {
 
-            if let
-              beaconServiceData = serviceData[serviceUUID] as? NSData,
-              beaconInfo = BeaconInfo.beaconInfoForUIDFrameData(beaconServiceData,
-                telemetry: telemetry, RSSI: _RSSI) {
-                  // NOTE: At this point you can choose whether to keep or get rid of the telemetry
-                  //       data. You can either opt to include it with every single beacon sighting
-                  //       for this beacon, or delete it until we get a new / "fresh" TLM frame.
-                  //       We'll treat it as "report it only when you see it", so we'll delete it
-                  //       each time.
-                  self.deviceIDCache.removeValueForKey(peripheral.identifier)
+          // NOTE: At this point you can choose whether to keep or get rid of the telemetry
+          //       data. You can either opt to include it with every single beacon sighting
+          //       for this beacon, or delete it until we get a new / "fresh" TLM frame.
+          //       We'll treat it as "report it only when you see it", so we'll delete it
+          //       each time.
+          self.deviceIDCache.removeValueForKey(peripheral.identifier)
 
-                  if let cachedData = self.seenEddystoneCache[beaconInfo.beaconID.description] {
-                    // Reset the onLost timer and fire the didUpdate.
-                    if let timer =
-                      self.seenEddystoneCache[beaconInfo.beaconID.description]?["onLostTimer"]
-                        as? DispatchTimer {
-                          timer.reschedule()
-                    }
-
-                    self.delegate?.didUpdateBeacon(self, beaconInfo: beaconInfo)
-                  } else {
-                    // We've never seen this beacon before
-                    self.delegate?.didFindBeacon(self, beaconInfo: beaconInfo)
-
-                    let onLostTimer = DispatchTimer.scheduledDispatchTimer(self.onLostTimeout,
-                      queue: dispatch_get_main_queue()) {
-                        (timer: DispatchTimer) -> () in
-                        let cacheKey = beaconInfo.beaconID.description
-                        if let
-                          beaconCache = self.seenEddystoneCache[cacheKey],
-                          lostBeaconInfo = beaconCache["beaconInfo"] as? BeaconInfo {
-                            self.delegate?.didLoseBeacon(self, beaconInfo: lostBeaconInfo)
-                            self.seenEddystoneCache.removeValueForKey(
-                              beaconInfo.beaconID.description)
-                        }
-                    }
-
-                    self.seenEddystoneCache[beaconInfo.beaconID.description] = [
-                      "beaconInfo" : beaconInfo,
-                      "onLostTimer" : onLostTimer
-                    ]
-                  }
+          if (self.seenEddystoneCache[beaconInfo.beaconID.description] != nil) {
+            // Reset the onLost timer and fire the didUpdate.
+            if let timer =
+              self.seenEddystoneCache[beaconInfo.beaconID.description]?["onLostTimer"]
+                as? DispatchTimer {
+              timer.reschedule()
             }
+
+            self.delegate?.didUpdateBeacon(self, beaconInfo: beaconInfo)
+          } else {
+            // We've never seen this beacon before
+            self.delegate?.didFindBeacon(self, beaconInfo: beaconInfo)
+
+            let onLostTimer = DispatchTimer.scheduledDispatchTimer(
+              self.onLostTimeout,
+              queue: dispatch_get_main_queue()) {
+                (timer: DispatchTimer) -> () in
+                let cacheKey = beaconInfo.beaconID.description
+                if let
+                  beaconCache = self.seenEddystoneCache[cacheKey],
+                  lostBeaconInfo = beaconCache["beaconInfo"] as? BeaconInfo {
+                  self.delegate?.didLoseBeacon(self, beaconInfo: lostBeaconInfo)
+                  self.seenEddystoneCache.removeValueForKey(
+                    beaconInfo.beaconID.description)
+                }
+            }
+
+            self.seenEddystoneCache[beaconInfo.beaconID.description] = [
+              "beaconInfo" : beaconInfo,
+              "onLostTimer" : onLostTimer
+            ]
           }
-      } else {
-        NSLog("Unable to find service data; can't process Eddystone")
+        }
+      } else if eft == BeaconInfo.EddystoneFrameType.URLFrameType {
+        let serviceUUID = CBUUID(string: "FEAA")
+        let _RSSI: Int = RSSI.integerValue
+
+        if let
+          beaconServiceData = serviceData[serviceUUID] as? NSData,
+          URL = BeaconInfo.parseURLFromFrame(beaconServiceData) {
+          self.delegate?.didObserveURLBeacon(self, URL: URL, RSSI: _RSSI)
+        }
       }
+    } else {
+      NSLog("Unable to find service data; can't process Eddystone")
+    }
   }
 
   private func startScanningSynchronized() {

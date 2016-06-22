@@ -1,0 +1,19 @@
+{
+  "name": "EddystoneChromeApp",
+  "description": "Chrome App to advertise Eddystone packets.",
+  "homepage": "https://github.com/google/eddystone",
+  "keywords": [
+    "ble",
+    "eddystone"
+  ],
+  "author": "Giovanni Ortuño <gd.ortuno@gmail.com>",
+  "dependencies": {
+    "paper-input": "PolymerElements/paper-input#^1.1.9",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.1.3",
+    "paper-item": "PolymerElements/paper-item#^1.1.4",
+    "paper-button": "PolymerElements/paper-button#^1.0.11",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.3.0",
+    "paper-toast": "PolymerElements/paper-toast#^1.2.0",
+    "paper-menu": "PolymerElements/paper-menu#^1.2.2"
+  }
+}

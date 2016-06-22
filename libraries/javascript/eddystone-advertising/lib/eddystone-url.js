@@ -118,6 +118,11 @@
         encoded_url.push(encoded_fragment.encoded);
         position += encoded_fragment.realLength;
       }
+
+      if (encoded_url.length > 18) {
+        throw new Error('Encoded URL shouldn\'t be longer than 18 bytes. Please use a URL shortener.');
+      }
+
       return encoded_url;
     }
 

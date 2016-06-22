@@ -245,12 +245,8 @@ describe('Eddystone-URL', () => {
     });
 
     it('https://inbox.google.com/u/0/?pli=1', () => {
-      expect(EddystoneURL.encodeURL('https://inbox.google.com/u/0/?pli=1')).to.eql([
-        3, // https://
-        105, 110, 98, 111, 120, 46, 103, 111, 111, 103, 108, 101,  // inbox.google
-        0, // .com/
-        117, 47, 48, 47, 63, 112, 108, 105, 61, 49 // u/0/?pli=1
-      ]);
+      let url = 'https://inbox.google.com/u/0/?pli=1';
+      expect(() => EddystoneURL.encodeURL(url)).to.throw(/longer/);
     });
   });
 

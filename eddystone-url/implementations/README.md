@@ -14,6 +14,6 @@ To date, in this directory you will find the following implementations:
 * [Cambridge Silicon Radio CSR1010 (Beacon Development Board)](CSR-1010)
 * [RFduino](RFduino)
 * [TI-CC2640](TI-CC2640)
-* [Linux (bluez)](linux-url-advertiser)
+* [Linux (bluez)](linux)
 * [ARM mbed (Nordic nRF51-dongle, nRF51-DK))](mbed_EddystoneURL_Beacon)
 * [Node.js (node-eddystone-beacon)](https://github.com/don/node-eddystone-beacon)
