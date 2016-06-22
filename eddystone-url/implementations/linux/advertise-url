@@ -19,25 +19,24 @@ Advertises a url as an Eddystone beacon.
 
 import sys
 import subprocess
-from optparse import OptionParser
+import argparse
 
-parser = OptionParser(usage = "%prog [options] [url]", description = __doc__)
+# The default url
+url = "https://goo.gl/SkcDTN"
 
-parser.add_option("-s", "--stop", dest="stop",
-        action="store_true", default=False,
-        help="Stop advertising")
+parser = argparse.ArgumentParser(prog='advertise-url', description= __doc__)
+parser.add_argument("-u", "--url", nargs='?', const=url, type=str,
+    default=url, help='URL to advertise.')
 
-parser.add_option("-v", "--verbose", dest="verbose",
-        action="store_true", default=False,
-        help="Print lots of debug output")
+parser.add_argument('-s','--stop', action='store_true',
+                    help='Stop advertising url.')
 
-(options, args) = parser.parse_args()
+parser.add_argument("-v", "--verbose", action='store_true',
+                    help='Print lots of debug output.')
 
-# The default uri
-uri = "https://goo.gl/SkcDTN"
+options = parser.parse_args()
 
-if len(args) > 0:
-    uri = args[0]
+url = options.url
 
 schemes = [
         "http://www.",
@@ -57,24 +56,24 @@ def verboseOutput(text = ""):
         sys.stderr.write(text + "\n")
 
 
-def encodeUri(uri):
+def encodeurl(url):
     i = 0
     data = []
 
     for s in range(len(schemes)):
         scheme = schemes[s]
-        if uri.startswith(scheme):
+        if url.startswith(scheme):
             data.append(s)
             i += len(scheme)
             break
     else:
-        raise Exception("Invalid uri scheme")
+        raise Exception("Invalid url scheme")
 
-    while i < len(uri):
-        if uri[i] == '.':
+    while i < len(url):
+        if url[i] == '.':
             for e in range(len(extensions)):
                 expansion = extensions[e]
-                if uri.startswith(expansion, i):
+                if url.startswith(expansion, i):
                     data.append(e)
                     i += len(expansion)
                     break
@@ -82,19 +81,19 @@ def encodeUri(uri):
                 data.append(0x2E)
                 i += 1
         else:
-            data.append(ord(uri[i]))
+            data.append(ord(url[i]))
             i += 1
 
     return data
 
 
-def encodeMessage(uri):
-    encodedUri = encodeUri(uri)
-    encodedUriLength = len(encodedUri)
+def encodeMessage(url):
+    encodedurl = encodeurl(url)
+    encodedurlLength = len(encodedurl)
 
-    verboseOutput("Encoded uri length: " + str(encodedUriLength))
+    verboseOutput("Encoded url length: " + str(encodedurlLength))
 
-    if encodedUriLength > 18:
+    if encodedurlLength > 18:
         raise Exception("Encoded url too long (max 18 bytes)")
 
     message = [
@@ -107,23 +106,24 @@ def encodeMessage(uri):
             0xaa,   # 16-bit Eddystone UUID
             0xfe,   # 16-bit Eddystone UUID
 
-            5 + len(encodedUri), # Service Data length
+            5 + len(encodedurl), # Service Data length
             0x16,   # Service Data data type value
             0xaa,   # 16-bit Eddystone UUID
             0xfe,   # 16-bit Eddystone UUID
 
-            0x10,   # Eddystone-URL frame type
+            0x10,   # Eddystone-url frame type
             0xed,   # txpower
             ]
 
-    message += encodedUri
+    message += encodedurl
 
     return message
 
 
-def advertise(uri):
-    verboseOutput("Advertising: " + uri)
-    message = encodeMessage(uri)
+def advertise(url):
+    print("Advertising: " + url)
+    verboseOutput("Advertising: " + url)
+    message = encodeMessage(url)
 
     # Prepend the length of the whole message
     message.insert(0, len(message))
@@ -151,6 +151,7 @@ def advertise(uri):
 
 
 def stopAdvertising():
+    print("Stopping advertising")
     verboseOutput("Stopping advertising")
     subprocess.call("sudo hcitool -i hci0 cmd 0x08 0x000a 00", shell = True, stdout = subprocess.DEVNULL)
 
@@ -159,7 +160,7 @@ try:
     if options.stop:
         stopAdvertising()
     else:
-        advertise(uri)
+        advertise(url)
 except Exception as e:
     sys.stderr.write("Exception: " + str(e) + "\n")
     exit(1)

@@ -23,19 +23,17 @@ import subprocess
 import sys
 import time
 
-from optparse import OptionParser
+import argparse
 
-parser = OptionParser(usage = "%prog [options]", description = __doc__)
+parser = argparse.ArgumentParser(prog='scan-for-urls', description= __doc__)
 
-parser.add_option("-v", "--verbose", dest = "verbose",
-        action = "store_true", default = False,
-        help = "Print lots of debug output. This mode also outputs non-url beacons.")
+parser.add_argument('-s','--single', action='store_true',
+                    help='Perform a single scan and output all the urls found without duplicates.')
 
-parser.add_option("-s", "--single", dest = "single",
-        action = "store_true", default = False,
-        help = "Perform a single scan and output all the urls found without duplicates.")
+parser.add_argument("-v", "--verbose", action='store_true',
+                    help='Print lots of debug output.')
 
-(options, args) = parser.parse_args()
+options = parser.parse_args()
 
 schemes = [
         "http://www.",

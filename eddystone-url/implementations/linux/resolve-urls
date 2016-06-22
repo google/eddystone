@@ -22,11 +22,13 @@ the command line, or through standard input. Try: "./scan-for-urls |
 import http.client
 import sys
 import urllib.parse
+import argparse
 
-from optparse import OptionParser
+parser = argparse.ArgumentParser(prog='advertise-url', description= __doc__)
+parser.add_argument("-u", "--urls", nargs='+', type=str, required=True,
+    help='URLs to resolve.')
 
-parser = OptionParser(usage = "%prog [urls]", description = __doc__)
-(options, args) = parser.parse_args()
+args = parser.parse_args()
 
 
 def resolveUrl(url):
@@ -62,7 +64,7 @@ def resolveUrl(url):
 
 resolvedUrls = dict()
 
-for url in args or sys.stdin:
+for url in args.urls or sys.stdin:
     url = url.strip()
 
     if not url in resolvedUrls:
