@@ -502,7 +502,7 @@ In the case of UID and URL frames, the data to be broadcast is supplied in the a
 <br><br>
 In the case of a TLM frame, the data is just the frame type byte, <code>0x20</code>. If another slot on the beacon has been configured as an EID frame type, the beacon shall broadcast the ETLM variety of telemetry. Otherwise, the plain TLM frame shall be broadcast. If the beacon is currently broadcasting a plain TLM frame and an EID frame is configured, the beacon shall switch to broadcasting the ETLM variety. If the beacon is configured to broadcast multiple EID frames, then the beacon should cycle through the set identity keys and use them in turn to broadcast an equal number of ETLM frames.
 <br><br>
-In the case of an EID frame, the length is either 33 or 17. If 33, it's the 32-byte service's public ECDH key and the exponent byte. This is the prefered method of provisioning an EID beacon. If 17, it's the result of encrypting the 16-byte identity key with the beacon's lock code, and the exponent. This is less secure and any provisioner who implements this should make it clear to the user.
+In the case of an EID frame, the length is either 34 or 18. If 34, it's the frame type, the 32-byte service's public ECDH key and the exponent byte. This is the prefered method of provisioning an EID beacon. If 18, it's the frame type, the result of encrypting the 16-byte identity key with the beacon's lock code, and the exponent. This is less secure and any provisioner who implements this should make it clear to the user.
 <br><br>
 Writing an empty array, or a single <code>0x00</code> byte clears the slot and stops Tx. If configured as an EID beacon this will also destroy the peripheral's state for this frame data.
 </td>
