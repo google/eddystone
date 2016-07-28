@@ -19,6 +19,9 @@ In either case, users may find it helpful if your beacons arrive broadcasting on
 * An Eddystone-URL frame type whose URL points to information about using your beacons. We recommend this for ease of recognition by the person who is configuring the device.
 * An Eddystone-UID frame type where the namespace part of the UID is fixed to the one you've chosen for your organization and the instance part is randomized. This ensures the beacon is ready to be registered with a service that supports the UID format with no configuration necessary.
 
+### Default unlock code
+If a beacon ships in a `0x02` unlocked state, care must be taken to ensure that it has a default unlock code that's known to the owner.
+
 ### Single connection only
 While a configuration client is connected to the beacon, the beacon must refuse other connections.
 
