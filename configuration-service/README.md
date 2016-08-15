@@ -547,7 +547,7 @@ If a value of <code>0x0B</code> is written, the beacon shall reset to its factor
 <br><br>
 Any other value shall be ignored.
 <br><br>
-In addition, any write shall be ignored if the lock state is not <code>0x01</code>, i.e. locked and automatic lock disabled. The beacon must have been purposefully unlocked by the current client before a factory reset can be performed.
+In addition, any write shall be ignored if the lock state is not <code>0x01</code>. The beacon must have been purposefully unlocked by the current client before a factory reset can be performed.
 </td>
 </tr>
 <tr>
