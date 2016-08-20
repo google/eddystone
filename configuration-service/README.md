@@ -44,7 +44,7 @@ If variable advertising intervals are supported (see `IS_VARIABLE_ADV_SUPPORTED`
 </tr>
 <tr>
 <td>Notes</td>
-<td>Where not explicitly stated, data written and read is defined in terms of big-endian arrays of signed bytes.</td>
+<td>Where not explicitly stated, data written and read is defined in terms of big-endian arrays of bytes. However, there are exceptions for EID related keys: the Public ECDH Key in Characteristic 8, the Identity Key in Characteristic 9, and the service's public ECDH key when writing an EID slot in Characteristic 10, all three of which are little-endian. This exception exists because the reference design for eliptic curve-25519, which has been widely adopted, was implemented using little-endian arithmetic and is the basis for the EID design. Note: the elliptic curve-25519 reference design is little-endian, even though big-endian is used almost universally for all other cryto protocols</td>
 </tr>
 </table>
 
@@ -407,7 +407,7 @@ Length: 32 bytes
 <tr>
 <td>Description</td>
 <td>
-Reads the beacon's 256-bit public ECDH key.
+Reads the beacon's 256-bit public ECDH key (little-endian).
 </td>
 </tr>
 <tr>
@@ -445,7 +445,7 @@ Length: 16 bytes
 <tr>
 <td>Description</td>
 <td>
-Reads the identity key for the active slot. If the slot isn't configured as EID, returns an error.
+Reads the identity key (little-endian) for the active slot. If the slot isn't configured as EID, returns an error.
 <br><br>
 To prevent this data being broadcast in the clear, it shall be AES-128 encrypted with the lock code for the beacon.
 </td>
@@ -505,7 +505,7 @@ In the case of UID and URL frames, the data to be broadcast is supplied in the a
 <br><br>
 In the case of a TLM frame, the data is just the frame type byte, <code>0x20</code>. If another slot on the beacon has been configured as an EID frame type, the beacon shall broadcast the ETLM variety of telemetry. Otherwise, the plain TLM frame shall be broadcast. If the beacon is currently broadcasting a plain TLM frame and an EID frame is configured, the beacon shall switch to broadcasting the ETLM variety. If the beacon is configured to broadcast multiple EID frames, then the beacon should cycle through the set identity keys and use them in turn to broadcast an equal number of ETLM frames.
 <br><br>
-In the case of an EID frame, the length is either 34 or 18. If 34, it's the frame type, the 32-byte service's public ECDH key and the exponent byte. This is the prefered method of provisioning an EID beacon. If 18, it's the frame type, the result of encrypting the 16-byte identity key with the beacon's lock code, and the exponent. This is less secure and any provisioner who implements this should make it clear to the user.
+In the case of an EID frame, the length is either 34 or 18. If 34, it's the frame type, the 32-byte service's public ECDH key (little-endian) and the exponent byte. This is the prefered method of provisioning an EID beacon. If 18, it's the frame type, the result of encrypting the 16-byte identity key (little-endian) with the beacon's lock code (big-endian), and the exponent. This is less secure and any provisioner who implements this should make it clear to the user.
 <br><br>
 Writing an empty array, or a single <code>0x00</code> byte clears the slot and stops Tx. If configured as an EID beacon this will also destroy the peripheral's state for this frame data.
 </td>
