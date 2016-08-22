@@ -44,7 +44,7 @@ If variable advertising intervals are supported (see `IS_VARIABLE_ADV_SUPPORTED`
 </tr>
 <tr>
 <td>Notes</td>
-<td>Where not explicitly stated, data written and read is defined in terms of big-endian arrays of bytes. However, there are exceptions for EID related keys: the Public ECDH Key in Characteristic 8, the Identity Key in Characteristic 9, and the service's public ECDH key when writing an EID slot in Characteristic 10, all three of which are little-endian. This exception exists because the reference design for eliptic curve-25519, which has been widely adopted, was implemented using little-endian arithmetic and is the basis for the EID design. Note: the elliptic curve-25519 reference design is little-endian, even though big-endian is used almost universally for all other cryto protocols</td>
+<td>Where not explicitly stated, data written and read is defined in terms of big-endian arrays of bytes. However, there are exceptions for EID related keys: the Public ECDH Key in Characteristic 8, the Identity Key in Characteristic 9, and the service's public ECDH key when writing an EID slot in Characteristic 10, all three of which are little-endian. This exception exists because the reference design for eliptic curve-25519, which has been widely adopted, was implemented using little-endian arithmetic and is the basis for the EID design. Note: the elliptic curve-25519 reference design is little-endian, even though big-endian is used almost universally for all other cryptographic protocols</td>
 </tr>
 </table>
 
