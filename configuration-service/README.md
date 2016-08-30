@@ -26,7 +26,7 @@ If a beacon ships in a `0x02` unlocked state, care must be taken to ensure that 
 While a configuration client is connected to the beacon, the beacon must refuse other connections.
 
 ### Interleaving multiple advertisement frames.
-If variable advertising intervals are supported (see `IS_VARIABLE_ADV_SUPPORTED` in the Broadcast Capabilities characteristic) it will be inevitable that some slots will be scheduled to broadcast at the same time. We recommend that implementers transmit those frames in slot order at the shortest permissible advertising interval (100 ms).
+If variable advertising intervals are supported (see `IS_VARIABLE_ADV_SUPPORTED` in the Capabilities characteristic) it will be inevitable that some slots will be scheduled to broadcast at the same time. We recommend that implementers transmit those frames in slot order at the shortest permissible advertising interval (100 ms).
 
 ## Specification
 
