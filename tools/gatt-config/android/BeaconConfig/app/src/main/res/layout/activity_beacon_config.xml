@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/beacon_config_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="bluetooth.beaconconfig.BeaconConfigActivity"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/appbar_padding_top"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:subtitleTextAppearance="@style/ToolbarSubtitleAppearance"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/throbber"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <RelativeLayout
+            android:id="@+id/beacon_config_page_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/connecting_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/connect_to_beacon_message"
+                android:paddingTop="150dp"
+                android:paddingStart="50dp"
+                android:paddingEnd="50dp"
+                android:gravity="center|center_horizontal" />
+
+            <!-- Connection fail screen -->
+            <LinearLayout
+                android:id="@+id/connection_fail"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="100dp"
+                android:visibility="gone"
+                android:gravity="center_vertical">
+                <TextView
+                    android:id="@+id/connection_fail_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="There was a problem when connecting to beacon."
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:paddingStart="50dp"
+                    android:paddingEnd="50dp"/>
+                <Button
+                    android:id="@+id/connection_fail_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Try again"
+                    android:theme="@style/buttonStyle"
+                    android:layout_gravity="center_horizontal"/>
+            </LinearLayout>
+
+            <include layout="@layout/tabs_layout" />
+
+            <LinearLayout
+                android:id="@+id/grey_out_slot"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:alpha="0.5"
+                android:visibility="gone"
+                android:orientation="vertical"/>
+        </RelativeLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>

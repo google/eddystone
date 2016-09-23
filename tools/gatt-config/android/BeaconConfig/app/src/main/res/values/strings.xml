@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Beaconfig</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_beacon_config">BeaconConfig</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="frame_types">
+        <item>UID</item>
+        <item>URL</item>
+        <item>TLM</item>
+        <item>EID</item>
+        <item> [empty] </item>
+    </string-array>
+    <string-array name="url_schemes">
+        <item>https://www.</item>
+        <item>http://www.</item>
+        <item>https://</item>
+        <item>http://</item>
+    </string-array>
+    <string name="changes_save_successful">Changes saved successfully</string>
+    <string name="connect_to_beacon_message"> Make sure that bluetooth is turned on and beacon
+        is connectable. \n \n You might have to press a button or shake the beacon to make
+        it connectable. \n \n </string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_main">MainActivity</string>
+</resources>

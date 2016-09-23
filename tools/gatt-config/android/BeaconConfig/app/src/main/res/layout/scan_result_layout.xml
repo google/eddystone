@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="3dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/topRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:gravity="center_vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="10dp"
+                            android:paddingTop="7dp">
+                        <View
+                            android:id="@+id/connectable"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:background="@drawable/circle"/>
+                        </LinearLayout>
+
+                        <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="name"
+                        android:textSize="@dimen/heading2"
+                        android:textColor="@color/black"/>
+
+
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="address"
+                        android:layout_weight="1"
+                        android:gravity="right"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/grayLine"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/gray_line_height"
+                android:background="@color/gray_line"
+                android:orientation="horizontal">
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingTop="8dp"
+                android:paddingRight="8dp">
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingRight="4dp"
+                android:paddingBottom="2dp"
+                android:gravity="end">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="10dp"
+                    android:text="RSSI: "/>
+                <TextView
+                    android:id="@+id/rssi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="10dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+ </android.support.v7.widget.CardView>

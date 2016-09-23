@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/uid_frame_type_row"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="2dp"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/frame_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_weight="8"
+        android:textSize="15dp"
+        android:textColor="@android:color/black"
+        android:text="UID"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Namespace:"
+                android:textSize="12dp"/>
+
+            <TextView
+                android:id="@+id/namespace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="aaaaaaaaaaaaaaaaaaaaaaaa"
+                android:textSize="12dp"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Instance: "
+                android:textSize="12dp"/>
+
+            <TextView
+                android:id="@+id/instance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="aaaaaaaaaaaa"
+                android:textSize="12dp"/>
+
+        </LinearLayout>
+    </LinearLayout>>
+
+</LinearLayout>

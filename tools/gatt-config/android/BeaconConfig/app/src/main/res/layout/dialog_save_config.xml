@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/dialog_save_config"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Title -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Configuration"
+            android:textColor="#ffffff"
+            android:textSize="22dp"
+            android:padding="20dp"
+            android:layout_weight="1"/>
+        <ImageView
+            android:id="@+id/cancel_save_config"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/cross"
+            android:layout_gravity="center_vertical"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp" />
+    </LinearLayout>
+
+    <!-- Divider Line -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:background="@drawable/shadow"
+        android:layout_gravity="top" />
+
+    <!-- Input -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingTop="14dp"
+        android:paddingRight="20dp">
+
+        <!-- Enter new configuration name -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose a name to uniquely identify this configuration:"
+            android:textSize="16dp"
+            android:paddingBottom="@dimen/space_between_lines"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/configuration_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="textStart"
+            android:textSize="@dimen/text_size"
+            android:singleLine="true"
+            android:paddingLeft="13dp"
+            android:hint="Enter configuration name" />
+
+    </LinearLayout>
+
+    <!-- Confirmation button -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="15dp"
+        android:gravity="center_horizontal"
+        android:background="#ffffff"
+        android:paddingLeft="20dp">
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="Done"
+            android:id="@+id/confirm_button"
+            android:theme="@style/buttonStyle"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+</LinearLayout>
