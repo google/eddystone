@@ -1,0 +1,487 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2B20915F1D95293800D65C32 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 2B20915E1D95293800D65C32 /* README.md */; };
+		2B2A54861D771CC6000D6A44 /* UserLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2A54851D771CC6000D6A44 /* UserLoginViewController.swift */; };
+		2B30DB111D5B268900C206AE /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B30DB101D5B268900C206AE /* StringUtils.swift */; };
+		2B30DB171D5B57C000C206AE /* HorizontalScrollButtonList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B30DB161D5B57C000C206AE /* HorizontalScrollButtonList.swift */; };
+		2B31ECEA1D89BCEB00E15683 /* GoogleService-Info.plist.sample in Resources */ = {isa = PBXBuildFile; fileRef = 2B31ECE91D89BCEB00E15683 /* GoogleService-Info.plist.sample */; };
+		2B4621661D50B2BE00C21672 /* BeaconInvestigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4621651D50B2BE00C21672 /* BeaconInvestigation.swift */; };
+		2B9241521D3F7F210038628A /* BeaconTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9241511D3F7F210038628A /* BeaconTableViewCell.swift */; };
+		2B92878B1D3FD60800C10F76 /* BeaconFramesSupported.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B92878A1D3FD60800C10F76 /* BeaconFramesSupported.swift */; };
+		2B9B24611D6DDE38000B8EA0 /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9B24601D6DDE38000B8EA0 /* CustomViews.swift */; };
+		2B9B24631D6DE054000B8EA0 /* BeaconItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9B24621D6DE054000B8EA0 /* BeaconItem.swift */; };
+		2BA0354F1D5DD10C00282F58 /* ConfigureBeaconSlotData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA0354E1D5DD10C00282F58 /* ConfigureBeaconSlotData.swift */; };
+		2BA4C43A1D3D2D890050395B /* ScannedBeaconsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4C4391D3D2D890050395B /* ScannedBeaconsTableViewController.swift */; };
+		2BB5C9401D3CE53000A697C9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB5C93F1D3CE53000A697C9 /* AppDelegate.swift */; };
+		2BB5C9451D3CE53000A697C9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2BB5C9431D3CE53000A697C9 /* Main.storyboard */; };
+		2BB5C9481D3CE53000A697C9 /* Beaconfig.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2BB5C9461D3CE53000A697C9 /* Beaconfig.xcdatamodeld */; };
+		2BB5C94A1D3CE53000A697C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2BB5C9491D3CE53000A697C9 /* Assets.xcassets */; };
+		2BB5C94D1D3CE53000A697C9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2BB5C94B1D3CE53000A697C9 /* LaunchScreen.storyboard */; };
+		2BB5C9551D3CECDA00A697C9 /* BeaconScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB5C9541D3CECDA00A697C9 /* BeaconScanner.swift */; };
+		2BB5C9571D3CED5300A697C9 /* Eddystone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB5C9561D3CED5300A697C9 /* Eddystone.swift */; };
+		2BC215AE1D75E61B007AD41D /* EIDConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC215AD1D75E61B007AD41D /* EIDConfiguration.swift */; };
+		2BCE59FF1D54D6D20066997F /* SlotDataContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCE59FE1D54D6D20066997F /* SlotDataContentView.swift */; };
+		2BD320551D805B760026CB22 /* UserInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD320541D805B760026CB22 /* UserInformation.swift */; };
+		2BD320571D81BED90026CB22 /* HTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD320561D81BED90026CB22 /* HTTPRequest.swift */; };
+		2BD3205D1D8842050026CB22 /* ConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD3205C1D8842050026CB22 /* ConnectionView.swift */; };
+		2BED28371D412278008DD2D6 /* BeaconDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BED28361D412278008DD2D6 /* BeaconDetailsViewController.swift */; };
+		2BED28391D412525008DD2D6 /* GATTOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BED28381D412525008DD2D6 /* GATTOperations.swift */; };
+		4E226EDD9FD9033C1E87DAEC /* Pods_Beaconfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFEA709B7DC8FFBA6D3939D7 /* Pods_Beaconfig.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2B20915E1D95293800D65C32 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		2B2A54851D771CC6000D6A44 /* UserLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserLoginViewController.swift; sourceTree = "<group>"; };
+		2B30DB101D5B268900C206AE /* StringUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
+		2B30DB161D5B57C000C206AE /* HorizontalScrollButtonList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalScrollButtonList.swift; sourceTree = "<group>"; };
+		2B31ECE91D89BCEB00E15683 /* GoogleService-Info.plist.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "GoogleService-Info.plist.sample"; sourceTree = "<group>"; };
+		2B4621651D50B2BE00C21672 /* BeaconInvestigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconInvestigation.swift; sourceTree = "<group>"; };
+		2B9241511D3F7F210038628A /* BeaconTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconTableViewCell.swift; sourceTree = "<group>"; };
+		2B92878A1D3FD60800C10F76 /* BeaconFramesSupported.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconFramesSupported.swift; sourceTree = "<group>"; };
+		2B9B24601D6DDE38000B8EA0 /* CustomViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
+		2B9B24621D6DE054000B8EA0 /* BeaconItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconItem.swift; sourceTree = "<group>"; };
+		2BA0354E1D5DD10C00282F58 /* ConfigureBeaconSlotData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigureBeaconSlotData.swift; sourceTree = "<group>"; };
+		2BA4C4391D3D2D890050395B /* ScannedBeaconsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannedBeaconsTableViewController.swift; sourceTree = "<group>"; };
+		2BB5C93C1D3CE53000A697C9 /* Beaconfig.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beaconfig.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BB5C93F1D3CE53000A697C9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		2BB5C9441D3CE53000A697C9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		2BB5C9471D3CE53000A697C9 /* Beaconfig.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Beaconfig.xcdatamodel; sourceTree = "<group>"; };
+		2BB5C9491D3CE53000A697C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2BB5C94C1D3CE53000A697C9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		2BB5C94E1D3CE53000A697C9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2BB5C9541D3CECDA00A697C9 /* BeaconScanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconScanner.swift; sourceTree = "<group>"; };
+		2BB5C9561D3CED5300A697C9 /* Eddystone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Eddystone.swift; sourceTree = "<group>"; };
+		2BC215AD1D75E61B007AD41D /* EIDConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EIDConfiguration.swift; sourceTree = "<group>"; };
+		2BCE59FE1D54D6D20066997F /* SlotDataContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlotDataContentView.swift; sourceTree = "<group>"; };
+		2BD320541D805B760026CB22 /* UserInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInformation.swift; sourceTree = "<group>"; };
+		2BD320561D81BED90026CB22 /* HTTPRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPRequest.swift; sourceTree = "<group>"; };
+		2BD3205C1D8842050026CB22 /* ConnectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionView.swift; sourceTree = "<group>"; };
+		2BED28361D412278008DD2D6 /* BeaconDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconDetailsViewController.swift; sourceTree = "<group>"; };
+		2BED28381D412525008DD2D6 /* GATTOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GATTOperations.swift; sourceTree = "<group>"; };
+		2BFE187D1D4649AD008E0CEA /* BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BridgingHeader.h; sourceTree = "<group>"; };
+		A47CDA43C4C36E75273D3548 /* Pods-Beaconfig.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beaconfig.release.xcconfig"; path = "Pods/Target Support Files/Pods-Beaconfig/Pods-Beaconfig.release.xcconfig"; sourceTree = "<group>"; };
+		CE105E4B9E0A2BC378EF351C /* Pods-Beaconfig.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beaconfig.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Beaconfig/Pods-Beaconfig.debug.xcconfig"; sourceTree = "<group>"; };
+		DFEA709B7DC8FFBA6D3939D7 /* Pods_Beaconfig.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Beaconfig.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2BB5C9391D3CE53000A697C9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4E226EDD9FD9033C1E87DAEC /* Pods_Beaconfig.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2BB5C9331D3CE53000A697C9 = {
+			isa = PBXGroup;
+			children = (
+				2B31ECE91D89BCEB00E15683 /* GoogleService-Info.plist.sample */,
+				2BB5C93E1D3CE53000A697C9 /* Beaconfig */,
+				2BB5C93D1D3CE53000A697C9 /* Products */,
+				A039EB4D606909EB98681B19 /* Pods */,
+				F019FD93CD2258602E221E24 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		2BB5C93D1D3CE53000A697C9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2BB5C93C1D3CE53000A697C9 /* Beaconfig.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2BB5C93E1D3CE53000A697C9 /* Beaconfig */ = {
+			isa = PBXGroup;
+			children = (
+				2B30DB161D5B57C000C206AE /* HorizontalScrollButtonList.swift */,
+				2B9241511D3F7F210038628A /* BeaconTableViewCell.swift */,
+				2BB5C93F1D3CE53000A697C9 /* AppDelegate.swift */,
+				2BC215AD1D75E61B007AD41D /* EIDConfiguration.swift */,
+				2BB5C9541D3CECDA00A697C9 /* BeaconScanner.swift */,
+				2BD320561D81BED90026CB22 /* HTTPRequest.swift */,
+				2B2A54851D771CC6000D6A44 /* UserLoginViewController.swift */,
+				2B9B24621D6DE054000B8EA0 /* BeaconItem.swift */,
+				2B9B24601D6DDE38000B8EA0 /* CustomViews.swift */,
+				2BB5C9561D3CED5300A697C9 /* Eddystone.swift */,
+				2B92878A1D3FD60800C10F76 /* BeaconFramesSupported.swift */,
+				2BA4C4391D3D2D890050395B /* ScannedBeaconsTableViewController.swift */,
+				2BED28361D412278008DD2D6 /* BeaconDetailsViewController.swift */,
+				2BA0354E1D5DD10C00282F58 /* ConfigureBeaconSlotData.swift */,
+				2BCE59FE1D54D6D20066997F /* SlotDataContentView.swift */,
+				2BD3205C1D8842050026CB22 /* ConnectionView.swift */,
+				2B30DB101D5B268900C206AE /* StringUtils.swift */,
+				2BED28381D412525008DD2D6 /* GATTOperations.swift */,
+				2B4621651D50B2BE00C21672 /* BeaconInvestigation.swift */,
+				2BB5C9431D3CE53000A697C9 /* Main.storyboard */,
+				2BD320541D805B760026CB22 /* UserInformation.swift */,
+				2BB5C9491D3CE53000A697C9 /* Assets.xcassets */,
+				2BB5C94B1D3CE53000A697C9 /* LaunchScreen.storyboard */,
+				2BFE187D1D4649AD008E0CEA /* BridgingHeader.h */,
+				2BB5C94E1D3CE53000A697C9 /* Info.plist */,
+				2BB5C9461D3CE53000A697C9 /* Beaconfig.xcdatamodeld */,
+				2B20915E1D95293800D65C32 /* README.md */,
+			);
+			path = Beaconfig;
+			sourceTree = "<group>";
+		};
+		A039EB4D606909EB98681B19 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CE105E4B9E0A2BC378EF351C /* Pods-Beaconfig.debug.xcconfig */,
+				A47CDA43C4C36E75273D3548 /* Pods-Beaconfig.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		F019FD93CD2258602E221E24 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DFEA709B7DC8FFBA6D3939D7 /* Pods_Beaconfig.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2BB5C93B1D3CE53000A697C9 /* Beaconfig */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2BB5C9511D3CE53000A697C9 /* Build configuration list for PBXNativeTarget "Beaconfig" */;
+			buildPhases = (
+				A6D36E02376F7C579B05D31A /* [CP] Check Pods Manifest.lock */,
+				2BB5C9381D3CE53000A697C9 /* Sources */,
+				2BB5C9391D3CE53000A697C9 /* Frameworks */,
+				2BB5C93A1D3CE53000A697C9 /* Resources */,
+				EBE4E81481A33BF54C3F0C5D /* [CP] Embed Pods Frameworks */,
+				3B7ECC2B17A5D019859527D2 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Beaconfig;
+			productName = Beaconfig;
+			productReference = 2BB5C93C1D3CE53000A697C9 /* Beaconfig.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2BB5C9341D3CE53000A697C9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = denisasandu;
+				TargetAttributes = {
+					2BB5C93B1D3CE53000A697C9 = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 9F564R5U82;
+					};
+				};
+			};
+			buildConfigurationList = 2BB5C9371D3CE53000A697C9 /* Build configuration list for PBXProject "Beaconfig" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2BB5C9331D3CE53000A697C9;
+			productRefGroup = 2BB5C93D1D3CE53000A697C9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2BB5C93B1D3CE53000A697C9 /* Beaconfig */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2BB5C93A1D3CE53000A697C9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2BB5C94D1D3CE53000A697C9 /* LaunchScreen.storyboard in Resources */,
+				2BB5C94A1D3CE53000A697C9 /* Assets.xcassets in Resources */,
+				2B31ECEA1D89BCEB00E15683 /* GoogleService-Info.plist.sample in Resources */,
+				2BB5C9451D3CE53000A697C9 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3B7ECC2B17A5D019859527D2 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Beaconfig/Pods-Beaconfig-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A6D36E02376F7C579B05D31A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		EBE4E81481A33BF54C3F0C5D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Beaconfig/Pods-Beaconfig-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2BB5C9381D3CE53000A697C9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B30DB111D5B268900C206AE /* StringUtils.swift in Sources */,
+				2BA4C43A1D3D2D890050395B /* ScannedBeaconsTableViewController.swift in Sources */,
+				2B9B24631D6DE054000B8EA0 /* BeaconItem.swift in Sources */,
+				2B9241521D3F7F210038628A /* BeaconTableViewCell.swift in Sources */,
+				2BD3205D1D8842050026CB22 /* ConnectionView.swift in Sources */,
+				2BCE59FF1D54D6D20066997F /* SlotDataContentView.swift in Sources */,
+				2BB5C9571D3CED5300A697C9 /* Eddystone.swift in Sources */,
+				2BED28371D412278008DD2D6 /* BeaconDetailsViewController.swift in Sources */,
+				2BA0354F1D5DD10C00282F58 /* ConfigureBeaconSlotData.swift in Sources */,
+				2BB5C9551D3CECDA00A697C9 /* BeaconScanner.swift in Sources */,
+				2BB5C9481D3CE53000A697C9 /* Beaconfig.xcdatamodeld in Sources */,
+				2BD320551D805B760026CB22 /* UserInformation.swift in Sources */,
+				2B4621661D50B2BE00C21672 /* BeaconInvestigation.swift in Sources */,
+				2BB5C9401D3CE53000A697C9 /* AppDelegate.swift in Sources */,
+				2BED28391D412525008DD2D6 /* GATTOperations.swift in Sources */,
+				2BC215AE1D75E61B007AD41D /* EIDConfiguration.swift in Sources */,
+				2B9B24611D6DDE38000B8EA0 /* CustomViews.swift in Sources */,
+				2B30DB171D5B57C000C206AE /* HorizontalScrollButtonList.swift in Sources */,
+				2BD320571D81BED90026CB22 /* HTTPRequest.swift in Sources */,
+				2B2A54861D771CC6000D6A44 /* UserLoginViewController.swift in Sources */,
+				2B20915F1D95293800D65C32 /* README.md in Sources */,
+				2B92878B1D3FD60800C10F76 /* BeaconFramesSupported.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		2BB5C9431D3CE53000A697C9 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2BB5C9441D3CE53000A697C9 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		2BB5C94B1D3CE53000A697C9 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2BB5C94C1D3CE53000A697C9 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		2BB5C94F1D3CE53000A697C9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: denisasandu@google.com (3BZGMGDGL2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = Beaconfig/BridgingHeader.h;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		2BB5C9501D3CE53000A697C9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: denisasandu@google.com (3BZGMGDGL2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = Beaconfig/BridgingHeader.h;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2BB5C9521D3CE53000A697C9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CE105E4B9E0A2BC378EF351C /* Pods-Beaconfig.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = Beaconfig/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "denisansadu-google.com.beaconfig.application";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = Beaconfig/BridgingHeader.h;
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = Beaconfig/BridgingHeader.h;
+				SWIFT_VERSION = 2.3;
+			};
+			name = Debug;
+		};
+		2BB5C9531D3CE53000A697C9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A47CDA43C4C36E75273D3548 /* Pods-Beaconfig.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = Beaconfig/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "denisansadu-google.com.beaconfig.application";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = Beaconfig/BridgingHeader.h;
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = Beaconfig/BridgingHeader.h;
+				SWIFT_VERSION = 2.3;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2BB5C9371D3CE53000A697C9 /* Build configuration list for PBXProject "Beaconfig" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2BB5C94F1D3CE53000A697C9 /* Debug */,
+				2BB5C9501D3CE53000A697C9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2BB5C9511D3CE53000A697C9 /* Build configuration list for PBXNativeTarget "Beaconfig" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2BB5C9521D3CE53000A697C9 /* Debug */,
+				2BB5C9531D3CE53000A697C9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		2BB5C9461D3CE53000A697C9 /* Beaconfig.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				2BB5C9471D3CE53000A697C9 /* Beaconfig.xcdatamodel */,
+			);
+			currentVersion = 2BB5C9471D3CE53000A697C9 /* Beaconfig.xcdatamodel */;
+			path = Beaconfig.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 2BB5C9341D3CE53000A697C9 /* Project object */;
+}
