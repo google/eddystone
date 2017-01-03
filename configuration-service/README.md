@@ -470,7 +470,7 @@ Read Not Permitted: for any attempt to read while the beacon is locked.</td>
 </tr>
 <tr>
 <td>Characteristic&nbsp;UUID</td>
-<td>a3c8<strong>750A</strong>-8ed3-4bdf-8a39-a01bebede295</td>
+<td>a3c8<strong>750a</strong>-8ed3-4bdf-8a39-a01bebede295</td>
 </tr>
 <tr>
 <td>Properties</td>
@@ -532,7 +532,7 @@ Invalid Attribute Length: on any attempt to write with an illegal number of byte
 </tr>
 <tr>
 <td>Characteristic&nbsp;UUID</td>
-<td>a3c8<strong>750B</strong>-8ed3-4bdf-8a39-a01bebede295</td>
+<td>a3c8<strong>750b</strong>-8ed3-4bdf-8a39-a01bebede295</td>
 </tr>
 <tr>
 <td>Properties</td>
@@ -568,7 +568,7 @@ In addition, any write shall be ignored if the lock state is not <code>0x01</cod
 </tr>
 <tr>
 <td>Characteristic&nbsp;UUID</td>
-<td>a3c8<strong>750C</strong>-8ed3-4bdf-8a39-a01bebede295</td>
+<td>a3c8<strong>750c</strong>-8ed3-4bdf-8a39-a01bebede295</td>
 </tr>
 <tr>
 <td>Properties</td>
