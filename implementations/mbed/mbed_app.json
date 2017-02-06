@@ -1,0 +1,12 @@
+{
+    "macros": [
+        "NDEBUG=1",
+        "MBEDTLS_USER_CONFIG_FILE=\"mbedtls_config.h\"",
+        "OS_MAINSTKSIZE=1024"
+    ], 
+    "target_overrides": {
+            "*": {
+                    "platform.stdio-flush-at-exit": false
+            }
+    }
+}

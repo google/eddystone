@@ -1,0 +1,20 @@
+{
+  "nordic": {
+    "softdevice": "S130"
+  },
+  "nrf51822": {
+      "ram_size": "32K"
+  },
+  "mbed": {
+    "max-filehandles": 4
+  },
+  "platform" : {
+    "reset_button" : "p17",
+    "config_led" : "p13",
+    "shutdown_led" : "p14",
+    "led_off" : 0
+  },
+  "mbedtls": {
+    "user-config-file": "\"source/mbedtls_config.h\""
+  }
+}
