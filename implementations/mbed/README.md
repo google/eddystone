@@ -6,7 +6,7 @@ This repo contains an fully functional Eddystone image that supports all 4 frame
 To compile this image you'll need the [mbed toolchain from ARM](mbed.org). mbed is one of the most widely used embedded OS platforms. Unfortunately, we can't offer support for mbed or ARM tools. 
 
 ### Goal 1 - Lots of beacons
-The first goal of this repo is to encourage a wide distribution of Eddystone beacon hardware with an open source version that anyone can freely use. If you do port this to your platform, please consider a pull request so others can compile to your hardware. There is already one comercial beacon using this image mde by [MinewTech](http://www.minewtech.com/eddystone.html) (we home many more will follow)
+The first goal of this repo is to encourage a wide distribution of Eddystone beacon hardware with an open source version that anyone can freely use. If you do port this to your platform, please consider a pull request so others can compile to your hardware. There is already one comercial beacon using this image mde by [MinewTech](http://www.minewtech.com/eddystone.html) (we hope many more will follow)
 
 ### Goal 2 - Lots of devices
 The second goal is to encourage other devices beyond just beacons. These would be interative devices that use new GATT services characteristics. We hope to see forks for products such as vending machines or remote control toys. With Bluetooth Javascript support in modern web browsers, it's important we have an easy way for device makers to not only broadcast a URL but to connect and control it directly.
