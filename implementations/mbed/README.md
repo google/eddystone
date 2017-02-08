@@ -1,9 +1,9 @@
 # Eddystone for mbed
-Eddystone beacons broadcast a small amount of information, such as URLs, to nearby devices that scan for them. If you'd like to learn more, please see the [Physical Web](physical-web.org) page.
+Eddystone beacons broadcast a small amount of information, such as URLs, to nearby devices that scan for them. If you'd like to learn more, please see the [Physical Web](http://physical-web.org) page.
 
 This repo contains an fully functional Eddystone image that supports all 4 frame types (URL, UUID, TLM, and EID) as well as the complete Eddystone GATT configuration service.
 
-To compile this image you'll need the [mbed toolchain from ARM](mbed.org). mbed is one of the most widely used embedded OS platforms. Unfortunately, we can't offer support for mbed or ARM tools. 
+To compile this image you'll need the [mbed toolchain from ARM](http://mbed.org). mbed is one of the most widely used embedded OS platforms. Unfortunately, we can't offer support for mbed or ARM tools. 
 
 ### Goal 1 - Lots of beacons
 The first goal of this repo is to encourage a wide distribution of Eddystone beacon hardware with an open source version that anyone can freely use. If you do port this to your platform, please consider a pull request so others can compile to your hardware. There is already one comercial beacon using this image mde by [MinewTech](http://www.minewtech.com/eddystone.html) (we hope many more will follow)
