@@ -1,5 +1,5 @@
 # Eddystone for mbed
-Eddystone beacons broadcast a small amount of information, such as URLs, to nearby devices that scan for them. If you'd like to learn more, please see the [Physical Web](physical-web.org) page.
+Eddystone beacons broadcast a small amount of information, such as URLs, to nearby devices that scan for them. If you'd like to learn more, please see the [Physical Web](http://physical-web.org) page.
 
 This repo contains an fully functional Eddystone image that supports all 4 frame types (URL, UUID, TLM, and EID) as well as the complete Eddystone GATT configuration service.
 
