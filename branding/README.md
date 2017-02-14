@@ -16,20 +16,20 @@ to follow.
   directly after Eddystone
   - Incorrect: "Google's Eddystone"
   - Incorrect: "Eddystone from Google" or "Eddystone for Android"
-  - Correct: "Eddystone, an open beacon format from Google"
-  - Correct: "Eddystone, an open beacon format that supports Android and iOS devices"
+  - Correct: "Eddystone™, an open beacon format from Google"
+  - Correct: "Eddystone™, an open beacon format that supports Android and iOS devices"
 - **Don't** use Google or Android logos on product pages, packaging or other
   marketing material (which includes using the stylized "G" in Google and/or
   Google colors)
 - **Don't** use Eddystone as an adjective:
   - Incorrect: "Supports Eddystone technology"
-  - Correct: "with support for Eddystone"
+  - Correct: "with support for Eddystone™"
 - **Don't** use Eddystone in the name of the application or product
   - Incorrect: "Eddystone Beacon"
-  - Correct: "Beacon with support for Eddystone"
+  - Correct: "Beacon with support for Eddystone™"
 - **Don't** change the spelling or intended capitalization of Eddystone
   - Incorrect: Eddy Stone, EddyStone
-  - Correct: Eddystone
+  - Correct: Eddystone™
 - **The Eddystone mark** can be found [assets](assets/) directory in this github project
   - **Don't** modify the color, proportions, spacing, or any other aspect of the
     Eddystone logo
