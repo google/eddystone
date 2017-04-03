@@ -198,7 +198,7 @@ private:
      * This is the some of the Eddystone UUID(2 bytes), FrameType, AdvTxPower,
      * EID Value
      */
-    static const uint8_t EID_FRAME_LEN = 18;
+    static const uint8_t EID_FRAME_LEN = 10;
     static const uint8_t FRAME_LEN_OFFSET = 0;
     static const uint8_t EDDYSTONE_UUID_LEN = 2;
     static const uint8_t EID_DATA_OFFSET = 3;
