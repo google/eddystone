@@ -39,6 +39,7 @@ The URL Scheme Prefix byte defines the identifier scheme, an optional prefix and
 |1        | 0x01       | `https://www.`
 |2        | 0x02       | `http://`
 |3        | 0x03       | `https://`
+|4        | 0x04       | `https://goo.gl/`
 
 ### Eddystone-URL HTTP URL encoding
 
