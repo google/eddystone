@@ -34,14 +34,14 @@ class BeaconID : NSObject {
   ///
   let beaconID: [UInt8]
 
-  private init(beaconType: BeaconType!, beaconID: [UInt8]) {
+  fileprivate init(beaconType: BeaconType!, beaconID: [UInt8]) {
     self.beaconID = beaconID
     self.beaconType = beaconType
   }
 
   override var description: String {
     if self.beaconType == BeaconType.Eddystone || self.beaconType == BeaconType.EddystoneEID {
-      let hexid = hexBeaconID(self.beaconID)
+      let hexid = hexBeaconID(beaconID: self.beaconID)
       return "BeaconID beacon: \(hexid)"
     } else {
       return "BeaconID with invalid type (\(beaconType))"
@@ -52,7 +52,7 @@ class BeaconID : NSObject {
     var retval = ""
     for byte in beaconID {
       var s = String(byte, radix:16, uppercase: false)
-      if s.characters.count == 1 {
+      if s.count == 1 {
         s = "0" + s
       }
       retval += s
@@ -121,13 +121,12 @@ class BeaconInfo : NSObject {
     self.telemetry = telemetry
   }
 
-  class func frameTypeForFrame(advertisementFrameList: [NSObject : AnyObject])
-    -> EddystoneFrameType {
+  class func frameTypeForFrame(advertisementFrameList: [NSObject : AnyObject]) -> EddystoneFrameType {
       let uuid = CBUUID(string: "FEAA")
       if let frameData = advertisementFrameList[uuid] as? NSData {
         if frameData.length > 1 {
           let count = frameData.length
-          var frameBytes = [UInt8](count: count, repeatedValue: 0)
+          var frameBytes = [UInt8](repeating: 0, count: count)
           frameData.getBytes(&frameBytes, length: count)
 
           if frameBytes[0] == EddystoneUIDFrameTypeID {
@@ -154,11 +153,10 @@ class BeaconInfo : NSObject {
   /// in the Swift compiler — it can't tear-down partially initialised objects, so we'll have to 
   /// wait until this gets fixed. For now, class method will do.
   ///
-  class func beaconInfoForUIDFrameData(frameData: NSData, telemetry: NSData?, RSSI: Int)
-    -> BeaconInfo? {
+  class func beaconInfoForUIDFrameData(frameData: NSData, telemetry: NSData?, RSSI: Int) -> BeaconInfo? {
       if frameData.length > 1 {
         let count = frameData.length
-        var frameBytes = [UInt8](count: count, repeatedValue: 0)
+        var frameBytes = [UInt8](repeating: 0, count: count)
         frameData.getBytes(&frameBytes, length: count)
 
         if frameBytes[0] != EddystoneUIDFrameTypeID {
@@ -177,11 +175,10 @@ class BeaconInfo : NSObject {
       return nil
   }
 
-  class func beaconInfoForEIDFrameData(frameData: NSData, telemetry: NSData?, RSSI: Int)
-    -> BeaconInfo? {
+  class func beaconInfoForEIDFrameData(frameData: NSData, telemetry: NSData?, RSSI: Int) -> BeaconInfo? {
       if frameData.length > 1 {
         let count = frameData.length
-        var frameBytes = [UInt8](count: count, repeatedValue: 0)
+        var frameBytes = [UInt8](repeating: 0, count: count)
         frameData.getBytes(&frameBytes, length: count)
 
         if frameBytes[0] != EddystoneEIDFrameTypeID {
@@ -203,14 +200,14 @@ class BeaconInfo : NSObject {
   class func parseURLFromFrame(frameData: NSData) -> NSURL? {
     if frameData.length > 0 {
       let count = frameData.length
-      var frameBytes = [UInt8](count: count, repeatedValue: 0)
+      var frameBytes = [UInt8](repeating: 0, count: count)
       frameData.getBytes(&frameBytes, length: count)
 
-      if let URLPrefix = URLPrefixFromByte(frameBytes[2]) {
+      if let URLPrefix = URLPrefixFromByte(schemeID: frameBytes[2]) {
         var output = URLPrefix
         for i in 3..<frameBytes.count {
-          if let encoded = encodedStringFromByte(frameBytes[i]) {
-            output.appendContentsOf(encoded)
+          if let encoded = encodedStringFromByte(charVal: frameBytes[i]) {
+            output.append(encoded)
           }
         }
 
@@ -276,8 +273,7 @@ class BeaconInfo : NSObject {
     case 0x0d:
       return ".gov"
     default:
-      return String(data: NSData(bytes: [ charVal ] as [UInt8], length: 1),
-                    encoding: NSUTF8StringEncoding)
+      return String(data: Data(bytes: [ charVal ] as [UInt8], count: 1), encoding: .utf8)
     }
   }
 
