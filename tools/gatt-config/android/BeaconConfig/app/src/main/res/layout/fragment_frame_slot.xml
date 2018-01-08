@@ -1,0 +1,668 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <LinearLayout
+        android:id="@+id/tab_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--  Global information about beacon -->
+        <LinearLayout
+            android:id="@+id/global_content"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context="layout.GlobalFragment"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingTop="24dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/space_between_lines">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Beacon Address"/>
+                <TextView
+                    android:id="@+id/beacon_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="textEnd"
+                    android:hint="address"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/space_between_lines"
+                android:paddingBottom="@dimen/space_between_lines">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Beacon Name"/>
+                <TextView
+                    android:id="@+id/beacon_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="textEnd"
+                    android:hint="name"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/space_between_lines"
+                android:paddingBottom="@dimen/space_between_lines">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Slots Available"/>
+                <TextView
+                    android:id="@+id/max_total_slots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="textEnd"
+                    android:hint="# slots"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/space_between_lines"
+                android:paddingBottom="@dimen/space_between_lines">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EID Slots Available"/>
+                <TextView
+                    android:id="@+id/max_eid_slots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="textEnd"
+                    android:hint="max eid slots"/>
+            </LinearLayout>
+
+            <!-- Remain Connectable -->
+            <LinearLayout
+                android:id="@+id/remain_connectable_slot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_horizontal"
+                android:paddingTop="@dimen/space_between_lines"
+                android:visibility="gone">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Remain Connectable"/>
+                    <ImageView
+                        android:id="@+id/remain_connectable_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/expand_arrow"/>
+
+                </LinearLayout>
+                <RadioGroup
+                    android:id="@+id/set_remain_connectable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/space_between_lines"
+                    android:orientation="horizontal"
+                    android:gravity="center_horizontal"
+                    android:visibility="gone">
+                    <RadioButton
+                        android:id="@+id/remain_connectable_on"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="30dp"
+                        android:text="On"
+                        android:textSize="@dimen/text_size"
+                        android:textColor="@color/textColorPrimary" />
+                    <RadioButton
+                        android:id="@+id/remain_connectable_off"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:textSize="@dimen/text_size"
+                        android:textColor="@color/textColorPrimary"
+                        android:text="Off"/>
+                </RadioGroup>
+            </LinearLayout>
+
+            <!-- Change Lock Code-->
+            <LinearLayout
+                android:id="@+id/lock_code_slot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/space_between_lines"
+                android:paddingBottom="@dimen/space_between_lines"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Change password"
+                        android:layout_gravity="center_vertical" />
+                    <ImageView
+                        android:id="@+id/change_lock_code_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/arrow_right"
+                        android:layout_gravity="center_vertical"
+                        android:foregroundGravity="center_vertical" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/change_lock_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/space_between_lines"
+                    android:paddingLeft="@dimen/padding_screen_sides"
+                    android:paddingRight="@dimen/padding_screen_sides"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <EditText
+                        android:id="@+id/new_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter new password"
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:singleLine="true"
+                        android:imeOptions="actionDone"
+                        android:maxLength="32"
+                        android:textSize="@dimen/text_size"/>
+                    <EditText
+                        android:id="@+id/repeat_new_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Repeat new password"
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:singleLine="true"
+                        android:imeOptions="actionDone"
+                        android:textSize="@dimen/text_size"
+                        android:maxLength="32"/>
+
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:id="@+id/save_new_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Save"
+                        android:layout_gravity="center_horizontal" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Factory reset -->
+            <LinearLayout
+                android:id="@+id/factory_reset"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingTop="@dimen/space_between_lines"
+                    android:paddingBottom="@dimen/space_between_lines"
+                    android:text="Factory Reset"
+                    android:layout_gravity="top" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/arrow_right"
+                    android:layout_gravity="center_vertical"
+                    android:foregroundGravity="center_vertical" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Frame slot information -->
+        <LinearLayout
+            android:id="@+id/slot_information"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="layout.SlotFragment"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:visibility="gone">
+            <!-- Frame type field -->
+            <LinearLayout
+                android:id="@+id/frame_type_slot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:paddingBottom="30dp"
+                android:paddingTop="24dp"
+                android:layout_gravity="center_horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Frame Type:"
+                    android:layout_weight="1"
+                    android:textAlignment="textEnd"
+                    android:paddingEnd="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/heading2"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical">
+                    <Spinner
+                        android:id="@+id/frame_type_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:spinnerMode="dropdown"
+                        android:paddingStart="7dp"
+                        android:minWidth="100dp"
+                        android:outlineProvider="paddedBounds"
+                        android:textAlignment="textEnd" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Divider line -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/gray_line_height"
+                android:background="@color/gray_line"
+                android:orientation="horizontal">
+            </LinearLayout>
+
+            <!-- Slot specific information -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/padding_screen_sides"
+                android:paddingRight="@dimen/padding_screen_sides"
+                android:paddingBottom="@dimen/space_between_lines">
+
+                <!-- UID frame information -->
+                <LinearLayout
+                    android:id="@+id/uid_frame_slot"
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="@dimen/space_between_lines"
+                    android:visibility="gone">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingTop="@dimen/space_between_lines">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Namespace"
+                                android:textAlignment="textStart" />
+                            <TextView
+                                android:id="@+id/namespace"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="textEnd"
+                                android:text="00000000000000000000"
+                                android:textSize="@dimen/text_size"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingTop="@dimen/space_between_lines">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Instance"
+                                android:textAlignment="textStart"/>
+                            <TextView
+                                android:id="@+id/instance"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="000000000000"
+                                android:textAlignment="textEnd"
+                                android:textSize="@dimen/text_size" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/edit_uid_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/pencil"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:paddingLeft="10dp"/>
+                </LinearLayout>
+
+                <!-- URL frame information -->
+                <LinearLayout
+                    android:id="@+id/url_frame_slot"
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="@dimen/space_between_lines"
+                    android:visibility="gone">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="@dimen/space_between_lines">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="URL"/>
+                        <TextView
+                            android:id="@+id/url"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:autoLink="web"
+                            android:hint="Enter URL"
+                            android:textAlignment="textEnd"/>
+                        <ImageView
+                            android:id="@+id/edit_url_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/pencil"
+                            android:paddingLeft="8dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- TLM frame information -->
+                <LinearLayout
+                    android:id="@+id/tlm_frame_slot"
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="@dimen/space_between_lines"
+                    android:visibility="gone">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="@dimen/space_between_lines"
+                        android:paddingBottom="@dimen/space_between_lines">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Battery Voltage"
+                            android:textAlignment="textStart" />
+                        <TextView
+                            android:id="@+id/voltage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textAlignment="textEnd"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" V"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="@dimen/space_between_lines"
+                        android:paddingBottom="@dimen/space_between_lines">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Beacon Temperature"/>
+                        <TextView
+                            android:id="@+id/temperature"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textAlignment="textEnd"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" °C"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="@dimen/space_between_lines"
+                        android:paddingBottom="@dimen/space_between_lines">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Advertising PDU Count"/>
+                        <TextView
+                            android:id="@+id/adv_pdu_count"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textAlignment="textEnd"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="@dimen/space_between_lines"
+                        android:paddingBottom="@dimen/space_between_lines">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Time since power-on or reboot"/>
+                        <TextView
+                            android:id="@+id/time_since_alive"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textAlignment="textEnd"/>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <!-- EID frame information -->
+                <LinearLayout
+                    android:id="@+id/eid_frame_slot"
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="@dimen/space_between_lines"
+                    android:visibility="gone">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="@dimen/space_between_lines"
+                        android:paddingBottom="@dimen/space_between_lines">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ephemeral ID"
+                            android:textAlignment="textEnd" />
+                        <TextView
+                            android:id="@+id/ephemeral_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textAlignment="textEnd" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Radio Tx Power information -->
+        <LinearLayout
+            android:id="@+id/tx_power_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/padding_screen_sides"
+            android:paddingRight="@dimen/padding_screen_sides"
+            android:paddingBottom="@dimen/space_between_lines"
+            android:visibility="gone">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/space_between_lines"
+                android:paddingBottom="@dimen/space_between_lines">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Radio Tx Power"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/radio_tx_power"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size"
+                    android:textAlignment="textEnd"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" dBm"/>
+            </LinearLayout>
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tx_power_seek_bar"
+                android:layout_gravity="center_horizontal"
+                android:paddingTop="@dimen/space_between_lines"
+                android:paddingLeft="@dimen/padding_seek_bars"
+                android:paddingRight="@dimen/padding_seek_bars" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/space_between_lines"
+                android:paddingBottom="@dimen/space_between_lines">
+                <RadioButton
+                    android:id="@+id/change_slot_adv_tx_power"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+                <LinearLayout
+                    android:id="@+id/change_adv_tx_slot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingStart="3dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/adv_tx_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Advertised Tx Power"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:textAlignment="textStart"
+                        android:enabled="false"/>
+                    <TextView
+                        android:id="@+id/adv_tx_power"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="textEnd"
+                        android:enabled="false"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" dBm"
+                        android:gravity="left"
+                        android:enabled="false" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/edit_adv_tx_power_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/pencil"
+                    android:paddingLeft="8dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Advertising interval information -->
+        <LinearLayout
+        android:id="@+id/adv_int_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/padding_screen_sides"
+        android:paddingRight="@dimen/padding_screen_sides"
+        android:paddingBottom="@dimen/space_between_lines"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/space_between_lines"
+            android:paddingBottom="@dimen/space_between_lines">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ADV Interval"/>
+            <TextView
+                android:id="@+id/adv_interval"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size"
+                android:textAlignment="textEnd" />
+        </LinearLayout>
+        <SeekBar
+            android:id="@+id/adv_interval_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_seek_bars"
+            android:paddingTop="@dimen/space_between_lines"
+            android:paddingRight="@dimen/padding_seek_bars"
+            android:paddingBottom="@dimen/space_between_lines" />
+    </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

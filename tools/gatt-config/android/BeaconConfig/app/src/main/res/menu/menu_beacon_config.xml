@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".BeaconConfigActivity">
+    <item
+        android:id="@+id/save_changes"
+        android:orderInCategory="50"
+        android:icon="@drawable/save_changes"
+        android:title="@string/save_changes"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/save_configuration"
+        android:orderInCategory="70"
+        android:title="Save Current Configuration"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/apply_configuration"
+        android:orderInCategory="70"
+        android:title="Apply Saved Configuration"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/manage_configurations"
+        android:orderInCategory="70"
+        android:title="Manage Saved Configurations"
+        app:showAsAction="never"/>
+</menu>

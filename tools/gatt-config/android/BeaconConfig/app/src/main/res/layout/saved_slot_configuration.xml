@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size"
+        android:textColor="@color/black"
+        android:text="Slot 1:"/>
+
+    <!-- Slot specific information -->
+    <LinearLayout
+        android:id="@+id/slot_information"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingLeft="@dimen/padding_screen_sides"
+        android:paddingRight="@dimen/padding_screen_sides">
+
+        <!-- UID frame information -->
+        <LinearLayout
+            android:id="@+id/uid_config"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:visibility="gone">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Namespace"
+                        android:textSize="@dimen/text_size_small"
+                        android:textAlignment="textStart" />
+                    <TextView
+                        android:id="@+id/namespace"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="textEnd"
+                        android:text="00000000000000000000"
+                        android:textSize="@dimen/text_size_small"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Instance"
+                        android:textSize="@dimen/text_size_small"
+                        android:textAlignment="textStart"/>
+                    <TextView
+                        android:id="@+id/instance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="000000000000"
+                        android:textAlignment="textEnd"
+                        android:textSize="@dimen/text_size_small" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- URL frame information -->
+        <LinearLayout
+            android:id="@+id/url_config"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/text_size_small"
+                android:text="URL"/>
+            <TextView
+                android:id="@+id/url"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:hint="empty"
+                android:textSize="@dimen/text_size_small"
+                android:textAlignment="textEnd"/>
+        </LinearLayout>
+
+        <!-- EID frame information -->
+        <LinearLayout
+            android:id="@+id/eid_config"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ephemeral ID"
+                    android:textSize="@dimen/text_size_small"
+                    android:textAlignment="textEnd" />
+                <TextView
+                    android:id="@+id/ephemeral_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/text_size_small"
+                    android:textAlignment="textEnd" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Radio Tx Power information -->
+    <LinearLayout
+        android:id="@+id/tx_power_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/padding_screen_sides"
+        android:paddingRight="@dimen/padding_screen_sides">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Radio Tx Power"
+                android:textSize="@dimen/text_size_small"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/radio_tx_power"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_small"
+                android:textAlignment="textEnd"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_small"
+                android:text=" dBm"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Advertised Tx Power"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/text_size_small"
+                    android:textAlignment="textStart"/>
+                <TextView
+                    android:id="@+id/adv_tx_power"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="textEnd"
+                    android:textSize="@dimen/text_size_small"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Advertising interval information -->
+    <LinearLayout
+        android:id="@+id/adv_int_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/padding_screen_sides"
+        android:paddingRight="@dimen/padding_screen_sides">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="@dimen/text_size_small"
+            android:text="ADV Interval"/>
+        <TextView
+            android:id="@+id/adv_interval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_small"
+            android:textAlignment="textEnd" />
+        </LinearLayout>
+
+</LinearLayout>

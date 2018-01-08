@@ -13,7 +13,7 @@ Byte offset | Field | Description
 0 | Frame Type | Value = `0x10`
 1 | TX Power | Calibrated Tx power at 0 m
 2 | URL Scheme | Encoded Scheme Prefix
-3+ | Encoded URL | Length 0-17
+3+ | Encoded URL | Length 1-17
 
 ### Tx Power Level
 

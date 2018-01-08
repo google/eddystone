@@ -1,7 +1,5 @@
 # Eddystone Configuration GATT Service
 
-**Note: https://github.com/google/eddystone/issues/132 needs resolution before this specification can be considered final.**
-
 This document defines the specification for the Eddystone Configuration Service and offers some implementation guidance.
 
 The Eddystone Configuration Service runs as a GATT service on the beacon while it is connectable and allows configuration of the advertised data, the broadcast power levels, and the advertising intervals. It also forms part of the definition of how Eddystone-EID beacons are configured and registered with a trusted resolver.
@@ -12,20 +10,23 @@ The primary goal of a standardized configuration service is interoperability bet
 
 There are two ways to accomplish this. Your choice depends on whether your beacons are always connectable, or if they are non-connectable by default and become connectable through some action by the user.
 
-We recommend that your beacons spend the majority of their lives in a non-connectable state, which avoids network congestion and collision issues in a dense wireless environment. In this case, the user will take some action to make a beacon temporarily connectable, perhaps by depressing a button, pulling a battery activation tab, or similar. Once your beacon becomes connectable, we recommend broadcasting the configuration GATT service's UUID as a 128-bit service UUID in the scan response, along with a local name data type that identifies your beacon. Configuration applications may look for both of these signals in the scan records of nearby beacons and use the information to highlight which ones are ready for configuration. (A flash of an LED or an audible beep upon connection from a client are helpful too, if your hardware has the necessary support.)
+We recommend that your beacons spend the majority of their lives in a non-connectable state, which avoids network congestion and collision issues in a dense wireless environment. In this case, the user will take some action to make a beacon temporarily connectable, perhaps by depressing a button, pulling a battery activation tab, or similar. The connectable timeout should be at the very least 30 seconds to let enough time to user to start a configuration application. Once your beacon becomes connectable, we recommend broadcasting the configuration GATT service's UUID as a 128-bit service UUID in the scan response, along with a local name data type that identifies your beacon. Configuration applications may look for both of these signals in the scan records of nearby beacons and use the information to highlight which ones are ready for configuration. (A flash of an LED or an audible beep upon connection from a client are helpful too, if your hardware has the necessary support.) 
 
-If your beacons must be always connectable, you may wish to minimize the amount of data that's broadcast in a scan response to conserve the battery. In this case we recommend that in an occasional scan response you broadcast a short local name so that configuration clients can display it to the user and aid an easier association between your beacon and any other nearby beacons. The time between scan responses should be tuned to balance the power requirements with the patience of a human trying to find a connectable frame to configure your beacon -- once the hardware device address has been obtained it should be possible to connect to the beacon in a few seconds.
+If your beacons must be always connectable, you may wish to minimize the amount of data that's broadcast in a scan response to conserve the battery. In this case we recommend that in an occasional scan response you broadcast a short local name so that configuration clients can display it to the user and aid an easier association between your beacon and any other nearby beacons. The time between scan responses should be tuned to balance the power requirements with the patience of a human trying to find a connectable frame to configure your beacon -- once the hardware device address has been obtained it should be possible to connect to the beacon in a few seconds. (Here too, a flash of an LED or an audible beep upon connection from a client may be helpful, if your hardware has the necessary support, especially if there are multiple connectable beacons in the vicinity.)
 
 In either case, users may find it helpful if your beacons arrive broadcasting one of the following two frames:
 
 * An Eddystone-URL frame type whose URL points to information about using your beacons. We recommend this for ease of recognition by the person who is configuring the device.
 * An Eddystone-UID frame type where the namespace part of the UID is fixed to the one you've chosen for your organization and the instance part is randomized. This ensures the beacon is ready to be registered with a service that supports the UID format with no configuration necessary.
 
+### Default unlock code
+If a beacon ships in a `0x02` unlocked state, care must be taken to ensure that it has a default unlock code that's known to the owner.
+
 ### Single connection only
 While a configuration client is connected to the beacon, the beacon must refuse other connections.
 
 ### Interleaving multiple advertisement frames.
-If variable advertising intervals are supported (see `IS_VARIABLE_ADV_SUPPORTED` in the Broadcast Capabilities characteristic) it will be inevitable that some slots will be scheduled to broadcast at the same time. We recommend that implementers transmit those frames in slot order at the shortest permissible advertising interval (100 ms).
+If variable advertising intervals are supported (see `IS_VARIABLE_ADV_SUPPORTED` in the Capabilities characteristic) it will be inevitable that some slots will be scheduled to broadcast at the same time. We recommend that implementers transmit those frames in slot order at the shortest permissible advertising interval (100 ms).
 
 ## Specification
 
@@ -43,7 +44,7 @@ If variable advertising intervals are supported (see `IS_VARIABLE_ADV_SUPPORTED`
 </tr>
 <tr>
 <td>Notes</td>
-<td>Where not explicitly stated, data written and read is defined in terms of big-endian arrays of signed bytes.</td>
+<td>Where not explicitly stated, data written and read is defined in terms of big-endian arrays of bytes. However, there are exceptions for EID related keys: the Public ECDH Key in Characteristic 8, the Identity Key in Characteristic 9, and the service's public ECDH key when writing an EID slot in Characteristic 10, all three of which are little-endian. This exception exists because the reference design for eliptic curve-25519, which has been widely adopted, was implemented using little-endian arithmetic and is the basis for the EID design. Note: the elliptic curve-25519 reference design is little-endian, even though big-endian is used almost universally for all other cryptographic protocols</td>
 </tr>
 </table>
 
@@ -377,8 +378,8 @@ Writeable only in locked state.</td>
 <tr>
 <td>Return Codes</td>
 <td>
-Read Not Permitted: for any attempt to read or write while the beacon is locked.<br>
-Write Not Permitted: for any attempt to write while the beacon is locked.
+Read Not Permitted: for any attempt to read while the beacon is unlocked.<br>
+Write Not Permitted: for any attempt to write while the beacon is unlocked.
 </td>
 </tr>
 </table>
@@ -406,7 +407,7 @@ Length: 32 bytes
 <tr>
 <td>Description</td>
 <td>
-Reads the beacon's 256-bit public ECDH key.
+Reads the beacon's 256-bit public ECDH key (little-endian).
 </td>
 </tr>
 <tr>
@@ -444,7 +445,7 @@ Length: 16 bytes
 <tr>
 <td>Description</td>
 <td>
-Reads the identity key for the active slot. If the slot isn't configured as EID, returns an error.
+Reads the identity key (little-endian) for the active slot. If the slot isn't configured as EID, returns an error.
 <br><br>
 To prevent this data being broadcast in the clear, it shall be AES-128 encrypted with the lock code for the beacon.
 </td>
@@ -469,7 +470,7 @@ Read Not Permitted: for any attempt to read while the beacon is locked.</td>
 </tr>
 <tr>
 <td>Characteristic&nbsp;UUID</td>
-<td>a3c8<strong>750A</strong>-8ed3-4bdf-8a39-a01bebede295</td>
+<td>a3c8<strong>750a</strong>-8ed3-4bdf-8a39-a01bebede295</td>
 </tr>
 <tr>
 <td>Properties</td>
@@ -504,7 +505,7 @@ In the case of UID and URL frames, the data to be broadcast is supplied in the a
 <br><br>
 In the case of a TLM frame, the data is just the frame type byte, <code>0x20</code>. If another slot on the beacon has been configured as an EID frame type, the beacon shall broadcast the ETLM variety of telemetry. Otherwise, the plain TLM frame shall be broadcast. If the beacon is currently broadcasting a plain TLM frame and an EID frame is configured, the beacon shall switch to broadcasting the ETLM variety. If the beacon is configured to broadcast multiple EID frames, then the beacon should cycle through the set identity keys and use them in turn to broadcast an equal number of ETLM frames.
 <br><br>
-In the case of an EID frame, the length is either 33 or 17. If 33, it's the 32-byte service's public ECDH key and the exponent byte. This is the prefered method of provisioning an EID beacon. If 17, it's the result of encrypting the 16-byte identity key with the beacon's lock code, and the exponent. This is less secure and any provisioner who implements this should make it clear to the user.
+In the case of an EID frame, the length is either 34 or 18. If 34, it's the frame type, the 32-byte service's public ECDH key (little-endian) and the exponent byte. This is the prefered method of provisioning an EID beacon. If 18, it's the frame type, the result of encrypting the 16-byte identity key (little-endian) with the beacon's lock code (big-endian), and the exponent. This is less secure and any provisioner who implements this should make it clear to the user.
 <br><br>
 Writing an empty array, or a single <code>0x00</code> byte clears the slot and stops Tx. If configured as an EID beacon this will also destroy the peripheral's state for this frame data.
 </td>
@@ -531,7 +532,7 @@ Invalid Attribute Length: on any attempt to write with an illegal number of byte
 </tr>
 <tr>
 <td>Characteristic&nbsp;UUID</td>
-<td>a3c8<strong>750B</strong>-8ed3-4bdf-8a39-a01bebede295</td>
+<td>a3c8<strong>750b</strong>-8ed3-4bdf-8a39-a01bebede295</td>
 </tr>
 <tr>
 <td>Properties</td>
@@ -546,7 +547,7 @@ If a value of <code>0x0B</code> is written, the beacon shall reset to its factor
 <br><br>
 Any other value shall be ignored.
 <br><br>
-In addition, any write shall be ignored if the lock state is not <code>0x01</code>, i.e. locked and automatic lock disabled. The beacon must have been purposefully unlocked by the current client before a factory reset can be performed.
+In addition, any write shall be ignored if the lock state is not <code>0x01</code>. The beacon must have been purposefully unlocked by the current client before a factory reset can be performed.
 </td>
 </tr>
 <tr>
@@ -567,7 +568,7 @@ In addition, any write shall be ignored if the lock state is not <code>0x01</cod
 </tr>
 <tr>
 <td>Characteristic&nbsp;UUID</td>
-<td>a3c8<strong>750C</strong>-8ed3-4bdf-8a39-a01bebede295</td>
+<td>a3c8<strong>750c</strong>-8ed3-4bdf-8a39-a01bebede295</td>
 </tr>
 <tr>
 <td>Properties</td>
