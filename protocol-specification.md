@@ -17,6 +17,12 @@ TLM | `0010` | `0x20`
 EID | `0011` | `0x30`
 RESERVED | `0100` | `0x40`
 
+The specification allows for two custom frames that are not described in the spec and are provider specific. Because they don't have a formal specification they should always be paired with either a UID or URL frame so the receiver can identify the provider.
+
+Frame Type | High-Order 4 bits | Byte Value
+:----------|:-----------------:|:---------:
+CUSTOM | `1110` | `0xE0`
+CUSTOM | `1111` | `0xF0`
 
 The four low-order bits are reserved for future use and must be `0000`.
 
