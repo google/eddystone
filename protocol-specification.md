@@ -30,7 +30,7 @@ Byte offset | Value | Description | Data Type
 -----|:-----:|-----------|------------
  0 | `0x02` | Length | Flags. CSS v5, Part A, § 1.3
  1 | `0x01` | Flags data type value
- 2 | `0x06` | Flags data
+ 2 | `0x04` | Flags data
  3 | `0x03` | Length | Complete list of 16-bit Service UUIDs. _Ibid._ § 1.1
  4 | `0x03` | Complete list of 16-bit Service UUIDs data type value
  5 | `0xAA` | 16-bit Eddystone UUID
