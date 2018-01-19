@@ -46,10 +46,10 @@ public class TlmValidator {
   static final float TEMPERATURE_NOT_SUPPORTED = -128.0f;
 
   // Minimum expected temperature value in beacon telemetry in degrees Celsius.
-  static final float MIN_EXPECTED_TEMP = 0.0f;
+  static final float MIN_EXPECTED_TEMP = -127.0f;
 
   // Maximum expected temperature value in beacon telemetry in degrees Celsius.
-  static final float MAX_EXPECTED_TEMP = 60.0f;
+  static final float MAX_EXPECTED_TEMP = 128.0f;
 
   // Maximum expected PDU count in beacon telemetry.
   // The fastest we'd expect to see a beacon transmitting would be about 10 Hz.
