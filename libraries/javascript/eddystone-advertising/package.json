@@ -40,7 +40,7 @@
     "chai": "^3.2.0",
     "chai-as-promised": "^5.1.0",
     "del": "^2.0.0",
-    "gulp": "^3.9.0",
+    "gulp": "^4.0.0",
     "gulp-concat": "^2.6.0",
     "gulp-david": "^0.4.1",
     "gulp-diff": "^1.0.0",

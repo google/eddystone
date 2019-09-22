@@ -26,14 +26,6 @@ gulp.task('docs', () => {
     .pipe(gulp.dest(''));
 });
 
-gulp.task('test', [
-  'test:docs',
-  'test:dependencies',
-  'test:browserify',
-  'test:style',
-  'test:unit']
-);
-
 gulp.task('browserify', () => {
 
   return getBrowserifyPipe()
@@ -71,9 +63,17 @@ gulp.task('test:unit', () => {
              .pipe(mocha({reporter: 'spec'}));
 });
 
-gulp.task('clean', ['test:chrome-os'], cb => {
+gulp.task('clean', cb => {
   del('temp/', cb);
 });
+
+gulp.task('test', gulp.series(
+  'test:docs',
+  'test:dependencies',
+  'test:browserify',
+  'test:style',
+  'test:unit')
+);
 
 function getJsDocPipe() {
   return gulp.src('lib/*.js')
