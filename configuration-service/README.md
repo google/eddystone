@@ -248,7 +248,7 @@ int8_t set_advertised_tx_power (write)
 <tr>
 <td>Description</td>
 <td>
-Writes a value that shall be used as the Tx power that is advertised in the Eddystone-UID, -URL, and -EID frame types. If not set, the Tx power advertised in those frames shall be the value set in the Radio Tx Power characteristic, and the read value shall reflect that.
+Writes a value that shall be used as the Tx power that is advertised in the Eddystone-UID, -URL, and -EID frame types. If not set, the Tx power advertised in those frames shall be the received power at 0 meters, as specified in [Tx Power Level](https://github.com/google/eddystone/tree/master/eddystone-url#tx-power-level). Also, if not set, the value returned when reading this characteristic shall be the value set in the Radio Tx Power characteristic.
 <br><br>
 This characteristic is available as an advanced deployer option. Beacon manufacturers will make every effort to ensure that the Radio Tx Power set is accurate and is the value received at 0m, but manufacturing changes and other unforeseeable events mean that some correction may be necessary. Implementors of this GATT service should make every effort to ensure that end-users cannot set this value without understanding the effect it has on the broadcast data.
 <br><br>
